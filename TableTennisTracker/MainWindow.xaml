@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:k="http://schemas.microsoft.com/kinect/2014"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTennisTracker"
         mc:Ignorable="d"
@@ -15,89 +16,94 @@
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="1080" Width="1920" >
-    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <StackPanel Margin="16">
-                    <TextBlock Margin="4" HorizontalAlignment="Center">MAIN MENU</TextBlock>
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+
+    <k:KinectRegion x:Name="kinectRegion">
+
+        <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+            <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <materialDesign:DrawerHost.LeftDrawerContent>
+                    <StackPanel Margin="16">
+                        <TextBlock Margin="4" HorizontalAlignment="Center">MAIN MENU</TextBlock>
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                         CommandParameter="{x:Static Dock.Left}"
                         Margin="4" 
                         HorizontalAlignment="Center"
                         Style="{DynamicResource MaterialDesignFlatButton}" Click="AddPlayer">
-                        ADD PLAYER
-                    </Button>
+                            ADD PLAYER
+                        </Button>
 
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}"
                             Margin="4"
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="NewGame">
-                        NEW GAME
-                    </Button>
+                            NEW GAME
+                        </Button>
 
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}"
                             Margin="4"
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="Leaderboard">
-                        LEADERBOARD
-                    </Button>
+                            LEADERBOARD
+                        </Button>
 
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             Margin="4" 
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="Splash">
-                        RETURN HOME
-                    </Button>
-                </StackPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel>
-                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            RETURN HOME
+                        </Button>
+                    </StackPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel>
+                    <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                             Mode="PrimaryMid" DockPanel.Dock="Top">
-                    <DockPanel>
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
+                        <DockPanel>
+                            <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
                                         x:Name="MenuToggleButton" Checked="MenuToggleButton_Checked"/>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                            <StackPanel>
-                                <Button Content="Hello World" Click="MenuPopupButton_OnClick"/>
-                                <Button Content="Nice Popup" Click="MenuPopupButton_OnClick"/>
-                                <Button Content="Can't Touch This" IsEnabled="False" />
-                                <Separator/>
-                                <Button Content="Goodbye" Click="MenuPopupButton_OnClick"/>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        <TextBlock 
+                            <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                                <StackPanel>
+                                    <Button Content="Hello World" Click="MenuPopupButton_OnClick"/>
+                                    <Button Content="Nice Popup" Click="MenuPopupButton_OnClick"/>
+                                    <Button Content="Can't Touch This" IsEnabled="False" />
+                                    <Separator/>
+                                    <Button Content="Goodbye" Click="MenuPopupButton_OnClick"/>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                            <TextBlock 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             FontSize="50"
                             FontWeight="Bold">TRIPPLE THREAT TABBLE TENNIS TRACKING!</TextBlock>
-                    </DockPanel>
+                        </DockPanel>
 
-                </materialDesign:ColorZone>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Frame x:Name="Main" Margin="0,0,0,0" NavigationUIVisibility="Hidden" />
+                    </materialDesign:ColorZone>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Frame x:Name="Main" Margin="0,0,0,0" NavigationUIVisibility="Hidden" />
 
-                    <!--<ScrollViewer
+                        <!--<ScrollViewer
                                   HorizontalScrollBarVisibility="{Binding ElementName=DemoItemsListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
                                   VerticalScrollBarVisibility="{Binding ElementName=DemoItemsListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}" 
                                   Padding="{Binding ElementName=DemoItemsListBox, Path=SelectedItem.MarginRequirement}">
                         <ContentControl Content="{Binding ElementName=DemoItemsListBox, Path=SelectedItem.Content}" />
                     </ScrollViewer>-->
 
-                    <!--<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar"
+                        <!--<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar"
                                             Grid.Row="1" />-->
 
-                </Grid>
-            </DockPanel>
-        </materialDesign:DrawerHost>
-    </materialDesign:DialogHost>
+                    </Grid>
+                </DockPanel>
+            </materialDesign:DrawerHost>
+        </materialDesign:DialogHost>
+
+    </k:KinectRegion>
 
 </Window>
