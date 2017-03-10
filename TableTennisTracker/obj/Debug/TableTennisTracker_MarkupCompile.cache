@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\coderCamps\fullStackDotNet\GroupProject\TableTennisTracker\TableTennisTracker\obj\Debug\
+C:\coderCamps\fullStackDotNet\TableTennisTracking\TableTennisTracker\obj\Debug\
 TableTennisTracker
 none
 false
 DEBUG;TRACE
-C:\coderCamps\fullStackDotNet\GroupProject\TableTennisTracker\TableTennisTracker\App.xaml
+C:\coderCamps\fullStackDotNet\TableTennisTracking\TableTennisTracker\App.xaml
 6454962694
 
 101356281644
-15-485576285
+15167142093
 GamePage.xaml;Leaderboard.xaml;MainWindow.xaml;NewPlayer.xaml;SelectPlayers.xaml;Splash.xaml;
 
 False
