@@ -22,71 +22,377 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Name="Icon_0" Width="*" />
+                <ColumnDefinition Name="Fields_1" Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*" />
+                <RowDefinition Name="Heading_0" Height="Auto" />
+                <RowDefinition Name="Form_1" Height="Auto"/>
             </Grid.RowDefinitions>
-            <!-- ................Player One, Score Board...........  -->
-            <materialDesign:Card 
-                Margin="10,16,10,16"
-                Padding="0" 
-                Grid.Row="0" 
+     <!--............................. Player one Column.........................  -->
+            <!--Username Header-->
+            <TextBlock
+                Grid.Row="0"
                 Grid.Column="0"
+                Margin="50,0,50,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Name="PlayerOneUserName"
+                FontSize="40"
+                Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                FontWeight="Bold"
+                Text="PlayerOneUserName">
+            </TextBlock>
+
+            <!--Score Card-->
+            <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
+                Grid.Column="0"
+                Grid.Row="0" 
+                Width="400"
+                Height="400"
                 HorizontalAlignment="Right" >
                 <materialDesign:ColorZone 
-                    Mode="Accent"
-                    Padding="50" >
-                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">P1 ScoreArea
+                    Mode="PrimaryMid"
+                    Padding="0"
+                    Height="400"
+                    Width="400"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="270"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        00
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-            <!--....................Player One Info Pannel ..............-->
-            <materialDesign:Card 
-                Margin="10,16,10,16"
-                Padding="28" 
-                Grid.Row="1" 
+  <!--______________Record, info and score buttons here___________________________-->
+            <materialDesign:Card
                 Grid.Column="0"
-                HorizontalAlignment="Right">
-                <TextBlock Style="{DynamicResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">USERNAME WIN-LOSS COE
-                </TextBlock>
+                Grid.Row="1"
+                Margin="20,10,20,10"
+                
+                Padding="0">
+                <StackPanel 
+                    Margin="0,0,0,0"
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Right">
+                    <StackPanel 
+                        Orientation="Horizontal" 
+                        Width="878">
+                        <!--Record Button-->
+                        <Button
+                        Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Background="Red"
+                        Width="150"
+                        Height="150"
+                        Name="PlayerOneRecord"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="20,0,0,0"
+                        FontSize="50">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,7,7"
+                        Width="150"
+                        Height="150"
+                        Kind="RecordRec"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                         />
+                        </Button>
+                        
+                        <!--Name Nationality paddle hand area-->
+                        <StackPanel
+                            Margin="50,0,0,0">
+                            <!--Name-->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        
+                        Margin="25,25,0,10">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"><Run Text="NAME:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerOneName"
+                            FontSize="32"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,10,0"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="Mike Jones"/>
+                            </StackPanel>
+
+
+                            <!--NATIONALITY-->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,10,0,10">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center"><Run Text="NATIONALITY:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerOneNation"
+                            FontSize="32"
+                            Margin="0,0,10,0"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="USA"/>
+                            </StackPanel>
+                            <!--PP HAND! -->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,10,0,25">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center"><Run Text="PADDLE HAND:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerOnePPHand"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="South Paw"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--Add & Subtract area-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="0,50,0,50">
+                        <!--Subtract Button-->
+                        <Button
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="350"
+                        Name="PlayerOneSubPoint"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="10,10,0,10"
+                        FontSize="55"
+                        Height="125"
+                        Background="Red"
+                        >
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="170"
+                        Height="170"
+                        Kind="Minus"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                         />
+                        </Button>
+
+                        <!--Add Button-->
+                        <Button
+                        
+                        Width="350"
+                        Name="PlayerOneAddPoint"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="50,10,0,10"
+                        FontSize="55"
+                        Height="125"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        >
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="170"
+                        Height="170"
+                        Kind="Plus"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                         />
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
             </materialDesign:Card>
 
-            <!-- ..................Player two Mirrored Layout........ -->
+            <!-- ..................Column Two, Bound Information On this side........ -->
 
-
-            <materialDesign:Card 
-                Margin="10,16,10,16" 
-                Padding="0"
+            <!--Username Header-->
+            <TextBlock
                 Grid.Row="0"
-                Grid.Column="2" 
-                Grid.RowSpan="2" 
-                HorizontalAlignment="Left">
-                <materialDesign:ColorZone Mode="Accent" 
-                                          Padding="50">
-                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        P2 ScoreArea
+                Grid.Column="1"
+                Margin="50,0,50,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Name="PlayerTwoUserName"
+                FontSize="40"
+                Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                FontWeight="Bold"
+                Text="PlayerTwoUserName">
+            </TextBlock>
+
+            <!--Score Card-->
+            <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
+                Grid.Column="1"
+                Grid.Row="0" 
+                Width="400"
+                Height="400"
+                HorizontalAlignment="Left" >
+                <materialDesign:ColorZone 
+                    Mode="PrimaryMid"
+                    Padding="0"
+                    Height="400"
+                    Width="400"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="270"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        00
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-
-            <materialDesign:Card 
-                Margin="10,16,50,16" 
-                Padding="28"
+  <!--______________Record, info and score buttons here___________________________-->
+            <materialDesign:Card
+                Grid.Column="1"
                 Grid.Row="1"
-                Grid.Column="2"
-                Grid.RowSpan="2" 
-                HorizontalAlignment="Left">
-                <TextBlock Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                           TextWrapping="Wrap">
-                    Detailed more detailed player stats in this area when clicked.
-                </TextBlock>
-            </materialDesign:Card>
+                Margin="20,10,20,10"
+                
+                Padding="0">
+                <StackPanel 
+                    Margin="0,0,0,0"
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Right">
+                    <StackPanel 
+                        Orientation="Horizontal" 
+                        Width="878">
+                        <!--Name Nationality paddle hand area-->
+                        <StackPanel
+                            Margin="50,0,100,0">
+                            <!--Name-->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        
+                        Margin="25,25,0,10">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"><Run Text="NAME:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerTwoName"
+                            FontSize="32"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,10,0"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="Christian Wunder"/>
+                            </StackPanel>
 
+
+                            <!--NATIONALITY-->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,10,0,10">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center"><Run Text="NATIONALITY:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerTwoNation"
+                            FontSize="32"
+                            Margin="0,0,10,0"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="USA"/>
+                            </StackPanel>
+                            <!--PP HAND! -->
+                            <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,10,0,25">
+                                <TextBlock
+                            Margin="0,0,0,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center"><Run Text="PADDLE HAND:"/></TextBlock>
+                                <TextBlock
+                            x:Name="PlayerTwoPPHand"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="Righty"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <!--Record Button-->
+                        <Button
+                        Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Background="Red"
+                        Width="150"
+                        Height="150"
+                        Name="PlayerTwoRecord"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="20,0,20,0"
+                        FontSize="50">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,7,7"
+                        Width="150"
+                        Height="150"
+                        Kind="RecordRec"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                         />
+                        </Button>
+                    </StackPanel>
+                    <!--Add & Subtract area-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="0,50,0,50">
+                        <!--Subtract Button-->
+                        <Button
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="350"
+                        Name="PlayerTwoSubPoint"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="10,10,0,10"
+                        FontSize="55"
+                        Height="125"
+                        Background="Red"
+                        >
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="170"
+                        Height="170"
+                        Kind="Minus"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                         />
+                        </Button>
+
+                        <!--Add Button-->
+                        <Button
+                        
+                        Width="350"
+                        Name="PlayerTwoAddPoint"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="50,10,0,10"
+                        FontSize="55"
+                        Height="125"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        >
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="170"
+                        Height="170"
+                        Kind="Plus"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                         />
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
 
 
 
