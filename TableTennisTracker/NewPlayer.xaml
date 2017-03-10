@@ -1,0 +1,385 @@
+﻿<Page x:Class="TableTennisTracker.NewPlayer"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TableTennisTracker"
+      mc:Ignorable="d" 
+       d:DesignHeight="970" d:DesignWidth="1913"
+      Title="NewPlayer" 
+    
+     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}">
+
+    <DockPanel>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="Icon_0" Width="*" />
+                <ColumnDefinition Name="Fields_1" Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Name="Heading_0" Height="150" />
+                <RowDefinition Name="Form_1" Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--.............................Column One, Player Enters Information...........  -->
+            <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
+                Grid.Column="0"
+                Grid.Row="0" 
+
+                Width="1000"
+                HorizontalAlignment="Center" >
+                <materialDesign:ColorZone 
+                    Mode="PrimaryMid"
+                    Padding="5" >
+                    <TextBlock
+                        FontSize="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        ADD NEW PLAYER
+                    </TextBlock>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+            <!--___________________________________Form Starts here___________________________-->
+            <materialDesign:Card
+                Grid.Column="0"
+                Grid.Row="1"
+                Margin="10,0,10,10"
+                Padding="0">
+                <StackPanel 
+                    Margin="0,0,0,0"
+                    Width="800"
+                    Height="Auto">
+
+                    <!--USERNAME SECTION-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <materialDesign:PackIcon   
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        VerticalAlignment="Center"
+                        Kind="ImageFilterTiltShift" 
+                        Foreground="{Binding ElementName=UserNameTextBox, Path=BorderBrush}" />
+                        <TextBox
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="UserNameTextBox"
+                        FontSize="30"
+		                materialDesign:HintAssist.Hint="Enter Username">
+                        </TextBox>
+                    </StackPanel>
+
+                    <!-- !!!!!!!!! NAME SECTION This section has all extra junk that may be needed. !!!! -->
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Margin="25,0,0,20">
+                        <materialDesign:PackIcon 
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        Kind="Account" 
+                        VerticalAlignment="Center"
+                        Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
+                        <TextBox 
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="NameTextBox"
+                        FontSize="30"
+		                materialDesign:HintAssist.Hint="Enter Your Name">
+                            <TextBox.Text>
+                                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <!--<domain1:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />-->
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+
+                    <!--Age Section-->
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Margin="25,0,0,20">
+                        <materialDesign:PackIcon 
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        Kind="CakeVariant"
+                        VerticalAlignment="Center"
+                        Foreground="{Binding ElementName=AgeTextBox, Path=BorderBrush}" />
+                        <TextBox 
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="AgeTextBox"
+                        FontSize="30"
+		                materialDesign:HintAssist.Hint="Enter Your Age">
+                        </TextBox>
+                    </StackPanel>
+
+                    <!--HEIGHT SECTION-->
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Margin="25,0,0,20">
+                        <materialDesign:PackIcon 
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        Kind="Human" 
+                        HorizontalAlignment="Center"
+                        Foreground="{Binding ElementName=HeightTextBox, Path=BorderBrush}" />
+                        <TextBox 
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="HeightTextBox"
+                        FontSize="30"
+		                materialDesign:HintAssist.Hint="Enter Your Height">
+                        </TextBox>
+                    </StackPanel>
+
+                    <!-- Country of Origin  Section-->
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Margin="25,0,0,20">
+                        <materialDesign:PackIcon 
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        Kind="FlagVariant"
+                        VerticalAlignment="Center"
+                        Foreground="{Binding ElementName=CountryTextBox, Path=BorderBrush}" />
+                        <TextBox 
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="CountryTextBox"
+                        FontSize="30"
+		                materialDesign:HintAssist.Hint="Enter your Nationality">
+                        </TextBox>
+                    </StackPanel>
+
+                    <!--Hand Choice Section-->
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Margin="25,0,0,20">
+                        <materialDesign:PackIcon 
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="60"
+                        Kind="Fingerprint"
+                        VerticalAlignment="Center"
+                        Foreground="{Binding ElementName=PPH, Path=BorderBrush}" />
+                        <ComboBox 
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="PPH"
+                        FontSize="30"
+                        materialDesign:HintAssist.Hint="Primary Paddle Hand">
+                            <ComboBoxItem>RIGHTY</ComboBoxItem>
+                            <ComboBoxItem>SOUTH PAW</ComboBoxItem>
+                            <ComboBoxItem>AMBIDEXTROUS</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <Button
+                        Foreground="Black"
+                        Background="Red"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,70,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="AddCancel">CANCEL
+                    </Button>
+
+
+
+
+
+
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- ..................Column Two, Bound Information On this side........ -->
+
+
+            <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
+                Grid.Column="1"
+                Grid.Row="0" 
+
+                Width="1000"
+                HorizontalAlignment="Center" >
+                <materialDesign:ColorZone 
+                    Mode="PrimaryMid"
+                    Padding="5" >
+                    <TextBlock
+                        FontSize="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        PLAYER PREVIEW
+                    </TextBlock>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+            <!--...................... Bound Preview Starts here ................................-->
+            <materialDesign:Card
+                Grid.Column="1"
+                Grid.Row="1"
+                Margin="10,0,10,10"
+                Padding="0">
+                <StackPanel 
+                    Margin="0,0,0,0"
+                    Width="800"
+                    Height="Auto">
+                    <!-- USERNAME BINDING -->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            Width="250"
+                            FontSize="28"
+                            VerticalAlignment="Center">
+                            USERNAME:
+                        </TextBlock>
+                        <TextBlock
+                            Name="userName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=UserNameTextBox}">
+                        </TextBlock>
+                    </StackPanel>
+                    <!-- NAME BINDING-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR NAME:
+                        </TextBlock>
+                        <TextBlock
+                            Name="name"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=NameTextBox}">
+                        </TextBlock>
+                    </StackPanel>
+                    <!--AGE BINDING-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR AGE:
+                        </TextBlock>
+                        <TextBlock
+                            Name="age"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=AgeTextBox}">
+                        </TextBlock>
+                    </StackPanel>
+                    <!--HEIGHT BINDING-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR HEIGHT:
+                        </TextBlock>
+                        <TextBlock
+                            Name="height"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=HeightTextBox}">
+                        </TextBlock>
+                    </StackPanel>
+                    <!--NATIONALITY BINDING-->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            NATIONALITY:
+                        </TextBlock>
+                        <TextBlock
+                            Name="country"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=CountryTextBox}">
+                        </TextBlock>
+                    </StackPanel>
+                    <!--PP HAND! -->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            PADDLE HAND:
+                        </TextBlock>
+                        <TextBlock
+                            Name="Name"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Text, ElementName=PPH}">
+                        </TextBlock>
+                    </StackPanel>
+                    <Button
+                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                        Width="200"
+                        Name="Confrim"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,10,0,10"
+                        FontSize="55"
+                        Height="200"
+                        Click="Submit"
+                        >
+                        <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CheckboxMarkedCircleOutline"
+                        VerticalAlignment="Center"
+                         />
+                    </Button>
+
+
+                </StackPanel>
+            </materialDesign:Card>
+
+
+        </Grid>
+    </DockPanel>
+</Page>

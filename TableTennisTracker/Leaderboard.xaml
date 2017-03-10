@@ -1,0 +1,94 @@
+﻿<Page x:Class="TableTennisTracker.Leaderboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TableTennisTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="970" d:DesignWidth="1913"
+      Title="Leaderboard"
+
+     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}">
+
+    <DockPanel>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="152"/>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- ................Section One, Leaderboard...........  -->
+            <materialDesign:Card 
+                Margin="0,16,0,16"
+                Padding="0" 
+                Grid.Row="0" 
+                Grid.Column="0"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Center" >
+                <materialDesign:ColorZone 
+                    Mode="Accent"
+                    Padding="32" >
+                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">Leaderboard
+                    </TextBlock>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+            <materialDesign:Card 
+                Margin="50,16,50,16"
+                Padding="32" 
+                Grid.Row="2" 
+                Grid.Column="0"
+                HorizontalAlignment="Center">
+                <TextBlock Style="{DynamicResource MaterialDesignBody2TextBlock}" TextWrapping="Wrap">All Players on a scrolling list here
+                </TextBlock>
+            </materialDesign:Card>
+
+            <!-- ..................Section Two, Mirrored Information for pretty layout........ -->
+
+
+            <materialDesign:Card 
+                Margin="0,16,0,16" 
+                Padding="0"
+                Grid.Row="0"
+                Grid.Column="1" 
+                Grid.RowSpan="2" 
+                HorizontalAlignment="Center">
+                <materialDesign:ColorZone Mode="Accent" Padding="32">
+                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        Individual players Picture when clicked.
+                    </TextBlock>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+
+            <materialDesign:Card 
+                Margin="50,16,50,16" 
+                Padding="32"
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.RowSpan="2" 
+                HorizontalAlignment="Center">
+                <TextBlock Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                           TextWrapping="Wrap">
+                    Detailed more detailed player stats in this area when clicked.
+                </TextBlock>
+            </materialDesign:Card>
+
+
+
+
+
+        </Grid>
+    </DockPanel>
+</Page>
