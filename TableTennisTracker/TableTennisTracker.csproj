@@ -117,6 +117,9 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="system.windows.controls.datavisualization.toolkit">
+      <HintPath>..\..\GroupProject\Chart Control in WPF\C#\WpfChartControl\bin\Debug\system.windows.controls.datavisualization.toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -137,6 +140,9 @@
     </ApplicationDefinition>
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameTest.xaml.cs">
+      <DependentUpon>GameTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="Leaderboard.xaml.cs">
       <DependentUpon>Leaderboard.xaml</DependentUpon>
@@ -161,6 +167,10 @@
     </Compile>
     <Compile Include="TableTennisTrackerDb.cs" />
     <Page Include="GamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

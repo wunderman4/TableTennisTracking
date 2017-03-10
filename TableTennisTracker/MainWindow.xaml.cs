@@ -83,5 +83,11 @@ namespace TableTennisTracker
             await Task.Delay(350);
             Main.Content = new Splash();
         }
+
+        private async void GameTest(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(350);
+            Main.Content = new GameTest();
+        }
     }
 }
