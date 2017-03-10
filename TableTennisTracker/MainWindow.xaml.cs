@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Kinect;
+using Microsoft.Kinect.Wpf.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +27,11 @@ namespace TableTennisTracker
         {
             InitializeComponent();
             Main.Content = new Splash();
+
+            KinectRegion.SetKinectRegion(this, kinectRegion);
+            App app = ((App)Application.Current);
+            app.KinectRegion = kinectRegion;
+            this.kinectRegion.KinectSensor = KinectSensor.GetDefault();
         }
 
         private void MenuPopupButton_OnClick(object sender, RoutedEventArgs e)
@@ -49,6 +56,8 @@ namespace TableTennisTracker
             }
 
             MenuToggleButton.IsChecked = false;
+
+            this.kinectRegion.InputPointerManager.CompleteGestures();
         }
 
         private async void AddPlayer(object sender, RoutedEventArgs e)

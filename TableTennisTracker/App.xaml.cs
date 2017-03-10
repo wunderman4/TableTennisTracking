@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Kinect.Wpf.Controls;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,6 @@ namespace TableTennisTracker
     /// </summary>
     public partial class App : Application
     {
+        internal KinectRegion KinectRegion { get; set; }
     }
 }
