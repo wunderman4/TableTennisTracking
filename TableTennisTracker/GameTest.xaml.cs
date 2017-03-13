@@ -59,24 +59,14 @@ namespace TableTennisTracker
         public DateTime startPosTime;
         public int _p1Score;
         public int _p2Score;
+        public bool gameOver;
 
         public GameTest()
         {
-            this._xyData = new List<KeyValuePair<float, float>>();
-            this.AllData = new List<DataPoint>();
-            this.Bounces = new List<DataPoint>();
-            this._direction = "";
-            this._vertdir = "";
-            this._pointScored = "";
-            this.bounce1 = false;
-            this.serveBounce = false;
-            this.inVolley = false;
-            this.hitTime = DateTime.MinValue;
             this.tableLevel = 514;      // Must be determined per setup
-            this.startPosition = false;
-            this.startPosTime = DateTime.MinValue;
-            this._p1Score = 0;
-            this._p2Score = 0;
+
+            InitVariables();
+            NewGame();
 
             this.kinectSensor = KinectSensor.GetDefault();
 
@@ -90,6 +80,23 @@ namespace TableTennisTracker
             this.DataContext = this;
 
             InitializeComponent();
+        }
+
+        // Initialize variables
+        private void InitVariables()
+        {
+            this._xyData = new List<KeyValuePair<float, float>>();
+            this.AllData = new List<DataPoint>();
+            this.Bounces = new List<DataPoint>();
+            this._direction = "";
+            this._vertdir = "";
+            this._pointScored = "";
+            this.bounce1 = false;
+            this.serveBounce = false;
+            this.inVolley = false;
+            this.hitTime = DateTime.MinValue;
+            this.startPosition = false;
+            this.startPosTime = DateTime.MinValue;
         }
 
         // Data points to be graphed
@@ -290,115 +297,118 @@ namespace TableTennisTracker
         // Color frame analysis
         private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
-            MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
-
-            if (inVolley)
+            if (!gameOver)
             {
-                // If too much time passes without bounce/return, someone missed
-                if (this.hitTime != DateTime.MinValue)
+                MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
+
+                if (inVolley)
                 {
-                    if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
+                    // If too much time passes without bounce/return, someone missed
+                    if (this.hitTime != DateTime.MinValue)
                     {
-                        if (this.Direction == "Left")
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
                         {
-                            Score("P2");
-                        }
-                        else
-                        {
-                            Score("P1");
-                        }
-                    }
-                }
-
-                // Get Ball xy coordinates
-                DataPoint BallLocation = FindBall(multiSourceFrame);
-                int xavg = (int)BallLocation.X;
-                int yavg = (int)BallLocation.Y;
-
-                // If good data point, analyze it
-                if (xavg > 1)
-                {
-                    // Off (or rather under) table
-                    if (bounce1 && yavg < 500)
-                    {
-                        if (this.Direction == "Left")
-                        {
-                            Score("P2");
-                        }
-                        else
-                        {
-                            Score("P1");
-                        }
-                    }
-
-                    // Determine direction and do game processing
-                    float xdelta = 0;
-                    float ydelta = 0;
-                    if (AllData.Count > 0)
-                    {
-                        xdelta = AllData[AllData.Count - 1].X - xavg;
-                        ydelta = AllData[AllData.Count - 1].Y - yavg;
-                    }
-
-                    // Horizontal direction determination and direction change detection
-                    if (xdelta > 10)
-                    {
-                        if (this.Direction == "Right")
-                        {
-                            ChangeDirection();
-                        }
-                        this.Direction = "Left";
-                    }
-                    else if (xdelta < -10)
-                    {
-                        if (this.Direction == "Left")
-                        {
-                            ChangeDirection();
-                        }
-                        this.Direction = "Right";
-                    }
-
-                    // Vertical direction and bounce detection
-                    if (ydelta > 5)
-                    {
-                        this.VertDir = "Down";
-                    }
-                    else if (ydelta < 5)
-                    {
-                        if (this.VertDir == "Down" && yavg < 600)
-                        {
-                            // If a bounce get x,y,z coords, handle bounce processesing
-                            using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                            if (this.Direction == "Left")
                             {
-                                BounceLocation(depthFrame, xavg, yavg);
+                                Score("P2");
                             }
-                            // Handle bounce processing
-                            Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                            else
+                            {
+                                Score("P1");
+                            }
                         }
-                        this.VertDir = "Up";
                     }
-                    // Add current location to points list
-                    this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                }
-            }
-            else   // Check for ball in start position to start volley
-            {
-                // Get Ball xy coordinates
-                DataPoint BallLocation = FindBall(multiSourceFrame);
-                int xavg = (int)BallLocation.X;
-                int yavg = (int)BallLocation.Y;
 
-                if (Math.Abs(yavg - this.tableLevel) < 10)
-                {
-                    if (!startPosition)
+                    // Get Ball xy coordinates
+                    DataPoint BallLocation = FindBall(multiSourceFrame);
+                    int xavg = (int)BallLocation.X;
+                    int yavg = (int)BallLocation.Y;
+
+                    // If good data point, analyze it
+                    if (xavg > 1)
                     {
-                        this.startPosTime = DateTime.Now;
-                        this.startPosition = true;
+                        // Off (or rather under) table
+                        if (bounce1 && yavg < 500)
+                        {
+                            if (this.Direction == "Left")
+                            {
+                                Score("P2");
+                            }
+                            else
+                            {
+                                Score("P1");
+                            }
+                        }
+
+                        // Determine direction and do game processing
+                        float xdelta = 0;
+                        float ydelta = 0;
+                        if (AllData.Count > 0)
+                        {
+                            xdelta = AllData[AllData.Count - 1].X - xavg;
+                            ydelta = AllData[AllData.Count - 1].Y - yavg;
+                        }
+
+                        // Horizontal direction determination and direction change detection
+                        if (xdelta > 10)
+                        {
+                            if (this.Direction == "Right")
+                            {
+                                ChangeDirection();
+                            }
+                            this.Direction = "Left";
+                        }
+                        else if (xdelta < -10)
+                        {
+                            if (this.Direction == "Left")
+                            {
+                                ChangeDirection();
+                            }
+                            this.Direction = "Right";
+                        }
+
+                        // Vertical direction and bounce detection
+                        if (ydelta > 5)
+                        {
+                            this.VertDir = "Down";
+                        }
+                        else if (ydelta < 5)
+                        {
+                            if (this.VertDir == "Down" && yavg < 600)
+                            {
+                                // If a bounce get x,y,z coords, handle bounce processesing
+                                using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                {
+                                    BounceLocation(depthFrame, xavg, yavg);
+                                }
+                                // Handle bounce processing
+                                Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                            }
+                            this.VertDir = "Up";
+                        }
+                        // Add current location to points list
+                        this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
                     }
-                    else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)
+                }
+                else   // Check for ball in start position to start volley
+                {
+                    // Get Ball xy coordinates
+                    DataPoint BallLocation = FindBall(multiSourceFrame);
+                    int xavg = (int)BallLocation.X;
+                    int yavg = (int)BallLocation.Y;
+
+                    if (Math.Abs(yavg - this.tableLevel) < 10)
                     {
-                        this.PointScored = "Starting Volley";
-                        StartVolley();
+                        if (!startPosition)
+                        {
+                            this.startPosTime = DateTime.Now;
+                            this.startPosition = true;
+                        }
+                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)
+                        {
+                            this.PointScored = "Starting Volley";
+                            StartVolley();
+                        }
                     }
                 }
             }
@@ -472,6 +482,14 @@ namespace TableTennisTracker
             this.inVolley = true;
         }
 
+        // Start New Game
+        private void NewGame()
+        {
+            P1Score = 0;
+            P2Score = 0;
+            gameOver = false;
+        }
+
         // Register point scored
         private void Score(string player)
         {
@@ -486,6 +504,16 @@ namespace TableTennisTracker
             else
             {
                 this.P2Score++;
+            }
+
+            if (P1Score == 21)
+            {
+                this.PointScored = "Player 1 Wins!";
+                gameOver = true;
+            } else if (P1Score == 21)
+            {
+                this.PointScored = "Player 2 Wins!";
+                gameOver = true;
             }
 
             PlotXYData();
