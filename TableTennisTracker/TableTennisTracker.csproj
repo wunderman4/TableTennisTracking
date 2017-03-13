@@ -145,6 +145,10 @@
     <Compile Include="Migrations\201703101922117_initial.Designer.cs">
       <DependentUpon>201703101922117_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703102303211_added-IsSelected-to-Player.cs" />
+    <Compile Include="Migrations\201703102303211_added-IsSelected-to-Player.Designer.cs">
+      <DependentUpon>201703102303211_added-IsSelected-to-Player.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GamePlayer.cs" />
@@ -209,6 +213,9 @@
     </Compile>
     <EmbeddedResource Include="Migrations\201703101922117_initial.resx">
       <DependentUpon>201703101922117_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703102303211_added-IsSelected-to-Player.resx">
+      <DependentUpon>201703102303211_added-IsSelected-to-Player.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

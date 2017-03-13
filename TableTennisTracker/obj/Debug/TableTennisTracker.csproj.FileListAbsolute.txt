@@ -124,3 +124,4 @@ C:\coderCampPrograms\kinectProject\TableTennisTracking\TableTennisTracker\bin\De
 C:\coderCampPrograms\kinectProject\TableTennisTracking\TableTennisTracker\bin\Debug\System.Interactive.Async.xml
 C:\coderCampPrograms\kinectProject\TableTennisTracking\TableTennisTracker\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\coderCampPrograms\kinectProject\TableTennisTracking\TableTennisTracker\obj\Debug\TableTennisTracker.Migrations.initial.resources
+C:\coderCampPrograms\kinectProject\TableTennisTracking\TableTennisTracker\obj\Debug\TableTennisTracker.Migrations.addedIsSelectedtoPlayer.resources

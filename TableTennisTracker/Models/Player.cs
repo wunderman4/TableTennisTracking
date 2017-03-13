@@ -16,6 +16,7 @@ namespace TableTennisTracker.Models
         public int HeightInch { get; set; }
         public string Nationality { get; set; }
         public string HandPreference { get; set; }
+        public bool IsSelected { get; set; } = false;
 
         public ICollection<GamePlayer> GamePlayer { get; set; }
     }
