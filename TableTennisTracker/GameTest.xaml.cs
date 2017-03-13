@@ -34,10 +34,10 @@ namespace TableTennisTracker
         }
     }
 
-        /// <summary>
-        /// Interaction logic for GameTest.xaml
-        /// </summary>
-        public partial class GameTest : Page, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for GameTest.xaml
+    /// </summary>
+    public partial class GameTest : Page, INotifyPropertyChanged
     {
         private KinectSensor kinectSensor = null;
         private MultiSourceFrameReader multiSourceFrameReader = null;
@@ -54,6 +54,11 @@ namespace TableTennisTracker
         public bool serveBounce;
         public bool inVolley;
         public DateTime hitTime;
+        public int tableLevel;
+        public bool startPosition;
+        public DateTime startPosTime;
+        public int _p1Score;
+        public int _p2Score;
 
         public GameTest()
         {
@@ -67,6 +72,11 @@ namespace TableTennisTracker
             this.serveBounce = false;
             this.inVolley = false;
             this.hitTime = DateTime.MinValue;
+            this.tableLevel = 514;      // Must be determined per setup
+            this.startPosition = false;
+            this.startPosTime = DateTime.MinValue;
+            this._p1Score = 0;
+            this._p2Score = 0;
 
             this.kinectSensor = KinectSensor.GetDefault();
 
@@ -93,6 +103,42 @@ namespace TableTennisTracker
                 if (handler != null)
                 {
                     handler(this, new PropertyChangedEventArgs("xyData"));
+                }
+            }
+        }
+
+        // Player 1 score
+        public int P1Score
+        {
+            get { return _p1Score; }
+            set
+            {
+                if (_p1Score != value)
+                {
+                    _p1Score = value;
+                    var handler = PropertyChanged;
+                    if (handler != null)
+                    {
+                        handler(this, new PropertyChangedEventArgs("P1Score"));
+                    }
+                }
+            }
+        }
+
+        // Player 2 score
+        public int P2Score
+        {
+            get { return _p2Score; }
+            set
+            {
+                if (_p2Score != value)
+                {
+                    _p2Score = value;
+                    var handler = PropertyChanged;
+                    if (handler != null)
+                    {
+                        handler(this, new PropertyChangedEventArgs("P2Score"));
+                    }
                 }
             }
         }
@@ -153,9 +199,99 @@ namespace TableTennisTracker
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Find ball xy coordinates
+        private DataPoint FindBall(MultiSourceFrame multiSourceFrame)
+        {
+            DataPoint BallLocation = new DataPoint(0, 0, 0, 0);
+
+            using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+            {
+                if (colorFrame != null)
+                {
+                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+
+                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
+                    {
+                        byte[] myBytes = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
+                        colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
+
+                        // Find location of the ball based on pixel colors
+                        int xsum = 0;
+                        int ysum = 0;
+                        int vcount = 0;
+                        for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
+                        {
+                            int j = i * 4;
+                            if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 140)
+                            {
+                                int yval = i / 1920;
+                                int xval = i - yval * 1920;
+                                xsum += xval;
+                                ysum += yval;
+                                vcount++;
+                            }
+                        }
+                        int xavg = 0;
+                        int yavg = 0;
+                        if (vcount > 0)
+                        {
+                            xavg = xsum / vcount;
+                            yavg = 1080 - (ysum / vcount);
+                        }
+                        else
+                        {
+                            xavg = 1;
+                            yavg = 1;
+                        }
+                        BallLocation.X = xavg;
+                        BallLocation.Y = yavg;
+                    }
+                }
+            }
+            return (BallLocation);
+        }
+
+        // Get xyz physical coordinates for bounce location, add to Bounce list
+        private void BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
+        {
+            if (depthFrame == null)
+            {
+                return;
+            }
+
+            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            {
+                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
+                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                int index = (1080 - yavg) * 1920 + xavg;
+                float xtval = camSpacePoints[index].X;
+                float ytval = camSpacePoints[index].Y;
+                float ztval = camSpacePoints[index].Z;
+
+                if (ztval < 0)
+                {
+                    for (int a = -5; a <= 5; a++)
+                    {
+                        for (int b = -5; b <= 5; b++)
+                        {
+                            if (camSpacePoints[index + (a * 1920) + b].Z > 0)
+                            {
+                                xtval = camSpacePoints[index + (a * 1920) + b].X;
+                                ytval = camSpacePoints[index + (a * 1920) + b].Y;
+                                ztval = camSpacePoints[index + (a * 1920) + b].Z;
+                            }
+                        }
+                    }
+                }
+                this.Bounces.Add(new DataPoint(xtval, ytval, ztval, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+            }
+        }
+
         // Color frame analysis
         private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
+            MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
+
             if (inVolley)
             {
                 // If too much time passes without bounce/return, someone missed
@@ -174,144 +310,95 @@ namespace TableTennisTracker
                     }
                 }
 
-                MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
+                // Get Ball xy coordinates
+                DataPoint BallLocation = FindBall(multiSourceFrame);
+                int xavg = (int)BallLocation.X;
+                int yavg = (int)BallLocation.Y;
 
-                using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+                // If good data point, analyze it
+                if (xavg > 1)
                 {
-                    if (colorFrame != null)
+                    // Off (or rather under) table
+                    if (bounce1 && yavg < 500)
                     {
-                        FrameDescription colorFrameDescription = colorFrame.FrameDescription;
-
-                        using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
+                        if (this.Direction == "Left")
                         {
-                            byte[] myBytes = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
-                            colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
-
-                            // Find location of the ball based on pixel colors
-                            int xsum = 0;
-                            int ysum = 0;
-                            int vcount = 0;
-                            for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
-                            {
-                                int j = i * 4;
-                                if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 140)
-                                {
-                                    int yval = i / 1920;
-                                    int xval = i - yval * 1920;
-                                    xsum += xval;
-                                    ysum += yval;
-                                    vcount++;
-                                }
-                            }
-                            int xavg = 0;
-                            int yavg = 0;
-                            if (vcount > 0)
-                            {
-                                xavg = xsum / vcount;
-                                yavg = 1080 - (ysum / vcount);
-                            }
-                            else
-                            {
-                                xavg = 1;
-                                yavg = 1;
-                            }
-
-                            // If good data point, analyze it
-                            if (xavg > 1)
-                            {
-                                // Off (or rather under) table
-                                if (bounce1 && yavg < 500)
-                                {
-                                    if (this.Direction == "Left")
-                                    {
-                                        Score("P2");
-                                    }
-                                    else
-                                    {
-                                        Score("P1");
-                                    }
-                                }
-
-                                // Determine direction and do game processing
-                                float xdelta = 0;
-                                float ydelta = 0;
-                                if (AllData.Count > 0)
-                                {
-                                    xdelta = AllData[AllData.Count - 1].X - xavg;
-                                    ydelta = AllData[AllData.Count - 1].Y - yavg;
-                                }
-
-                                // Horizontal direction determination and direction change detection
-                                if (xdelta > 10)
-                                {
-                                    if (this.Direction == "Right")
-                                    {
-                                        ChangeDirection();
-                                    }
-                                    this.Direction = "Left";
-                                }
-                                else if (xdelta < -10)
-                                {
-                                    if (this.Direction == "Left")
-                                    {
-                                        ChangeDirection();
-                                    }
-                                    this.Direction = "Right";
-                                }
-
-                                // Vertical direction and bounce detection
-                                if (ydelta > 5)
-                                {
-                                    this.VertDir = "Down";
-                                }
-                                else if (ydelta < 5)
-                                {
-                                    if (this.VertDir == "Down" && yavg < 600)
-                                    {
-                                        // If a bounce get x,y,z coords, handle bounce processesing
-                                        using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                        {
-                                            if (depthFrame == null)
-                                            {
-                                                return;
-                                            }
-
-                                            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-                                            {
-                                                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-                                                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-                                                int index = (1080 - yavg) * 1920 + xavg;
-                                                float xtval = camSpacePoints[index].X;
-                                                float ytval = camSpacePoints[index].Y;
-                                                float ztval = camSpacePoints[index].Z;
-
-                                                if (ztval < 0)
-                                                {
-                                                    for (int a = -5; a <= 5; a++)
-                                                    {
-                                                        for (int b = -5; b <= 5; b++)
-                                                        {
-                                                            if (camSpacePoints[index + (a * 1920) + b].Z > 0)
-                                                            {
-                                                                xtval = camSpacePoints[index + (a * 1920) + b].X;
-                                                                ytval = camSpacePoints[index + (a * 1920) + b].Y;
-                                                                ztval = camSpacePoints[index + (a * 1920) + b].Z;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                this.Bounces.Add(new DataPoint(xtval, ytval, ztval, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                            }
-                                        }
-                                        // Handle bounce processing
-                                        Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                    }
-                                    this.VertDir = "Up";
-                                }
-                                // Add current location to points list
-                                this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                            }
+                            Score("P2");
                         }
+                        else
+                        {
+                            Score("P1");
+                        }
+                    }
+
+                    // Determine direction and do game processing
+                    float xdelta = 0;
+                    float ydelta = 0;
+                    if (AllData.Count > 0)
+                    {
+                        xdelta = AllData[AllData.Count - 1].X - xavg;
+                        ydelta = AllData[AllData.Count - 1].Y - yavg;
+                    }
+
+                    // Horizontal direction determination and direction change detection
+                    if (xdelta > 10)
+                    {
+                        if (this.Direction == "Right")
+                        {
+                            ChangeDirection();
+                        }
+                        this.Direction = "Left";
+                    }
+                    else if (xdelta < -10)
+                    {
+                        if (this.Direction == "Left")
+                        {
+                            ChangeDirection();
+                        }
+                        this.Direction = "Right";
+                    }
+
+                    // Vertical direction and bounce detection
+                    if (ydelta > 5)
+                    {
+                        this.VertDir = "Down";
+                    }
+                    else if (ydelta < 5)
+                    {
+                        if (this.VertDir == "Down" && yavg < 600)
+                        {
+                            // If a bounce get x,y,z coords, handle bounce processesing
+                            using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                            {
+                                BounceLocation(depthFrame, xavg, yavg);
+                            }
+                            // Handle bounce processing
+                            Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                        }
+                        this.VertDir = "Up";
+                    }
+                    // Add current location to points list
+                    this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                }
+            }
+            else   // Check for ball in start position to start volley
+            {
+                // Get Ball xy coordinates
+                DataPoint BallLocation = FindBall(multiSourceFrame);
+                int xavg = (int)BallLocation.X;
+                int yavg = (int)BallLocation.Y;
+
+                if (Math.Abs(yavg - this.tableLevel) < 10)
+                {
+                    if (!startPosition)
+                    {
+                        this.startPosTime = DateTime.Now;
+                        this.startPosition = true;
+                    }
+                    else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)
+                    {
+                        this.PointScored = "Starting Volley";
+                        StartVolley();
                     }
                 }
             }
@@ -359,10 +446,22 @@ namespace TableTennisTracker
             chart1.DataContext = this.xyData;
         }
 
-        // Start new volley
+        // Start new volley (overloaded for now)
         public void StartVolley(object sender, RoutedEventArgs e)
         {
             this.PointScored = "";
+            this.AllData.Clear();
+            this.Bounces.Clear();
+            this.xyData.Clear();
+            this.timeStarted = DateTime.Now;
+            this.serveBounce = false;
+            this.bounce1 = false;
+            this.hitTime = DateTime.MinValue;
+            this.inVolley = true;
+        }
+        public void StartVolley()
+        {
+            this.PointScored = "Starting Volley";
             this.AllData.Clear();
             this.Bounces.Clear();
             this.xyData.Clear();
@@ -379,6 +478,15 @@ namespace TableTennisTracker
             this.PointScored = "Point Scored by " + player + "!";
             this.hitTime = DateTime.MinValue;
             this.inVolley = false;
+
+            if (player == "P1")
+            {
+                this.P1Score++;
+            }
+            else
+            {
+                this.P2Score++;
+            }
 
             PlotXYData();
         }

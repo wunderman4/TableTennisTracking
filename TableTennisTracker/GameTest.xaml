@@ -15,9 +15,9 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="770"/>
+            <RowDefinition Height="720"/>
             <RowDefinition Height="100"/>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
         <charts:Chart Name="chart1" Title="Ping Pong" Background="White" Grid.Column="0" Grid.Row="0">
@@ -55,12 +55,14 @@
         <StackPanel Margin="10" Grid.Column="0" Grid.Row="1" Name="buttons" Orientation="Horizontal">
             <Button  MinWidth="100" Height="60" Margin="50,0,0,0" Click="PlotIt">Plot Points</Button>
             <Button MinWidth="100" Height="60" Margin="10,0,0,0" Click="StartVolley">Start Volley</Button>
-            <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding PointScored}" FontSize="36" HorizontalAlignment="Center"/>
+            <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding PointScored}" FontSize="36" Foreground="White" HorizontalAlignment="Center"/>
         </StackPanel>
 
-        <StatusBar Name="StatBar" Grid.Column="0" Grid.Row="2">
-            <StatusBarItem Content="{Binding Direction}" />
-            <StatusBarItem Content="{Binding VertDir}" />
-        </StatusBar>
+        <StackPanel Name="ScoreBar" Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+            <TextBlock Height="60" Margin="20,0,0,0" FontSize="36" Foreground="White" Text="Player1:" />
+            <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding P1Score}" FontSize="36" Foreground="White" />
+            <TextBlock Height="60" Margin="40,0,0,0" FontSize="36" Foreground="White" Text="Player2:" />
+            <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding P2Score}" FontSize="36" Foreground="White" />
+        </StackPanel>
     </Grid>
 </Page>
