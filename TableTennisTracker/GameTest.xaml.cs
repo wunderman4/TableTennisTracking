@@ -55,6 +55,7 @@ namespace TableTennisTracker
         public bool inVolley;
         public DateTime hitTime;
         public int tableLevel;
+        public int netLocation;
         public bool startPosition;
         public DateTime startPosTime;
         public int _p1Score;
@@ -64,6 +65,7 @@ namespace TableTennisTracker
         public GameTest()
         {
             this.tableLevel = 514;      // Must be determined per setup
+            this.netLocation = 960;     // Must be determined per setup
 
             InitVariables();
             NewGame();
@@ -328,7 +330,7 @@ namespace TableTennisTracker
                     if (xavg > 1)
                     {
                         // Off (or rather under) table
-                        if (bounce1 && yavg < 500)
+                        if (bounce1 && yavg < tableLevel - 20)
                         {
                             if (this.Direction == "Left")
                             {
@@ -397,7 +399,7 @@ namespace TableTennisTracker
                     int xavg = (int)BallLocation.X;
                     int yavg = (int)BallLocation.Y;
 
-                    if (Math.Abs(yavg - this.tableLevel) < 10)
+                    if (Math.Abs(yavg - this.tableLevel) < 10 && (xavg > netLocation + 300 || xavg < netLocation - 300))
                     {
                         if (!startPosition)
                         {
@@ -550,7 +552,7 @@ namespace TableTennisTracker
         {
             if (this.serveBounce)
             {
-                if (this.bounce1)
+                if (this.bounce1)  // Second bounce - someone scored
                 {
                     if (this.Direction == "Left")
                     {
@@ -561,24 +563,24 @@ namespace TableTennisTracker
                         Score("P1");
                     }
                 }
-                else if (this.Direction == "Right" && hit.X < 960)
+                else if (this.Direction == "Right" && hit.X < netLocation)   // Wrong side of net
                 {
                     Score("P2");
                 }
-                else if (this.Direction == "Left" && hit.X > 960)
+                else if (this.Direction == "Left" && hit.X > netLocation)    // Wrong side of net
                 {
                     Score("P1");
                 }
-                else
+                else     // Legal bounce
                 {
                     this.bounce1 = true;
                     this.hitTime = DateTime.Now;
                     this.PointScored = "Bounce 1";
                 }
             }
-            else
+            else  // Check for valid serve bounce
             {
-                if ((this.Direction == "Right" && hit.X < 960) || (this.Direction == "Left" && hit.X > 960))
+                if ((this.Direction == "Right" && hit.X < netLocation) || (this.Direction == "Left" && hit.X > netLocation))
                 {
                     this.serveBounce = true;
                     this.PointScored = "Serve Bounce";
