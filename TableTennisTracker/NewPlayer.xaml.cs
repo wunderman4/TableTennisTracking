@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableTennisTracker.Models;
 
 namespace TableTennisTracker
 {
@@ -37,11 +38,30 @@ namespace TableTennisTracker
 
         private void Submit(object sender, RoutedEventArgs e)
         {
-            //TestUser = new User
-            //{
-            //    Name = NameTextBox.Text,
-            //    UserName = UserNameTextBox.Text
-            //};
+            int Age = Convert.ToInt32(AgeTextBox.Text);
+
+            Player newPlayer = new Player
+            {
+                UserName = UserNameTextBox.Text,
+                PlayerName = NameTextBox.Text,
+                Age = Age,
+                Nationality = CountryTextBox.Text,
+                HandPreference = PPH.Text
+            };
+
+            using (var db = new TableTennisTrackerDb())
+            {
+                db.Players.Add(newPlayer);
+                db.SaveChanges();
+            }
         }
     }
 }
+
+
+
+//TestUser = new User
+//{
+//    Name = NameTextBox.Text,
+//    UserName = UserNameTextBox.Text
+//};
