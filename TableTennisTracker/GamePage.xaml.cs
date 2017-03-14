@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableTennisTracker.Models;
 
 namespace TableTennisTracker
 {
@@ -20,9 +21,27 @@ namespace TableTennisTracker
     /// </summary>
     public partial class GamePage : Page
     {
-        public GamePage()
+        Player PlayerOne = null;
+        Player PlayerTwo = null;
+
+        public GamePage(Player pOne, Player pTwo)
         {
             InitializeComponent();
+            PlayerOne = pOne;
+            PlayerTwo = pTwo;
+            
+            //Player One DataContext
+            PlayerOneUserName.DataContext = PlayerOne;
+            PlayerOneName.DataContext = PlayerOne;
+            PlayerOneNation.DataContext = PlayerOne;
+            PlayerOnePPHand.DataContext = PlayerOne;
+            
+            //Player Two DataContext
+            PlayerTwoUserName.DataContext = PlayerTwo;
+            PlayerTwoName.DataContext = PlayerTwo;
+            PlayerTwoNation.DataContext = PlayerTwo;
+            PlayerTwoPPHand.DataContext = PlayerTwo;
+
         }
     }
 }

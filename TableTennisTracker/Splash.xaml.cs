@@ -27,7 +27,7 @@ namespace TableTennisTracker
 
         private async void NewGame(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(350);
+            await Task.Delay(300);
             NavigationService.Navigate(new SelectPlayers());
 
 
@@ -35,14 +35,14 @@ namespace TableTennisTracker
 
         private async void NewPlayer(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(350);
+            await Task.Delay(300);
             NavigationService.Navigate(new NewPlayer());
 
 
         }
         private async void Leaderboard(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(350);
+            await Task.Delay(300);
             NavigationService.Navigate(new Leaderboard());
 
 

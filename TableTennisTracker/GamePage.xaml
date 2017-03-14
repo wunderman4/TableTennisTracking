@@ -35,13 +35,14 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="50,0,50,0"
+                Width="400"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Name="PlayerOneUserName"
                 FontSize="40"
                 Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                 FontWeight="Bold"
-                Text="PlayerOneUserName">
+                Text="{Binding UserName}">
             </TextBlock>
 
             <!--Score Card-->
@@ -120,12 +121,13 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"><Run Text="NAME:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerOneName"
                             FontSize="32"
                             HorizontalAlignment="Right"
                             Margin="0,0,10,0"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="Mike Jones"/>
+                            Text="{Binding PlayerName}"/>
                             </StackPanel>
 
 
@@ -139,11 +141,12 @@
                             Width="250"
                             VerticalAlignment="Center"><Run Text="NATIONALITY:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerOneNation"
                             FontSize="32"
                             Margin="0,0,10,0"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="USA"/>
+                            Text="{Binding Nationality}"/>
                             </StackPanel>
                             <!--PP HAND! -->
                             <StackPanel
@@ -155,10 +158,11 @@
                             Width="250"
                             VerticalAlignment="Center"><Run Text="PADDLE HAND:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerOnePPHand"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="South Paw"/>
+                            Text="{Binding HandPreference}"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -217,14 +221,16 @@
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="1"
-                Margin="50,0,50,0"
+                Width="400"
+                Margin="10,0,50,0"
+                Padding="10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Name="PlayerTwoUserName"
                 FontSize="40"
                 Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                 FontWeight="Bold"
-                Text="PlayerTwoUserName">
+                Text="{Binding UserName}">
             </TextBlock>
 
             <!--Score Card-->
@@ -257,7 +263,6 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 Margin="20,10,20,10"
-                
                 Padding="0">
                 <StackPanel 
                     Margin="0,0,0,0"
@@ -269,7 +274,7 @@
                         Width="878">
                         <!--Name Nationality paddle hand area-->
                         <StackPanel
-                            Margin="50,0,100,0">
+                            Margin="10,0,100,0">
                             <!--Name-->
                             <StackPanel
                         Orientation="Horizontal"
@@ -282,12 +287,13 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"><Run Text="NAME:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerTwoName"
                             FontSize="32"
                             HorizontalAlignment="Right"
                             Margin="0,0,10,0"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="Christian Wunder"/>
+                            Text="{Binding PlayerName}"/>
                             </StackPanel>
 
 
@@ -301,11 +307,12 @@
                             Width="250"
                             VerticalAlignment="Center"><Run Text="NATIONALITY:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerTwoNation"
                             FontSize="32"
                             Margin="0,0,10,0"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="USA"/>
+                            Text="{Binding Nationality}"/>
                             </StackPanel>
                             <!--PP HAND! -->
                             <StackPanel
@@ -317,10 +324,11 @@
                             Width="250"
                             VerticalAlignment="Center"><Run Text="PADDLE HAND:"/></TextBlock>
                                 <TextBlock
+                                    Width="250"
                             x:Name="PlayerTwoPPHand"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="Righty"/>
+                            Text="{Binding HandPreference}"/>
                             </StackPanel>
                         </StackPanel>
                         
