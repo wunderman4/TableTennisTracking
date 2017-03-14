@@ -4,23 +4,17 @@
 winexe
 C#
 .cs
-C:\programming\FullStackClass\MyGroupProject\TableTennisTracker\obj\Debug\
+C:\coderCamps\fullStackDotNet\TableTennisTracking\TableTennisTracker\obj\Debug\
 TableTennisTracker
 none
 false
 DEBUG;TRACE
-C:\programming\FullStackClass\MyGroupProject\TableTennisTracker\App.xaml
+C:\coderCamps\fullStackDotNet\TableTennisTracking\TableTennisTracker\App.xaml
 71514208081
 
-<<<<<<< HEAD
-201232418262
-90175759986
-GamePage.xaml;Leaderboard.xaml;MainWindow.xaml;NewPlayer.xaml;SelectPlayers.xaml;Splash.xaml;
-=======
-191460105887
-9156912846
+21-1315848621
+91-473606876
 GamePage.xaml;GameTest.xaml;Leaderboard.xaml;MainWindow.xaml;NewPlayer.xaml;SelectPlayers.xaml;Splash.xaml;
->>>>>>> WunderBranch
 
 False
 

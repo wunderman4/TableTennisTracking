@@ -365,6 +365,7 @@
                         FontSize="55"
                         Height="200"
                         Click="Submit"
+                        
                         >
                         <materialDesign:PackIcon 
                         Margin="0,0,0,0"
