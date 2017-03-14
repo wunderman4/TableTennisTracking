@@ -59,70 +59,67 @@
                 Grid.Row="1"
                 Margin="10,0,10,10"
                 Padding="0">
-                <ScrollViewer>
+                
                     <StackPanel 
                     Name="PlayerOneSelectArea"
                     Margin="0,0,0,0"
                     Width="800"
-                    Height="600">
+                    Height="750">
 
-                    <!--SELECT USER SECTION-->
-                   
-                        <ItemsControl 
-                        Name="selectPlayer"
-                        Height="Auto"
-                        Grid.IsSharedSizeScope="True">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type Models:Player}">
-                                    <Border 
+                    <!--SELECT PLAYER ONE SECTION-->
+                        <ListBox 
+                            HorizontalAlignment="Stretch"
+                            Name="PlayerOneListBox"
+                            Height="600">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border 
                                     x:Name="Border" 
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition 
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
                                                     SharedSizeGroup="Checkerz" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <ToggleButton 
-                                            Height="100"
-                                            Width="100"
-                                            VerticalAlignment="Center" 
-                                            IsChecked="{Binding IsSelected}"
-                                            Style="{StaticResource MaterialDesignActionLightToggleButton}"
-                                            Content="{Binding Age}" />
-                                            <StackPanel 
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                                <TextBlock 
+                                            <TextBlock 
                                                 FontSize="50"
                                                 FontWeight="Bold" 
                                                 Text="{Binding UserName}" />
-                                                <TextBlock 
+                                            <TextBlock 
                                                 FontSize="30"
                                                 Text="{Binding PlayerName}" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     <Button
-                        Foreground="Black"
-                        Background="Red"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,0"
+                        Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
-                        Click="Cancel"
-                        >CANCEL
+                        Click="PlayerOneConfirm"
+                        >
+                        <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CheckboxMarkedCircleOutline"
+                        VerticalAlignment="Center"
+                         />
                     </Button>
 
 
@@ -131,7 +128,7 @@
 
 
                 </StackPanel>
-                </ScrollViewer>
+                
             </materialDesign:Card>
 
             <!-- ..................Column Two, Bound Information On this side........ -->
@@ -153,137 +150,70 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        PLAYER PREVIEW
+                        PLAYER TWO:
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-            <!--...................... Bound Preview Starts here ................................-->
+
+            <!--Select Player TWO List Starts Here-->
             <materialDesign:Card
                 Grid.Column="1"
                 Grid.Row="1"
                 Margin="10,0,10,10"
                 Padding="0">
+
                 <StackPanel 
+                    Name="PlayerTwoSelectArea"
                     Margin="0,0,0,0"
                     Width="800"
-                    Height="Auto">
-                    <!-- USERNAME BINDING -->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            Width="250"
-                            FontSize="28"
-                            VerticalAlignment="Center">
-                            USERNAME:
-                        </TextBlock>
-                        <TextBlock
-                            Name="userName"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=UserNameTextBox}">
-                        </TextBlock>
-                    </StackPanel>
-                    <!-- NAME BINDING-->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            YOUR NAME:
-                        </TextBlock>
-                        <TextBlock
-                            Name="name"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=NameTextBox}">
-                        </TextBlock>
-                    </StackPanel>
-                    <!--AGE BINDING-->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            YOUR AGE:
-                        </TextBlock>
-                        <TextBlock
-                            Name="age"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=AgeTextBox}">
-                        </TextBlock>
-                    </StackPanel>
-                    <!--HEIGHT BINDING-->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            YOUR HEIGHT:
-                        </TextBlock>
-                        <TextBlock
-                            Name="height"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=HeightTextBox}">
-                        </TextBlock>
-                    </StackPanel>
-                    <!--NATIONALITY BINDING-->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            NATIONALITY:
-                        </TextBlock>
-                        <TextBlock
-                            Name="country"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=CountryTextBox}">
-                        </TextBlock>
-                    </StackPanel>
-                    <!--PP HAND! -->
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            PADDLE HAND:
-                        </TextBlock>
-                        <TextBlock
-                            Name="Name"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=PPH}">
-                        </TextBlock>
-                    </StackPanel>
+                    Height="750">
+
+                    <!--SELECT PLAYER ONE SECTION-->
+                    <ListBox 
+                            HorizontalAlignment="Stretch"
+                            Name="PlayerTwoListBox"
+                            Height="600">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                                    x:Name="Border" 
+                                    Padding="8" 
+                                    BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
+                                                    SharedSizeGroup="Checkerz" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel 
+                                            Margin="8 0 0 0" 
+                                            Grid.Column="1">
+                                            <TextBlock 
+                                                FontSize="50"
+                                                FontWeight="Bold" 
+                                                Text="{Binding UserName}" />
+                                            <TextBlock 
+                                                FontSize="30"
+                                                Text="{Binding PlayerName}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <Button
-                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-                        Width="200"
-                        Name="Confrim"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,10,0,10"
+                        Margin="0,20,0,0"
                         FontSize="55"
-                        Height="200"
-                        Click="PlayerOneConfirm"
+                        Height="125"
+                        Click="PlayerTwoConfirm"
                         >
                         <materialDesign:PackIcon 
                         Margin="0,0,0,0"
@@ -295,7 +225,12 @@
                     </Button>
 
 
+
+
+
+
                 </StackPanel>
+
             </materialDesign:Card>
 
 

@@ -15,7 +15,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="1080" Width="1920" >
+        Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized" >
 
     <k:KinectRegion x:Name="kinectRegion">
 
@@ -87,7 +87,7 @@
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             FontSize="50"
-                            FontWeight="Bold">TRIPPLE THREAT TABBLE TENNIS TRACKING!</TextBlock>
+                            FontWeight="Bold">TRIPLE THREAT TABLE TENNIS TRACKING!</TextBlock>
                         </DockPanel>
 
                     </materialDesign:ColorZone>
