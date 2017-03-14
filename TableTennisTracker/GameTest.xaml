@@ -63,6 +63,9 @@
             <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding P1Score}" FontSize="36" Foreground="White" />
             <TextBlock Height="60" Margin="40,0,0,0" FontSize="36" Foreground="White" Text="Player2:" />
             <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding P2Score}" FontSize="36" Foreground="White" />
+            <TextBlock Height="40" Margin="40,0,0,0" FontSize="20" Foreground="White" Text="Direction:" />
+            <TextBlock Height="40" Margin="20,0,0,0" FontSize="20" Foreground="White" Text="{Binding Direction}" />
+            <TextBlock Height="40" Margin="20,0,0,0" FontSize="20" Foreground="White" Text="{Binding VertDir}" />
         </StackPanel>
     </Grid>
 </Page>
