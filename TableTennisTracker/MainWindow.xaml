@@ -15,7 +15,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="1080" Width="1920" >
+        Title="MainWindow" Height="1080" Width="1920">
 
     <k:KinectRegion x:Name="kinectRegion">
 

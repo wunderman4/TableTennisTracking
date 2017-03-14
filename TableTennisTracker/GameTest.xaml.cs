@@ -212,6 +212,8 @@ namespace TableTennisTracker
         private DataPoint FindBall(MultiSourceFrame multiSourceFrame)
         {
             DataPoint BallLocation = new DataPoint(0, 0, 0, 0);
+            List<int> xvals = new List<int>();
+            List<int> yvals = new List<int>();
 
             using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
             {
@@ -225,8 +227,8 @@ namespace TableTennisTracker
                         colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
 
                         // Find location of the ball based on pixel colors
-                        int xsum = 0;
-                        int ysum = 0;
+                        //int xsum = 0;
+                        //int ysum = 0;
                         int vcount = 0;
                         for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
                         {
@@ -235,25 +237,36 @@ namespace TableTennisTracker
                             {
                                 int yval = i / 1920;
                                 int xval = i - yval * 1920;
-                                xsum += xval;
-                                ysum += yval;
+                                xvals.Add(xval);
+                                yvals.Add(yval);
+                                //xsum += xval;
+                                //ysum += yval;
                                 vcount++;
                             }
                         }
-                        int xavg = 0;
-                        int yavg = 0;
+                        //int xavg = 0;
+                        //int yavg = 0;
+                        //if (vcount > 9)
+                        //{
+                        //    xavg = xsum / vcount;
+                        //    yavg = 1080 - (ysum / vcount);
+                        //}
+                        //else
+                        //{
+                        //    xavg = 1;
+                        //    yavg = 1;
+                        //}
                         if (vcount > 9)
                         {
-                            xavg = xsum / vcount;
-                            yavg = 1080 - (ysum / vcount);
-                        }
-                        else
+                            int midindex = vcount / 2;
+                            xvals.Sort();
+                            BallLocation.X = xvals[midindex];
+                            BallLocation.Y = 1080 - yvals[midindex];
+                        } else
                         {
-                            xavg = 1;
-                            yavg = 1;
+                            BallLocation.X = 1;
+                            BallLocation.Y = 1;
                         }
-                        BallLocation.X = xavg;
-                        BallLocation.Y = yavg;
                     }
                 }
             }
