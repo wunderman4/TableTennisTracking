@@ -36,7 +36,7 @@ namespace TableTennisTracker
             NavigationService.Navigate(new Splash());
         }
 
-        private void Submit(object sender, RoutedEventArgs e)
+        private async void Submit(object sender, RoutedEventArgs e)
         {
             int Age = Convert.ToInt32(AgeTextBox.Text);
 
@@ -54,6 +54,12 @@ namespace TableTennisTracker
                 db.Players.Add(newPlayer);
                 db.SaveChanges();
             }
+
+            
+
+            await Task.Delay(350);
+            NavigationService.Navigate(new Splash());
+
         }
     }
 }
