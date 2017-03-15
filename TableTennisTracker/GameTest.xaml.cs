@@ -34,10 +34,10 @@ namespace TableTennisTracker
         }
     }
 
-        /// <summary>
-        /// Interaction logic for GameTest.xaml
-        /// </summary>
-        public partial class GameTest : Page, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for GameTest.xaml
+    /// </summary>
+    public partial class GameTest : Page, INotifyPropertyChanged
     {
         private KinectSensor kinectSensor = null;
         private MultiSourceFrameReader multiSourceFrameReader = null;
@@ -54,19 +54,27 @@ namespace TableTennisTracker
         public bool serveBounce;
         public bool inVolley;
         public DateTime hitTime;
+        public int tableLevel;
+        public int netLocation;
+        public bool startPosition;
+        public DataPoint startLocation;
+        public DateTime startPosTime;
+        public DateTime scoreDelay;
+        public bool served;
+        public int _p1Score;
+        public int _p2Score;
+        public bool gameOver;
+        public bool PossibleBounce;
+        public DataPoint tempBounce;
+        public DataPoint tempBounceXYZ;
 
         public GameTest()
         {
-            this._xyData = new List<KeyValuePair<float, float>>();
-            this.AllData = new List<DataPoint>();
-            this.Bounces = new List<DataPoint>();
-            this._direction = "";
-            this._vertdir = "";
-            this._pointScored = "";
-            this.bounce1 = false;
-            this.serveBounce = false;
-            this.inVolley = false;
-            this.hitTime = DateTime.MinValue;
+            this.tableLevel = 575;      // Must be determined per setup
+            this.netLocation = 960;     // Must be determined per setup
+
+            InitVariables();
+            NewGame();
 
             this.kinectSensor = KinectSensor.GetDefault();
 
@@ -82,6 +90,27 @@ namespace TableTennisTracker
             InitializeComponent();
         }
 
+        // Initialize variables
+        private void InitVariables()
+        {
+            this._xyData = new List<KeyValuePair<float, float>>();
+            this.AllData = new List<DataPoint>();
+            this.Bounces = new List<DataPoint>();
+            this.startLocation = new DataPoint(0,0,0,0);
+            this._direction = "";
+            this._vertdir = "";
+            this._pointScored = "";
+            this.bounce1 = false;
+            this.serveBounce = false;
+            this.served = false;
+            this.inVolley = false;
+            this.hitTime = DateTime.MinValue;
+            this.startPosition = false;
+            this.startPosTime = DateTime.MinValue;
+            this.PossibleBounce = false;
+            this.scoreDelay = DateTime.MinValue;
+        }
+
         // Data points to be graphed
         public List<KeyValuePair<float, float>> xyData
         {
@@ -93,6 +122,42 @@ namespace TableTennisTracker
                 if (handler != null)
                 {
                     handler(this, new PropertyChangedEventArgs("xyData"));
+                }
+            }
+        }
+
+        // Player 1 score
+        public int P1Score
+        {
+            get { return _p1Score; }
+            set
+            {
+                if (_p1Score != value)
+                {
+                    _p1Score = value;
+                    var handler = PropertyChanged;
+                    if (handler != null)
+                    {
+                        handler(this, new PropertyChangedEventArgs("P1Score"));
+                    }
+                }
+            }
+        }
+
+        // Player 2 score
+        public int P2Score
+        {
+            get { return _p2Score; }
+            set
+            {
+                if (_p2Score != value)
+                {
+                    _p2Score = value;
+                    var handler = PropertyChanged;
+                    if (handler != null)
+                    {
+                        handler(this, new PropertyChangedEventArgs("P2Score"));
+                    }
                 }
             }
         }
@@ -153,164 +218,294 @@ namespace TableTennisTracker
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Color frame analysis
-        private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        // Find ball xy coordinates
+        private DataPoint FindBall(MultiSourceFrame multiSourceFrame)
         {
-            if (inVolley)
+            DataPoint BallLocation = new DataPoint(0, 0, 0, 0);
+            List<int> xvals = new List<int>();
+            List<int> yvals = new List<int>();
+
+            using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
             {
-                // If too much time passes without bounce/return, someone missed
-                if (this.hitTime != DateTime.MinValue)
+                if (colorFrame != null)
                 {
-                    if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
+                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+
+                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
                     {
-                        if (this.Direction == "Left")
+                        byte[] myBytes = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
+                        colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
+
+                        // Find location of the ball based on pixel colors
+                        int vcount = 0;
+                        for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
                         {
-                            Score("P2");
+                            int j = i * 4;
+                            //if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 120)
+                            if (myBytes[j] < 140 && myBytes[j] > 80 && myBytes[j + 1] < 60 && myBytes[j + 1] > 40 && myBytes[j + 2] < 160 && myBytes[j + 2] > 110)
+                            {
+                                int yval = i / 1920;
+                                int xval = i - yval * 1920;
+                                xvals.Add(xval);
+                                yvals.Add(yval);
+                                vcount++;
+                            }
+                        }
+
+                        if (vcount > 9)
+                        {
+                            int midindex = vcount / 2;
+                            xvals.Sort();
+                            BallLocation.X = xvals[midindex];
+                            BallLocation.Y = 1080 - yvals[midindex];
                         }
                         else
                         {
-                            Score("P1");
+                            BallLocation.X = 1;
+                            BallLocation.Y = 1;
                         }
                     }
                 }
+            }
+            return (BallLocation);
+        }
 
+        // Get xyz physical coordinates for bounce location, add to Bounce list
+        private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
+        {
+            DataPoint bounceLocn = new TableTennisTracker.DataPoint(0, 0, 0, 0);
+            if (depthFrame == null)
+            {
+                return (bounceLocn);
+            }
+
+            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            {
+                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
+                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                int index = (1080 - yavg) * 1920 + xavg;
+                float xtval = camSpacePoints[index].X;
+                float ytval = camSpacePoints[index].Y;
+                float ztval = camSpacePoints[index].Z;
+
+                if (ztval < 0)
+                {
+                    for (int a = -5; a <= 5; a++)
+                    {
+                        for (int b = -5; b <= 5; b++)
+                        {
+                            if (camSpacePoints[index + (a * 1920) + b].Z > 0)
+                            {
+                                xtval = camSpacePoints[index + (a * 1920) + b].X;
+                                ytval = camSpacePoints[index + (a * 1920) + b].Y;
+                                ztval = camSpacePoints[index + (a * 1920) + b].Z;
+                            }
+                        }
+                    }
+                }
+                bounceLocn.X = xtval;
+                bounceLocn.Y = ytval;
+                return (bounceLocn);
+            }
+        }
+
+        // Color frame analysis
+        private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            bool changeDir = false;
+            bool pause = false;
+
+            if (scoreDelay != DateTime.MinValue)
+            {
+                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 2) {
+                    pause = true;
+                } else {
+                    scoreDelay = DateTime.MinValue;
+                }
+            }
+
+            if (!gameOver && !pause)
+            {
                 MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
 
-                using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+                if (inVolley)
                 {
-                    if (colorFrame != null)
+                    // If too much time passes without bounce/return, someone missed
+                    if (this.hitTime != DateTime.MinValue)
                     {
-                        FrameDescription colorFrameDescription = colorFrame.FrameDescription;
-
-                        using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 2)
                         {
-                            byte[] myBytes = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
-                            colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
-
-                            // Find location of the ball based on pixel colors
-                            int xsum = 0;
-                            int ysum = 0;
-                            int vcount = 0;
-                            for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
+                            if (this.Direction == "Left" && bounce1)
                             {
-                                int j = i * 4;
-                                if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 140)
-                                {
-                                    int yval = i / 1920;
-                                    int xval = i - yval * 1920;
-                                    xsum += xval;
-                                    ysum += yval;
-                                    vcount++;
-                                }
+                                Score("P2", "Time Limit");
                             }
-                            int xavg = 0;
-                            int yavg = 0;
-                            if (vcount > 0)
+                            else if (this.Direction == "Left")
                             {
-                                xavg = xsum / vcount;
-                                yavg = 1080 - (ysum / vcount);
+                                Score("P1", "Time Limit");
+                            }
+                            else if (this.Direction == "Right" && bounce1)
+                            {
+                                Score("P1", "Time Limit");
                             }
                             else
                             {
-                                xavg = 1;
-                                yavg = 1;
+                                Score("P2", "Time Limit");
+                            }
+                        }
+                    }
+
+                    // Get Ball xy coordinates
+                    DataPoint BallLocation = FindBall(multiSourceFrame);
+                    int xavg = (int)BallLocation.X;
+                    int yavg = (int)BallLocation.Y;
+
+                    // If good data point, analyze it
+                    if (xavg > 1)
+                    {
+                        // Off (or rather under) table
+                        if (yavg < tableLevel - 100)
+                        {
+                            if (bounce1)
+                            {
+                                if (this.Direction == "Left")
+                                {
+                                    Score("P2", "Below Table");
+                                }
+                                else
+                                {
+                                    Score("P1", "Below Table");
+                                }
+                            } else
+                            {
+                                if (this.Direction == "Left")
+                                {
+                                    Score("P1", "Below Table");
+                                }
+                                else
+                                {
+                                    Score("P2", "Below Table");
+                                }
+                            }
+                        }
+
+                        // Determine direction and do game processing
+                        float xdelta = 0;
+                        float ydelta = 0;
+                        if (AllData.Count > 0)
+                        {
+                            xdelta = AllData[AllData.Count - 1].X - xavg;
+                            ydelta = AllData[AllData.Count - 1].Y - yavg;
+                        }
+
+                        if (served)
+                        {
+                            // Horizontal direction determination and direction change detection
+                            if (xdelta > 5)
+                            {
+                                if (this.Direction == "Right")
+                                {
+                                    ChangeDirection();
+                                    changeDir = true;
+                                }
+                                this.Direction = "Left";
+                            }
+                            else if (xdelta < -5)
+                            {
+                                if (this.Direction == "Left")
+                                {
+                                    ChangeDirection();
+                                    changeDir = true;
+                                }
+                                this.Direction = "Right";
                             }
 
-                            // If good data point, analyze it
-                            if (xavg > 1)
+                            // Vertical direction and bounce detection
+                            if (ydelta > 5)
                             {
-                                // Off (or rather under) table
-                                if (bounce1 && yavg < 500)
+                                this.VertDir = "Down";
+                            }
+                            else if (ydelta < -5)
+                            {
+                                if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
                                 {
-                                    if (this.Direction == "Left")
+                                    PossibleBounce = true;
+                                    this.hitTime = DateTime.Now;
+                                    // Get xyz coords for potential bounce
+                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
                                     {
-                                        Score("P2");
+                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
                                     }
-                                    else
-                                    {
-                                        Score("P1");
-                                    }
+                                    this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
-
-                                // Determine direction and do game processing
-                                float xdelta = 0;
-                                float ydelta = 0;
-                                if (AllData.Count > 0)
+                                else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
                                 {
-                                    xdelta = AllData[AllData.Count - 1].X - xavg;
-                                    ydelta = AllData[AllData.Count - 1].Y - yavg;
-                                }
-
-                                // Horizontal direction determination and direction change detection
-                                if (xdelta > 10)
-                                {
-                                    if (this.Direction == "Right")
+                                    if (!changeDir)
                                     {
-                                        ChangeDirection();
+                                        // Handle bounce processing
+                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                                        this.Bounces.Add(tempBounceXYZ);
                                     }
+                                    PossibleBounce = false;
+                                }
+                                this.VertDir = "Up";
+                            }
+                        } else if (inVolley)    // if not served yet, check for serve hit
+                        {
+                            // Serve defined as moving in x and negative y, and decently above table 
+                            if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
+                            {
+                                this.served = true;
+                                this.PointScored = "Served";
+                                this.startPosTime = DateTime.MinValue;
+                                this.VertDir = "Down";
+                                if (xdelta > 0)
+                                {
                                     this.Direction = "Left";
-                                }
-                                else if (xdelta < -10)
+                                } else
                                 {
-                                    if (this.Direction == "Left")
-                                    {
-                                        ChangeDirection();
-                                    }
                                     this.Direction = "Right";
                                 }
+                            } 
+                        }
+                        // Add current location to points list
+                        this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
 
-                                // Vertical direction and bounce detection
-                                if (ydelta > 5)
-                                {
-                                    this.VertDir = "Down";
-                                }
-                                else if (ydelta < 5)
-                                {
-                                    if (this.VertDir == "Down" && yavg < 600)
-                                    {
-                                        // If a bounce get x,y,z coords, handle bounce processesing
-                                        using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                        {
-                                            if (depthFrame == null)
-                                            {
-                                                return;
-                                            }
+                    }
+                }
+                else   // Check for ball in start position to start volley
+                {
+                    // Get Ball xy coordinates
+                    DataPoint BallLocation = FindBall(multiSourceFrame);
+                    int xavg = (int)BallLocation.X;
+                    int yavg = (int)BallLocation.Y;
 
-                                            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-                                            {
-                                                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-                                                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-                                                int index = (1080 - yavg) * 1920 + xavg;
-                                                float xtval = camSpacePoints[index].X;
-                                                float ytval = camSpacePoints[index].Y;
-                                                float ztval = camSpacePoints[index].Z;
-
-                                                if (ztval < 0)
-                                                {
-                                                    for (int a = -5; a <= 5; a++)
-                                                    {
-                                                        for (int b = -5; b <= 5; b++)
-                                                        {
-                                                            if (camSpacePoints[index + (a * 1920) + b].Z > 0)
-                                                            {
-                                                                xtval = camSpacePoints[index + (a * 1920) + b].X;
-                                                                ytval = camSpacePoints[index + (a * 1920) + b].Y;
-                                                                ztval = camSpacePoints[index + (a * 1920) + b].Z;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                this.Bounces.Add(new DataPoint(xtval, ytval, ztval, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                            }
-                                        }
-                                        // Handle bounce processing
-                                        Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                    }
-                                    this.VertDir = "Up";
-                                }
-                                // Add current location to points list
-                                this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                            }
+                    // Determine if ball in start position 1.5 seconds to signal start of volley
+                    if (Math.Abs(yavg - this.tableLevel) < 20 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+                    {
+                        if (!startPosition)  // Log ball in possible start position
+                        {
+                            this.startPosTime = DateTime.Now;
+                            this.startPosition = true;
+                            this.startLocation.X = xavg;
+                            this.startLocation.Y = yavg;
+                            this.PointScored = "See it";
+                        }
+                        else if (Math.Abs(this.startLocation.X - xavg) > 10 || Math.Abs(this.startLocation.Y - yavg) > 10)    // Check ball not moving
+                        {
+                            this.startPosTime = DateTime.Now;
+                            this.startLocation.X = xavg;
+                            this.startLocation.Y = yavg;
+                            this.PointScored = "unstable";
+                        }
+                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)    // Start volley if ball not moved in 1.5 seconds
+                        {
+                            this.PointScored = "Starting Volley";
+                            this.startPosTime = DateTime.MinValue;
+                            this.startPosition = false;
+                            StartVolley();
+                        } else
+                        {
+                            this.PointScored = "stable";
                         }
                     }
                 }
@@ -359,7 +554,7 @@ namespace TableTennisTracker
             chart1.DataContext = this.xyData;
         }
 
-        // Start new volley
+        // Start new volley (overloaded for now - button push or automatic detection calls)
         public void StartVolley(object sender, RoutedEventArgs e)
         {
             this.PointScored = "";
@@ -367,18 +562,65 @@ namespace TableTennisTracker
             this.Bounces.Clear();
             this.xyData.Clear();
             this.timeStarted = DateTime.Now;
+            this.served = false;
             this.serveBounce = false;
             this.bounce1 = false;
             this.hitTime = DateTime.MinValue;
             this.inVolley = true;
+            this.VertDir = "";
+            this.Direction = "";
+        }
+        public void StartVolley()
+        {
+            this.PointScored = "Starting Volley";
+            this.AllData.Clear();
+            this.Bounces.Clear();
+            this.xyData.Clear();
+            this.timeStarted = DateTime.Now;
+            this.served = false;
+            this.serveBounce = false;
+            this.bounce1 = false;
+            this.hitTime = DateTime.MinValue;
+            this.inVolley = true;
+            this.VertDir = "";
+            this.Direction = "";
+        }
+
+        // Start New Game
+        private void NewGame()
+        {
+            P1Score = 0;
+            P2Score = 0;
+            gameOver = false;
         }
 
         // Register point scored
-        private void Score(string player)
+        private void Score(string player, string message)
         {
-            this.PointScored = "Point Scored by " + player + "!";
+            this.PointScored = "Point Scored by " + player + "!  --  " + message;
             this.hitTime = DateTime.MinValue;
             this.inVolley = false;
+            this.scoreDelay = DateTime.Now;
+
+            if (player == "P1")
+            {
+                this.P1Score++;
+            }
+            else
+            {
+                this.P2Score++;
+            }
+
+            if (P1Score == 21)
+            {
+                this.PointScored = "Player 1 Wins!";
+                gameOver = true;
+            }
+            else if (P2Score == 21)
+            {
+                this.PointScored = "Player 2 Wins!";
+                gameOver = true;
+            }
 
             PlotXYData();
         }
@@ -392,11 +634,11 @@ namespace TableTennisTracker
                 {
                     if (this.Direction == "Left")
                     {
-                        Score("P1");
+                        Score("P1", "No Bounce");
                     }
                     else
                     {
-                        Score("P2");
+                        Score("P2", "No Bounce");
                     }
                     this.hitTime = DateTime.MinValue;
                 }
@@ -414,38 +656,39 @@ namespace TableTennisTracker
         {
             if (this.serveBounce)
             {
-                if (this.bounce1)
+                if (this.bounce1)  // Second bounce - someone scored
                 {
                     if (this.Direction == "Left")
                     {
-                        Score("P2");
+                        Score("P2", "Two Bounces");
                     }
                     else
                     {
-                        Score("P1");
+                        Score("P1", "Two Bounces");
                     }
                 }
-                else if (this.Direction == "Right" && hit.X < 960)
+                else if (this.Direction == "Right" && hit.X < netLocation)   // Wrong side of net
                 {
-                    Score("P2");
+                    Score("P2", "Hit Net");
                 }
-                else if (this.Direction == "Left" && hit.X > 960)
+                else if (this.Direction == "Left" && hit.X > netLocation)    // Wrong side of net
                 {
-                    Score("P1");
+                    Score("P1", "Hit Net");
                 }
-                else
+                else     // Legal bounce
                 {
                     this.bounce1 = true;
                     this.hitTime = DateTime.Now;
                     this.PointScored = "Bounce 1";
                 }
             }
-            else
+            else  // Check for valid serve bounce
             {
-                if ((this.Direction == "Right" && hit.X < 960) || (this.Direction == "Left" && hit.X > 960))
+                if ((this.Direction == "Right" && hit.X < netLocation) || (this.Direction == "Left" && hit.X > netLocation))
                 {
                     this.serveBounce = true;
                     this.PointScored = "Serve Bounce";
+                    this.hitTime = DateTime.Now.AddSeconds(1);
                 }
                 else
                 {
