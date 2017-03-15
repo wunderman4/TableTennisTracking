@@ -57,14 +57,20 @@ namespace TableTennisTracker
         public int tableLevel;
         public int netLocation;
         public bool startPosition;
+        public DataPoint startLocation;
         public DateTime startPosTime;
+        public DateTime scoreDelay;
+        public bool served;
         public int _p1Score;
         public int _p2Score;
         public bool gameOver;
+        public bool PossibleBounce;
+        public DataPoint tempBounce;
+        public DataPoint tempBounceXYZ;
 
         public GameTest()
         {
-            this.tableLevel = 515;      // Must be determined per setup
+            this.tableLevel = 575;      // Must be determined per setup
             this.netLocation = 960;     // Must be determined per setup
 
             InitVariables();
@@ -90,15 +96,19 @@ namespace TableTennisTracker
             this._xyData = new List<KeyValuePair<float, float>>();
             this.AllData = new List<DataPoint>();
             this.Bounces = new List<DataPoint>();
+            this.startLocation = new DataPoint(0,0,0,0);
             this._direction = "";
             this._vertdir = "";
             this._pointScored = "";
             this.bounce1 = false;
             this.serveBounce = false;
+            this.served = false;
             this.inVolley = false;
             this.hitTime = DateTime.MinValue;
             this.startPosition = false;
             this.startPosTime = DateTime.MinValue;
+            this.PossibleBounce = false;
+            this.scoreDelay = DateTime.MinValue;
         }
 
         // Data points to be graphed
@@ -227,42 +237,29 @@ namespace TableTennisTracker
                         colorFrame.CopyConvertedFrameDataToArray(myBytes, ColorImageFormat.Bgra);
 
                         // Find location of the ball based on pixel colors
-                        //int xsum = 0;
-                        //int ysum = 0;
                         int vcount = 0;
                         for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
                         {
                             int j = i * 4;
-                            if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 140)
+                            //if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 120)
+                            if (myBytes[j] < 140 && myBytes[j] > 80 && myBytes[j + 1] < 60 && myBytes[j + 1] > 40 && myBytes[j + 2] < 160 && myBytes[j + 2] > 110)
                             {
                                 int yval = i / 1920;
                                 int xval = i - yval * 1920;
                                 xvals.Add(xval);
                                 yvals.Add(yval);
-                                //xsum += xval;
-                                //ysum += yval;
                                 vcount++;
                             }
                         }
-                        //int xavg = 0;
-                        //int yavg = 0;
-                        //if (vcount > 9)
-                        //{
-                        //    xavg = xsum / vcount;
-                        //    yavg = 1080 - (ysum / vcount);
-                        //}
-                        //else
-                        //{
-                        //    xavg = 1;
-                        //    yavg = 1;
-                        //}
+
                         if (vcount > 9)
                         {
                             int midindex = vcount / 2;
                             xvals.Sort();
                             BallLocation.X = xvals[midindex];
                             BallLocation.Y = 1080 - yvals[midindex];
-                        } else
+                        }
+                        else
                         {
                             BallLocation.X = 1;
                             BallLocation.Y = 1;
@@ -274,11 +271,12 @@ namespace TableTennisTracker
         }
 
         // Get xyz physical coordinates for bounce location, add to Bounce list
-        private void BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
+        private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
+            DataPoint bounceLocn = new TableTennisTracker.DataPoint(0, 0, 0, 0);
             if (depthFrame == null)
             {
-                return;
+                return (bounceLocn);
             }
 
             using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
@@ -305,7 +303,9 @@ namespace TableTennisTracker
                         }
                     }
                 }
-                this.Bounces.Add(new DataPoint(xtval, ytval, ztval, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                bounceLocn.X = xtval;
+                bounceLocn.Y = ytval;
+                return (bounceLocn);
             }
         }
 
@@ -313,8 +313,18 @@ namespace TableTennisTracker
         private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             bool changeDir = false;
+            bool pause = false;
 
-            if (!gameOver)
+            if (scoreDelay != DateTime.MinValue)
+            {
+                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 2) {
+                    pause = true;
+                } else {
+                    scoreDelay = DateTime.MinValue;
+                }
+            }
+
+            if (!gameOver && !pause)
             {
                 MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
 
@@ -323,15 +333,23 @@ namespace TableTennisTracker
                     // If too much time passes without bounce/return, someone missed
                     if (this.hitTime != DateTime.MinValue)
                     {
-                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 2)
                         {
-                            if (this.Direction == "Left")
+                            if (this.Direction == "Left" && bounce1)
                             {
                                 Score("P2", "Time Limit");
                             }
-                            else
+                            else if (this.Direction == "Left")
                             {
                                 Score("P1", "Time Limit");
+                            }
+                            else if (this.Direction == "Right" && bounce1)
+                            {
+                                Score("P1", "Time Limit");
+                            }
+                            else
+                            {
+                                Score("P2", "Time Limit");
                             }
                         }
                     }
@@ -345,15 +363,28 @@ namespace TableTennisTracker
                     if (xavg > 1)
                     {
                         // Off (or rather under) table
-                        if (bounce1 && yavg < tableLevel - 50)
+                        if (yavg < tableLevel - 100)
                         {
-                            if (this.Direction == "Left")
+                            if (bounce1)
                             {
-                                Score("P2", "Below Table");
-                            }
-                            else
+                                if (this.Direction == "Left")
+                                {
+                                    Score("P2", "Below Table");
+                                }
+                                else
+                                {
+                                    Score("P1", "Below Table");
+                                }
+                            } else
                             {
-                                Score("P1", "Below Table");
+                                if (this.Direction == "Left")
+                                {
+                                    Score("P1", "Below Table");
+                                }
+                                else
+                                {
+                                    Score("P2", "Below Table");
+                                }
                             }
                         }
 
@@ -366,8 +397,10 @@ namespace TableTennisTracker
                             ydelta = AllData[AllData.Count - 1].Y - yavg;
                         }
 
-                        // Horizontal direction determination and direction change detection
-                            if (xdelta > 10)
+                        if (served)
+                        {
+                            // Horizontal direction determination and direction change detection
+                            if (xdelta > 5)
                             {
                                 if (this.Direction == "Right")
                                 {
@@ -376,7 +409,7 @@ namespace TableTennisTracker
                                 }
                                 this.Direction = "Left";
                             }
-                            else if (xdelta < -10)
+                            else if (xdelta < -5)
                             {
                                 if (this.Direction == "Left")
                                 {
@@ -386,27 +419,57 @@ namespace TableTennisTracker
                                 this.Direction = "Right";
                             }
 
-                        // Vertical direction and bounce detection
-                        if (ydelta > 5)
-                        {
-                            this.VertDir = "Down";
-                        }
-                        else if (ydelta < -5)
-                        {
-                            if (this.VertDir == "Down" && !changeDir)
+                            // Vertical direction and bounce detection
+                            if (ydelta > 5)
                             {
-                                // If a bounce, get xyz coords, handle bounce processesing
-                                using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                {
-                                    BounceLocation(depthFrame, xavg, yavg);
-                                }
-                                // Handle bounce processing
-                                Bounce(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                                this.VertDir = "Down";
                             }
-                            this.VertDir = "Up";
+                            else if (ydelta < -5)
+                            {
+                                if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
+                                {
+                                    PossibleBounce = true;
+                                    this.hitTime = DateTime.Now;
+                                    // Get xyz coords for potential bounce
+                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                    {
+                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                    }
+                                    this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
+                                }
+                                else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
+                                {
+                                    if (!changeDir)
+                                    {
+                                        // Handle bounce processing
+                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                                        this.Bounces.Add(tempBounceXYZ);
+                                    }
+                                    PossibleBounce = false;
+                                }
+                                this.VertDir = "Up";
+                            }
+                        } else if (inVolley)    // if not served yet, check for serve hit
+                        {
+                            // Serve defined as moving in x and negative y, and decently above table 
+                            if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
+                            {
+                                this.served = true;
+                                this.PointScored = "Served";
+                                this.startPosTime = DateTime.MinValue;
+                                this.VertDir = "Down";
+                                if (xdelta > 0)
+                                {
+                                    this.Direction = "Left";
+                                } else
+                                {
+                                    this.Direction = "Right";
+                                }
+                            } 
                         }
                         // Add current location to points list
                         this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+
                     }
                 }
                 else   // Check for ball in start position to start volley
@@ -416,17 +479,33 @@ namespace TableTennisTracker
                     int xavg = (int)BallLocation.X;
                     int yavg = (int)BallLocation.Y;
 
-                    if (Math.Abs(yavg - this.tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+                    // Determine if ball in start position 1.5 seconds to signal start of volley
+                    if (Math.Abs(yavg - this.tableLevel) < 20 && (xavg > netLocation + 300 || xavg < netLocation - 300))
                     {
-                        if (!startPosition)
+                        if (!startPosition)  // Log ball in possible start position
                         {
                             this.startPosTime = DateTime.Now;
                             this.startPosition = true;
+                            this.startLocation.X = xavg;
+                            this.startLocation.Y = yavg;
+                            this.PointScored = "See it";
                         }
-                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)
+                        else if (Math.Abs(this.startLocation.X - xavg) > 10 || Math.Abs(this.startLocation.Y - yavg) > 10)    // Check ball not moving
+                        {
+                            this.startPosTime = DateTime.Now;
+                            this.startLocation.X = xavg;
+                            this.startLocation.Y = yavg;
+                            this.PointScored = "unstable";
+                        }
+                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)    // Start volley if ball not moved in 1.5 seconds
                         {
                             this.PointScored = "Starting Volley";
+                            this.startPosTime = DateTime.MinValue;
+                            this.startPosition = false;
                             StartVolley();
+                        } else
+                        {
+                            this.PointScored = "stable";
                         }
                     }
                 }
@@ -483,6 +562,7 @@ namespace TableTennisTracker
             this.Bounces.Clear();
             this.xyData.Clear();
             this.timeStarted = DateTime.Now;
+            this.served = false;
             this.serveBounce = false;
             this.bounce1 = false;
             this.hitTime = DateTime.MinValue;
@@ -497,10 +577,13 @@ namespace TableTennisTracker
             this.Bounces.Clear();
             this.xyData.Clear();
             this.timeStarted = DateTime.Now;
+            this.served = false;
             this.serveBounce = false;
             this.bounce1 = false;
             this.hitTime = DateTime.MinValue;
             this.inVolley = true;
+            this.VertDir = "";
+            this.Direction = "";
         }
 
         // Start New Game
@@ -517,6 +600,7 @@ namespace TableTennisTracker
             this.PointScored = "Point Scored by " + player + "!  --  " + message;
             this.hitTime = DateTime.MinValue;
             this.inVolley = false;
+            this.scoreDelay = DateTime.Now;
 
             if (player == "P1")
             {
@@ -532,7 +616,7 @@ namespace TableTennisTracker
                 this.PointScored = "Player 1 Wins!";
                 gameOver = true;
             }
-            else if (P1Score == 21)
+            else if (P2Score == 21)
             {
                 this.PointScored = "Player 2 Wins!";
                 gameOver = true;
@@ -604,6 +688,7 @@ namespace TableTennisTracker
                 {
                     this.serveBounce = true;
                     this.PointScored = "Serve Bounce";
+                    this.hitTime = DateTime.Now.AddSeconds(1);
                 }
                 else
                 {
