@@ -1,6 +1,5 @@
 namespace TableTennisTracker
 {
-    //using Microsoft.EntityFrameworkCore;
     using Models;
     using System;
     using System.Data.Entity;
@@ -20,7 +19,7 @@ namespace TableTennisTracker
         // If you wish to target a different database and/or database provider, modify the 'TableTennisTrackerDb' 
         // connection string in the application configuration file.
         public TableTennisTrackerDb()
-            : base("name=TableTennisTrackerDb")
+             : base("name=TableTennisTrackerDb")
         {
         }
 

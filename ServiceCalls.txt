@@ -1,0 +1,71 @@
+            PlayerService ps = new PlayerService();
+            GameService gs = new GameService();
+            HitLocationService hs = new HitLocationService();
+
+            List<HitLocation> hitLocationsList;
+            List<HitLocation> hitLocationsListGame;
+            HitLocation hitLocation;
+
+            //gs.DeleteGame(7);
+            //gs.DeleteGame(8);
+            hs.DeleteHitLocation(18);
+            
+
+            hitLocationsList = hs.GetHitLocations();
+
+            hitLocationsListGame = hs.GetHitLocationsGame(1);
+
+            hitLocation = hs.GetSingleHitLocation(8);
+
+            //hs.DeleteHitLocation(11);
+
+ 
+
+            Player updatedPlayer = ps.GetPlayer(7);
+
+            updatedPlayer.PlayerName = "Kathleen";
+
+            ps.UpdatePlayer(updatedPlayer);
+
+            Logging logger = new Logging(@"C:\coderCampPrograms\kinectProject\TableTennisTracking\log.txt");
+
+            List<GamesView> games;
+
+            Game singleGame;
+
+            games = gs.GetPlayerGames(1);
+
+            singleGame = gs.GetGame(1);
+
+            Game currentGame = new Game
+            {
+                Id = singleGame.Id
+            };
+
+            //HitLocation newHitLocation = new HitLocation
+            //{
+            //    X = 1,
+            //    Y = 2,
+            //    Z = 3,
+            //    Game = singleGame,
+            //    Volley = 3
+            //};
+
+            HitLocation newHitLocation = new HitLocation();
+
+            newHitLocation.X = 7;
+            newHitLocation.Y = 7;
+            newHitLocation.Z = 7;
+            newHitLocation.Volley = 5;
+            //newHitLocation.Game.Id = singleGame.Id;
+            newHitLocation.Game = currentGame;
+
+
+            hs.AddHitLocation(newHitLocation);
+
+            foreach (GamesView game in games)
+            {
+                logger.logIt(game.Id.ToString());
+                logger.logIt(game.Player1.PlayerName);
+                logger.logIt(game.Player2.PlayerName);
+            }
