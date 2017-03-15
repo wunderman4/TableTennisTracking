@@ -29,7 +29,7 @@
                 <RowDefinition Name="Heading_0" Height="Auto" />
                 <RowDefinition Name="Form_1" Height="Auto"/>
             </Grid.RowDefinitions>
-     <!--............................. Player one Column.........................  -->
+            <!--............................. Player one Column.........................  -->
             <!--Username Header-->
             <TextBlock
                 Grid.Row="0"
@@ -62,15 +62,17 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                     <TextBlock
+                        x:Name="PlayerOneBoard"
                         FontSize="270"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        00
-                    </TextBlock>
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                        Text="{Binding PlayerOneScore}" />
+
+
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-  <!--______________Record, info and score buttons here___________________________-->
+            <!--______________Record, info and score buttons here___________________________-->
             <materialDesign:Card
                 Grid.Column="0"
                 Grid.Row="1"
@@ -105,7 +107,7 @@
                         HorizontalAlignment="Center"
                          />
                         </Button>
-                        
+
                         <!--Name Nationality paddle hand area-->
                         <StackPanel
                             Margin="50,0,0,0">
@@ -180,6 +182,7 @@
                         FontSize="55"
                         Height="125"
                         Background="Red"
+                        Click="PlayerOneSubPoint_Click"
                         >
                             <materialDesign:PackIcon 
                         Margin="0,0,0,0"
@@ -201,6 +204,7 @@
                         FontSize="55"
                         Height="125"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Click="PlayerOneAddPoint_Click"
                         >
                             <materialDesign:PackIcon 
                         Margin="0,0,0,0"
@@ -250,15 +254,16 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                     <TextBlock
+                        x:Name="PlayerTwoBoard"
                         FontSize="270"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        00
-                    </TextBlock>
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                        Text="{Binding PlayerTwoScore}"/>
+
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-  <!--______________Record, info and score buttons here___________________________-->
+            <!--______________Record, info and score buttons here___________________________-->
             <materialDesign:Card
                 Grid.Column="1"
                 Grid.Row="1"
@@ -274,7 +279,7 @@
                         Width="878">
                         <!--Name Nationality paddle hand area-->
                         <StackPanel
-                            Margin="10,0,100,0">
+                            Margin="10,0,50,0">
                             <!--Name-->
                             <StackPanel
                         Orientation="Horizontal"
@@ -331,16 +336,14 @@
                             Text="{Binding HandPreference}"/>
                             </StackPanel>
                         </StackPanel>
-                        
-                        <!--Record Button-->
                         <Button
                         Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                             Background="Red"
                         Width="150"
                         Height="150"
-                        Name="PlayerTwoRecord"
+                        x:Name="PlayerTwoRecord"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="20,0,20,0"
+                        Margin="0,0,20,0"
                         FontSize="50">
                             <materialDesign:PackIcon 
                         Margin="0,0,7,7"
@@ -352,6 +355,8 @@
                         HorizontalAlignment="Center"
                          />
                         </Button>
+
+                        <!--Record Button-->
                     </StackPanel>
                     <!--Add & Subtract area-->
                     <StackPanel
@@ -367,6 +372,7 @@
                         FontSize="55"
                         Height="125"
                         Background="Red"
+                        Click="PlayerTwoSubPoint_Click"    
                         >
                             <materialDesign:PackIcon 
                         Margin="0,0,0,0"
@@ -388,7 +394,7 @@
                         FontSize="55"
                         Height="125"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        >
+                        Click="PlayerTwoAddPoint_Click">
                             <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="170"
