@@ -12,5 +12,7 @@ namespace TableTennisTracker.Models
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
+        public int Volley { get; set; }
+        public Game Game { get; set; }
     }
 }

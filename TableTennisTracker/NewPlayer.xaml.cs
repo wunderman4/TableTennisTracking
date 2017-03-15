@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.Respository;
+using TableTennisTracker.Services;
+using TableTennisTracker.Views;
 
 namespace TableTennisTracker
 {
@@ -22,8 +25,6 @@ namespace TableTennisTracker
     public partial class NewPlayer : Page
     {
         //public User TestUser;
-
-
 
         public NewPlayer()
         {
@@ -49,19 +50,16 @@ namespace TableTennisTracker
                 HandPreference = PPH.Text
             };
 
-            using (var db = new TableTennisTrackerDb())
-            {
-                db.Players.Add(newPlayer);
-                db.SaveChanges();
-            }
+            PlayerService ps = new PlayerService();
+
+            ps.AddPlayer(newPlayer);
+
         }
     }
 }
 
-
-
-//TestUser = new User
+//using (var db = new TableTennisTrackerDb())
 //{
-//    Name = NameTextBox.Text,
-//    UserName = UserNameTextBox.Text
-//};
+//    db.Players.Add(newPlayer);
+//    db.SaveChanges();
+//}
