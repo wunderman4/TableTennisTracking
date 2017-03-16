@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,9 @@ namespace TableTennisTracker
         Game CurrentGame = null;
         int _playerOneScore;
         int _playerTwoScore;
+        SoundPlayer PointScored = new SoundPlayer(@"../../Sounds/PointScored.wav");
+        SoundPlayer BallSet = new SoundPlayer(@"../../Sounds/BallSet.wav");
+        SoundPlayer BadServe = new SoundPlayer(@"../../Sounds/BadServe.wav");
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -69,7 +73,7 @@ namespace TableTennisTracker
         private void PlayerOneAddPoint_Click(object sender, RoutedEventArgs e)
         {
             PlayerOneScore++;
-              
+            PlayScore();  
 
         }
 
@@ -79,6 +83,7 @@ namespace TableTennisTracker
             if (PlayerOneScore !=0)
             {
                 PlayerOneScore--;
+                PlayBadServe();
             }
             
         }
@@ -87,6 +92,7 @@ namespace TableTennisTracker
         private void PlayerTwoAddPoint_Click(object sender, RoutedEventArgs e)
         {
             PlayerTwoScore++;
+            PlayScore();
         }
 
         // Subtract Point Player Two
@@ -95,6 +101,7 @@ namespace TableTennisTracker
             if (PlayerTwoScore != 0)
             {
                 PlayerTwoScore--;
+                PlayBadServe();
             }
             
         }
@@ -137,8 +144,28 @@ namespace TableTennisTracker
             }
         }
 
-        
+        // Plays Point Scored Sound
+        private void PlayScore()
+        {
+            PointScored.Load(); 
+            PointScored.Play();
+        }
+        // Plays Ball Set Sound
+        private void PlayBallSet()
+        {
+            BallSet.Load();
+            BallSet.Play();
+        }
+        // Plays Bad Serve Sound
+        private void PlayBadServe()
+        {
+            BadServe.Load();
+            BadServe.Play();
+        }
 
-        
+        private void PlayerOneRecord_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
