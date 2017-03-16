@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.Services;
 
 namespace TableTennisTracker
 {
@@ -22,6 +24,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class SelectPlayers : Page
     {
+        PlayerService ps = new PlayerService();
         List<Player> PlayerOneList;
         List<Player> PlayerTwoList;
         Player PlayerOne = null;
@@ -36,58 +39,72 @@ namespace TableTennisTracker
         // Gets the list of players
         private void GetPlayers()
         {
-            using (var db = new TableTennisTrackerDb())
-            {
-                PlayerOneList = (from p in db.Players
-                                 select p).ToList();
-                PlayerTwoList = PlayerOneList;
-            }
+            // Gets list of players
+            PlayerOneList = ps.ListPlayers();
+
+            //copies list to player two
+            PlayerTwoList = PlayerOneList;
+
+            // assigns each list to the listbox on xaml page. 
             PlayerOneListBox.ItemsSource = PlayerOneList;
             PlayerTwoListBox.ItemsSource = PlayerTwoList;
 
         }
 
         // Player One Confirm
-        private void PlayerOneConfirm(object sender, RoutedEventArgs e)
+        private async void PlayerOneConfirm(object sender, RoutedEventArgs e)
         {
             // need to check if player two is null then
             // either set and wait or set and navigate. 
             foreach (Player p in PlayerOneListBox.SelectedItems)
             {
-                if (PlayerOne == null)
+                if (p != PlayerTwo)
                 {
 
                     PlayerOne = p;
-
+                    if (PlayerTwo != null)
+                    {
+                        NavigationService.Navigate(new GamePage(PlayerOne, PlayerTwo));
+                    }
+                }
+                else
+                {
+                    PlayerOneErrorSnackbar.IsActive = true;
+                    await Task.Delay(3000);
+                    PlayerOneErrorSnackbar.IsActive = false;
                 }
             }
 
-            if (PlayerTwo != null)
-            {
-                NavigationService.Navigate(new GamePage(PlayerOne,PlayerTwo));
-            }
+            
 
         }
 
-        
+
 
         // Player Two Confrim
-        private void PlayerTwoConfirm(object sender, RoutedEventArgs e)
+        private async void PlayerTwoConfirm(object sender, RoutedEventArgs e)
         {
             foreach (Player p in PlayerTwoListBox.SelectedItems)
             {
-                if (PlayerTwo == null)
+                if (p != PlayerOne)
                 {
-
                     PlayerTwo = p;
+
+                    if (PlayerOne != null)
+                    {
+                        NavigationService.Navigate(new GamePage(PlayerOne, PlayerTwo));
+                    }
+                }
+                else
+                {
+                    PlayerTwoErrorSnackbar.IsActive = true;
+                    await Task.Delay(3000);
+                    PlayerTwoErrorSnackbar.IsActive = false;
 
                 }
             }
 
-            if (PlayerOne != null)
-            {
-                NavigationService.Navigate(new GamePage(PlayerOne, PlayerTwo));
-            }
+            
         }
 
         private async void Cancel(object sender, RoutedEventArgs e)

@@ -68,7 +68,7 @@ namespace TableTennisTracker
 
         private async void NewGame(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(350);
+            await Task.Delay(50);
             Main.Content = new SelectPlayers();
         }
 

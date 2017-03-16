@@ -20,6 +20,8 @@
      FontFamily="{DynamicResource MaterialDesignFont}">
 
     <DockPanel>
+        
+        
 
 
         <Grid>
@@ -28,10 +30,18 @@
                 <ColumnDefinition Name="Fields_1" Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Name="Heading_0" Height="150" />
-                <RowDefinition Name="Form_1" Height="800"/>
+                <RowDefinition Name="Heading_0" Height="Auto" />
+                <RowDefinition Name="Form_1" Height="Auto"/>
+                <RowDefinition Name="Snackbar" Height="Auto"/>
             </Grid.RowDefinitions>
             <!--.............................Column One, Player Enters Information...........  -->
+            <ItemsControl>
+            <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                <materialDesign:TransitioningContent.OpeningEffects>
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                </materialDesign:TransitioningContent.OpeningEffects>
+                
+            
             <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
@@ -52,7 +62,8 @@
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-
+            </materialDesign:TransitioningContent>
+            </ItemsControl>
             <!--Select Player List Starts Here-->
             <materialDesign:Card
                 Grid.Column="0"
@@ -67,7 +78,13 @@
                     Height="750">
 
                     <!--SELECT PLAYER ONE SECTION-->
-                        <ListBox 
+                    <ItemsControl>   
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.50}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                    
+                    <ListBox 
                             HorizontalAlignment="Stretch"
                             Name="PlayerOneListBox"
                             Height="600">
@@ -104,6 +121,15 @@
                             </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                    </materialDesign:TransitioningContent>
+                    </ItemsControl>
+
+
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                    
                     <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
@@ -121,10 +147,7 @@
                         VerticalAlignment="Center"
                          />
                     </Button>
-
-
-
-
+                    </materialDesign:TransitioningContent>
 
 
                 </StackPanel>
@@ -133,7 +156,14 @@
 
             <!-- ..................Column Two, Bound Information On this side........ -->
 
-
+            <materialDesign:TransitioningContent 
+                Grid.Column="1"
+                Grid.Row="0"
+                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                <materialDesign:TransitioningContent.OpeningEffects>
+                    <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                </materialDesign:TransitioningContent.OpeningEffects>
+            
             <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
@@ -154,6 +184,7 @@
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
+            </materialDesign:TransitioningContent>
 
             <!--Select Player TWO List Starts Here-->
             <materialDesign:Card
@@ -169,6 +200,11 @@
                     Height="750">
 
                     <!--SELECT PLAYER ONE SECTION-->
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                    
                     <ListBox 
                             HorizontalAlignment="Stretch"
                             Name="PlayerTwoListBox"
@@ -206,6 +242,13 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    </materialDesign:TransitioningContent>
+
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                    
                     <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
@@ -223,6 +266,7 @@
                         VerticalAlignment="Center"
                          />
                     </Button>
+                    </materialDesign:TransitioningContent>
 
 
 
@@ -233,7 +277,34 @@
 
             </materialDesign:Card>
 
+            <materialDesign:Snackbar 
+                IsActive="False"
+                x:Name="PlayerTwoErrorSnackbar"
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center">
+                
+                <materialDesign:SnackbarMessage
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Content="THIS PLAYER IS ALREADY SELECTED BY PLAYER ONE..."/>
+            </materialDesign:Snackbar>
+
+            <materialDesign:Snackbar 
+                IsActive="False"
+                x:Name="PlayerOneErrorSnackbar"
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                
+                >
+                <materialDesign:SnackbarMessage 
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Content="THIS PLAYER IS ALREADY SELECTED BY PLAYER TWO..."/>
+            </materialDesign:Snackbar>
 
         </Grid>
+        
     </DockPanel>
 </Page>
