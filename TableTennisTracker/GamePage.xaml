@@ -96,7 +96,8 @@
                         Name="PlayerOneRecord"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="20,0,0,0"
-                        FontSize="50">
+                        FontSize="50"
+                        Click="PlayerOneRecord_Click">
                             <materialDesign:PackIcon 
                         Margin="0,0,7,7"
                         Width="150"

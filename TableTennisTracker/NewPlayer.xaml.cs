@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.Services;
 
 namespace TableTennisTracker
 {
@@ -22,6 +23,7 @@ namespace TableTennisTracker
     public partial class NewPlayer : Page
     {
         //public User TestUser;
+        PlayerService ps = new PlayerService();
 
 
 
@@ -49,15 +51,9 @@ namespace TableTennisTracker
                 HandPreference = PPH.Text
             };
 
-            using (var db = new TableTennisTrackerDb())
-            {
-                db.Players.Add(newPlayer);
-                db.SaveChanges();
-            }
+            ps.AddPlayer(newPlayer);
 
-            
-
-            await Task.Delay(350);
+            await Task.Delay(250);
             NavigationService.Navigate(new Splash());
 
         }
