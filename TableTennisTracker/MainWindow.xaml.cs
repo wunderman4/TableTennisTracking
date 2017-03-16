@@ -89,5 +89,11 @@ namespace TableTennisTracker
             await Task.Delay(350);
             Main.Content = new GameTest();
         }
+
+        private async void Calibration(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(350);
+            Main.Content = new Calibration();
+        }
     }
 }
