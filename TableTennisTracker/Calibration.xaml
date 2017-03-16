@@ -1,0 +1,37 @@
+﻿<Page x:Class="TableTennisTracker.Calibration"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TableTennisTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="Calibration">
+
+    <Page.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10 0 10 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="0 0 0 0" VerticalAlignment="Bottom" Foreground="Yellow" FontFamily="Segoe UI" FontSize="64">Align Camera</TextBlock>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center" Width="1200" Margin="10 20 10 10">
+            <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+        </Viewbox>
+
+        <StackPanel Margin="10" Grid.Column="0" Grid.Row="2" Name="ButtonMessage" Orientation="Horizontal" Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Content="Calibrate" Height="100" Width="200" HorizontalAlignment="Left" FontSize="36" VerticalAlignment="Center" Margin="0 10 0 10" Click="Calibration_Click" />
+            <TextBlock FontSize="36" Foreground="White" Margin="20,0,0,0" Text="{Binding Message}" VerticalAlignment="Center"/>
+            <Button Content="Accept Calibration" Height="100" Width="320" HorizontalAlignment="Left" FontSize="30" VerticalAlignment="Center" Margin="20 10 0 10" Click="Accept_Click" />
+        </StackPanel>
+        
+    </Grid>
+</Page>

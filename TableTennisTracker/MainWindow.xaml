@@ -60,6 +60,15 @@
                         </Button>
 
                         <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Left}"
+                            Margin="4"
+                            HorizontalAlignment="Center"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            Click="Calibration">
+                            CALIBRATION
+                        </Button>
+
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             Margin="4" 
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"

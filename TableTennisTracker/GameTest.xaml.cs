@@ -70,9 +70,6 @@ namespace TableTennisTracker
 
         public GameTest()
         {
-            this.tableLevel = 575;      // Must be determined per setup
-            this.netLocation = 960;     // Must be determined per setup
-
             InitVariables();
             NewGame();
 
@@ -93,6 +90,9 @@ namespace TableTennisTracker
         // Initialize variables
         private void InitVariables()
         {
+            this.tableLevel = GlobalClass.tableHeight;
+            this.netLocation = GlobalClass.netLocation;
+
             this._xyData = new List<KeyValuePair<float, float>>();
             this.AllData = new List<DataPoint>();
             this.Bounces = new List<DataPoint>();
@@ -305,6 +305,7 @@ namespace TableTennisTracker
                 }
                 bounceLocn.X = xtval;
                 bounceLocn.Y = ytval;
+                bounceLocn.Z = ztval;
                 return (bounceLocn);
             }
         }
@@ -419,6 +420,11 @@ namespace TableTennisTracker
                                 this.Direction = "Right";
                             }
 
+                            using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                            {
+                                this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                            }
+
                             // Vertical direction and bounce detection
                             if (ydelta > 5)
                             {
@@ -480,7 +486,7 @@ namespace TableTennisTracker
                     int yavg = (int)BallLocation.Y;
 
                     // Determine if ball in start position 1.5 seconds to signal start of volley
-                    if (Math.Abs(yavg - this.tableLevel) < 20 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+                    if (Math.Abs(yavg - this.tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
                     {
                         if (!startPosition)  // Log ball in possible start position
                         {
@@ -557,9 +563,9 @@ namespace TableTennisTracker
         // Start new volley (overloaded for now - button push or automatic detection calls)
         public void StartVolley(object sender, RoutedEventArgs e)
         {
-            this.PointScored = "";
+            this.PointScored = "Starting Volley";
             this.AllData.Clear();
-            this.Bounces.Clear();
+            //this.Bounces.Clear();
             this.xyData.Clear();
             this.timeStarted = DateTime.Now;
             this.served = false;
@@ -574,7 +580,7 @@ namespace TableTennisTracker
         {
             this.PointScored = "Starting Volley";
             this.AllData.Clear();
-            this.Bounces.Clear();
+            //this.Bounces.Clear();
             this.xyData.Clear();
             this.timeStarted = DateTime.Now;
             this.served = false;

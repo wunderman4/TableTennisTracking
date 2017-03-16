@@ -172,12 +172,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calibration.xaml.cs">
+      <DependentUpon>Calibration.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameTest.xaml.cs">
       <DependentUpon>GameTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalClass.cs" />
     <Compile Include="Leaderboard.xaml.cs">
       <DependentUpon>Leaderboard.xaml</DependentUpon>
     </Compile>
@@ -227,6 +231,10 @@
     <Compile Include="TableTennisTrackerDb.cs" />
     <Compile Include="Views\GameIdView.cs" />
     <Compile Include="Views\GamesView.cs" />
+    <Page Include="Calibration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
