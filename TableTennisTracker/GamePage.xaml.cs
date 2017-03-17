@@ -33,6 +33,7 @@ namespace TableTennisTracker
         SoundPlayer PointScored = new SoundPlayer(@"../../Sounds/PointScored.wav");
         SoundPlayer BallSet = new SoundPlayer(@"../../Sounds/BallSet.wav");
         SoundPlayer BadServe = new SoundPlayer(@"../../Sounds/BadServe.wav");
+        SoundPlayer GameWin = new SoundPlayer(@"../../Sounds/GameWin.wav");
 
         private KinectSensor kinectSensor = null;
         private MultiSourceFrameReader multiSourceFrameReader = null;
@@ -688,6 +689,13 @@ namespace TableTennisTracker
         {
             BadServe.Load();
             BadServe.Play();
+        }
+
+        //Plays Game Win Sound
+        private void PlayGameWin()
+        {
+            GameWin.Load();
+            GameWin.Play();
         }
 
         private void PlayerOneRecord_Click(object sender, RoutedEventArgs e)

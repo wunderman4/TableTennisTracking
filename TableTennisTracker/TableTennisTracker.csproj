@@ -325,6 +325,7 @@
   <ItemGroup>
     <Content Include="Sounds\BadServe.wav" />
     <Content Include="Sounds\BallSet.wav" />
+    <Content Include="Sounds\GameWin.wav" />
     <Content Include="Sounds\PointScored.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
