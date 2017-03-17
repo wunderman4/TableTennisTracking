@@ -70,7 +70,7 @@ namespace TableTennisTracker
                 else
                 {
                     PlayerOneErrorSnackbar.IsActive = true;
-                    await Task.Delay(3000);
+                    await Task.Delay(2000);
                     PlayerOneErrorSnackbar.IsActive = false;
                 }
             }
@@ -98,7 +98,7 @@ namespace TableTennisTracker
                 else
                 {
                     PlayerTwoErrorSnackbar.IsActive = true;
-                    await Task.Delay(3000);
+                    await Task.Delay(2000);
                     PlayerTwoErrorSnackbar.IsActive = false;
 
                 }

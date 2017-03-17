@@ -95,5 +95,10 @@ namespace TableTennisTracker
             await Task.Delay(350);
             Main.Content = new Calibration();
         }
+
+        private void GameSummary(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new GameSummary();
+        }
     }
 }
