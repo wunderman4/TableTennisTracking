@@ -21,8 +21,14 @@
 
     
     <DockPanel>
+        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+        </materialDesign:TransitioningContent>
 
-        
+
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="Icon_0" Width="*" />
@@ -33,7 +39,13 @@
                 <RowDefinition Name="Form_1" Height="Auto"/>
             </Grid.RowDefinitions>
             <!--.............................Column One, Player Enters Information...........  -->
+
+            <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                <materialDesign:TransitioningContent.OpeningEffects>
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                </materialDesign:TransitioningContent.OpeningEffects>
             
+
             <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
@@ -54,18 +66,22 @@
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
+            </materialDesign:TransitioningContent>
             <!--___________________________________Form Starts here___________________________-->
+            
             <materialDesign:Card
                 Grid.Column="0"
                 Grid.Row="1"
                 Margin="10,0,10,10"
                 Padding="0">
+
                 <StackPanel 
                     Margin="0,0,0,0"
                     Width="800"
                     Height="Auto">
 
                     <!--USERNAME SECTION-->
+                    
                     <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
@@ -145,15 +161,39 @@
                         Height="60"
                         Kind="Human" 
                         HorizontalAlignment="Center"
-                        Foreground="{Binding ElementName=HeightTextBox, Path=BorderBrush}" />
-                        <TextBox 
-                        Margin="0,0,30,0"
+                        Foreground="{Binding ElementName=HeightFt, Path=BorderBrush}" />
+                        
+                        <ComboBox
+                            Margin="0,0,30,0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        x:Name="HeightTextBox"
+                        x:Name="HeightFt"
                         FontSize="30"
-		                materialDesign:HintAssist.Hint="Enter Your Height">
-                        </TextBox>
+                        materialDesign:HintAssist.Hint="Height Ft">
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                        </ComboBox>
+                        <ComboBox
+                            Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        x:Name="HeightIn"
+                        FontSize="30"
+                        materialDesign:HintAssist.Hint="Inches">
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="4"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                            <ComboBoxItem Content="9"/>
+                            <ComboBoxItem Content="10"/>
+                            <ComboBoxItem Content="11"/>
+                        </ComboBox>
                     </StackPanel>
 
                     <!-- Country of Origin  Section-->
@@ -201,7 +241,12 @@
                         </ComboBox>
                     </StackPanel>
                     
-                    <Button
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        
+                        <Button
                         Foreground="Black"
                         Background="Red"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
@@ -211,8 +256,8 @@
                         Height="125"
                         Click="AddCancel">CANCEL
                         </Button>
-                    
 
+                    </materialDesign:TransitioningContent>
 
 
 
@@ -223,8 +268,14 @@
             
             <!-- ..................Column Two, Bound Information On this side........ -->
 
+            <materialDesign:TransitioningContent 
+                Grid.Column="1"
+                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                <materialDesign:TransitioningContent.OpeningEffects>
+                    <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                </materialDesign:TransitioningContent.OpeningEffects>
 
-            <materialDesign:Card 
+                <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
                 Grid.Column="1"
@@ -232,19 +283,21 @@
 
                 Width="1000"
                 HorizontalAlignment="Center" >
-                <materialDesign:ColorZone 
+                    <materialDesign:ColorZone 
                     Mode="PrimaryMid"
                     Padding="5" >
-                    <TextBlock
+                        <TextBlock
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         PLAYER PREVIEW
-                    </TextBlock>
-                </materialDesign:ColorZone>
-            </materialDesign:Card>
+                        </TextBlock>
+                    </materialDesign:ColorZone>
+                </materialDesign:Card>
+            </materialDesign:TransitioningContent>
             <!--...................... Bound Preview Starts here ................................-->
+            
             <materialDesign:Card
                 Grid.Column="1"
                 Grid.Row="1"
@@ -254,137 +307,171 @@
                     Margin="0,0,0,0"
                     Width="800"
                     Height="Auto">
-                    <!-- USERNAME BINDING -->
-                    <StackPanel
+                    
+                        <!-- USERNAME BINDING -->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             Width="250"
                             FontSize="28"
                             VerticalAlignment="Center">
                             USERNAME:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="userName"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Text, ElementName=UserNameTextBox}">
-                        </TextBlock>
-                    </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
+                    
                     <!-- NAME BINDING-->
-                    <StackPanel
+                    
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="250"
                             VerticalAlignment="Center">
                             YOUR NAME:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="name"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Text, ElementName=NameTextBox}">
-                        </TextBlock>
-                    </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
+                    
                     <!--AGE BINDING-->
-                    <StackPanel
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="250"
                             VerticalAlignment="Center">
                             YOUR AGE:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="age"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Text, ElementName=AgeTextBox}">
-                        </TextBlock>
-                    </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
+                    
                     <!--HEIGHT BINDING-->
-                    <StackPanel
+                    
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="250"
                             VerticalAlignment="Center">
                             YOUR HEIGHT:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="height"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=HeightTextBox}">
-                        </TextBlock>
-                    </StackPanel>
+                            >
+                            <Run Text="{Binding Text, ElementName=HeightFt}"/><Run Text=" Ft"/> <Run Text="{Binding Text, ElementName=HeightIn}"/><Run Text=" In"/>
+                            </TextBlock>
+                        </StackPanel>
+                    
                     <!--NATIONALITY BINDING-->
-                    <StackPanel
+                    
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="250"
                             VerticalAlignment="Center">
                             NATIONALITY:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="country"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Text, ElementName=CountryTextBox}">
-                        </TextBlock>
-                    </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
+                    
                     <!--PP HAND! -->
-                    <StackPanel
+                   
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
-                        <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="250"
                             VerticalAlignment="Center">
                             PADDLE HAND:
-                        </TextBlock>
-                        <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="Name"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Text, ElementName=PPH}">
-                        </TextBlock>
-                    </StackPanel>
-                    <Button
-                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-                        Width="200"
+                            </TextBlock>
+                        </StackPanel>
+                    
+
+                    <materialDesign:TransitioningContent 
+                Grid.Column="1"
+                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+
+                        <Button
                         Name="Confrim"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,10,0,10"
+                        Margin="0,70,0,0"
                         FontSize="55"
-                        Height="200"
+                        Height="125"
                         Click="Submit"
-                        
                         >
-                        <materialDesign:PackIcon 
+                            <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="CheckboxMarkedCircleOutline"
                         VerticalAlignment="Center"
                          />
-                    </Button>
-
+                        </Button>
+                    </materialDesign:TransitioningContent>
 
                 </StackPanel>
             </materialDesign:Card>
+
+            <materialDesign:Snackbar 
+                IsActive="False"
+                x:Name="EnterAllFieldsError"
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                
+                >
+                <materialDesign:SnackbarMessage 
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Content="PLEASE FILL OUT ALL FIELDS..."/>
+            </materialDesign:Snackbar>
+
 
 
         </Grid>
