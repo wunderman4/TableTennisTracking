@@ -67,9 +67,11 @@ namespace TableTennisTracker
         public bool PossibleBounce;
         public DataPoint tempBounce;
         public DataPoint tempBounceXYZ;
+        public UInt16[] PreviousDepthFrame;
 
         public GameTest()
         {
+            this.PreviousDepthFrame = new UInt16[217088];
             InitVariables();
             NewGame();
 
@@ -270,7 +272,7 @@ namespace TableTennisTracker
             return (BallLocation);
         }
 
-        // Get xyz physical coordinates for bounce location, add to Bounce list
+        // Get xyz physical coordinates for bounce location, add to Bounce list - not very good right now
         private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
             DataPoint bounceLocn = new TableTennisTracker.DataPoint(0, 0, 0, 0);
@@ -278,23 +280,25 @@ namespace TableTennisTracker
             {
                 return (bounceLocn);
             }
-
-            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-            {
+            
+            //using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            //{
+                
                 CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                this.coordinateMapper.MapColorFrameToCameraSpace(this.PreviousDepthFrame, camSpacePoints);
+                //this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
                 int index = (1080 - yavg) * 1920 + xavg;
                 float xtval = camSpacePoints[index].X;
                 float ytval = camSpacePoints[index].Y;
                 float ztval = camSpacePoints[index].Z;
 
-                if (ztval < 0)
+                if (ztval < 0 || ztval > 3.5)
                 {
                     for (int a = -5; a <= 5; a++)
                     {
                         for (int b = -5; b <= 5; b++)
                         {
-                            if (camSpacePoints[index + (a * 1920) + b].Z > 0)
+                            if (camSpacePoints[index + (a * 1920) + b].Z > 0 || camSpacePoints[index + (a * 1920) + b].Z < 3.5)
                             {
                                 xtval = camSpacePoints[index + (a * 1920) + b].X;
                                 ytval = camSpacePoints[index + (a * 1920) + b].Y;
@@ -307,7 +311,7 @@ namespace TableTennisTracker
                 bounceLocn.Y = ytval;
                 bounceLocn.Z = ztval;
                 return (bounceLocn);
-            }
+            //}
         }
 
         // Color frame analysis
@@ -318,7 +322,7 @@ namespace TableTennisTracker
 
             if (scoreDelay != DateTime.MinValue)
             {
-                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 2) {
+                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 20000) {
                     pause = true;
                 } else {
                     scoreDelay = DateTime.MinValue;
@@ -334,7 +338,7 @@ namespace TableTennisTracker
                     // If too much time passes without bounce/return, someone missed
                     if (this.hitTime != DateTime.MinValue)
                     {
-                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 2)
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
                         {
                             if (this.Direction == "Left" && bounce1)
                             {
@@ -420,15 +424,22 @@ namespace TableTennisTracker
                                 this.Direction = "Right";
                             }
 
+                            //this.tempBounceXYZ = BounceLocation(PreviousDepthFrame, xavg, yavg);
                             using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
                             {
                                 this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                if (depthFrame != null)
+                                {
+                                    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
+                                }
+                                
                             }
 
                             // Vertical direction and bounce detection
                             if (ydelta > 5)
                             {
                                 this.VertDir = "Down";
+                                PossibleBounce = false;
                             }
                             else if (ydelta < -5)
                             {
@@ -437,10 +448,10 @@ namespace TableTennisTracker
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
                                     // Get xyz coords for potential bounce
-                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                    {
-                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                    }
+                                    //using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                    //{
+                                    //    this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                    //}
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                                 else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
@@ -455,7 +466,22 @@ namespace TableTennisTracker
                                 }
                                 this.VertDir = "Up";
                             }
-                        } else if (inVolley)    // if not served yet, check for serve hit
+                            else if (ydelta <= 0)
+                            {
+                                if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
+                                {
+                                    PossibleBounce = true;
+                                    this.hitTime = DateTime.Now;
+                                    // Get xyz coords for potential bounce
+                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                    {
+                                        //this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                    }
+                                    this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
+                                }
+                            }
+                        }
+                        else if (inVolley)    // if not served yet, check for serve hit
                         {
                             // Serve defined as moving in x and negative y, and decently above table 
                             if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
