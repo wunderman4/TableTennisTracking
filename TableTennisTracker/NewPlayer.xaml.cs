@@ -22,7 +22,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class NewPlayer : Page
     {
-        //public User TestUser;
+        //Add Services to page
         PlayerService ps = new PlayerService();
 
 
@@ -32,38 +32,58 @@ namespace TableTennisTracker
             InitializeComponent();
         }
 
+        // Navigates Home
         private async void AddCancel(object sender, RoutedEventArgs e)
         {
             await Task.Delay(350);
             NavigationService.Navigate(new Splash());
         }
 
+        // Checks required fields, converts data type, Assigns to type User then adds to database.
         private async void Submit(object sender, RoutedEventArgs e)
         {
-            int Age = Convert.ToInt32(AgeTextBox.Text);
-
-            Player newPlayer = new Player
+            // Checks required fields
+            if (AgeTextBox.Text == "" ||
+                UserNameTextBox.Text == "" ||
+                NameTextBox.Text == "" ||
+                HeightFt.Text == "" ||
+                HeightIn.Text == "" ||
+                PPH.Text == "" ||
+                CountryTextBox.Text == "")
             {
-                UserName = UserNameTextBox.Text,
-                PlayerName = NameTextBox.Text,
-                Age = Age,
-                Nationality = CountryTextBox.Text,
-                HandPreference = PPH.Text
-            };
+                // SnackBar Popup if Feilds not filled in.
+                EnterAllFieldsError.IsActive = true;
+                await Task.Delay(2000);
+                EnterAllFieldsError.IsActive = false;
+            }
+            else
+            {
 
-            ps.AddPlayer(newPlayer);
+                // Converts DataTypes 
+                int age = Convert.ToInt32(AgeTextBox.Text);
+                int heightFeet = Convert.ToInt32(HeightFt.Text.ToString());
+                int heightInches = Convert.ToInt32(HeightIn.Text.ToString());
+                // Creates New Player
+                Player newPlayer = new Player
+                {
+                    UserName = UserNameTextBox.Text,
+                    PlayerName = NameTextBox.Text,
+                    Age = age,
+                    HeightFt = heightFeet,
+                    HeightInch = heightInches,
+                    Nationality = CountryTextBox.Text,
+                    HandPreference = PPH.Text
 
-            await Task.Delay(250);
-            NavigationService.Navigate(new Splash());
+                };
+
+                ps.AddPlayer(newPlayer);
+
+                await Task.Delay(200);
+                NavigationService.Navigate(new Splash());
+            }
+
+           
 
         }
     }
 }
-
-
-
-//TestUser = new User
-//{
-//    Name = NameTextBox.Text,
-//    UserName = UserNameTextBox.Text
-//};
