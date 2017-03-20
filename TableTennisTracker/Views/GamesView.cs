@@ -20,6 +20,8 @@ namespace TableTennisTracker.Views
         public float MaxVelocity { get; set; }
         public float LongestVolleyTime { get; set; }
         public int LongestVolleyHits { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
         public List<HitLocation> GameHitLocations { get; set; }
 
         public List<GamePlayer> GamePlayer { get; set; }
