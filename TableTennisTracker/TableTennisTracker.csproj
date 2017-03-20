@@ -208,6 +208,10 @@
     <Compile Include="Migrations\201703142207401_added-GameHitLocations-to-Game.Designer.cs">
       <DependentUpon>201703142207401_added-GameHitLocations-to-Game.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703202125310_added-Wins-Losses-To-Player.cs" />
+    <Compile Include="Migrations\201703202125310_added-Wins-Losses-To-Player.Designer.cs">
+      <DependentUpon>201703202125310_added-Wins-Losses-To-Player.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GamePlayer.cs" />
@@ -307,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703142207401_added-GameHitLocations-to-Game.resx">
       <DependentUpon>201703142207401_added-GameHitLocations-to-Game.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703202125310_added-Wins-Losses-To-Player.resx">
+      <DependentUpon>201703202125310_added-Wins-Losses-To-Player.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -53,6 +53,8 @@ namespace TableTennisTracker.Services
             originalPlayer.Nationality = updatedPlayer.Nationality;
             originalPlayer.HandPreference = updatedPlayer.HandPreference;
             originalPlayer.IsSelected = updatedPlayer.IsSelected;
+            originalPlayer.Wins = updatedPlayer.Wins;
+            originalPlayer.Losses = updatedPlayer.Losses;
 
             _repo.SaveChanges();
         }
