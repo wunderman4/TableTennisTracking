@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -50,6 +51,10 @@ namespace TableTennisTracker
         public bool bounce1;
         public bool serveBounce;
         public bool inVolley;
+        public int VolleyHits;
+        public int LongestVolleyHits;
+        public DateTime VolleyStartTime;
+        public float LongestVolleyTime;
         public DateTime hitTime;
         public int tableLevel;
         public int netLocation;
@@ -103,6 +108,8 @@ namespace TableTennisTracker
         {
             PlayerOneScore = 0;
             PlayerTwoScore = 0;
+            LongestVolleyHits = 0;
+            LongestVolleyTime = 0;
             gameOver = false;
             CurrentGame = new Game
             {
@@ -134,6 +141,7 @@ namespace TableTennisTracker
             this.startPosTime = DateTime.MinValue;
             this.PossibleBounce = false;
             this.scoreDelay = DateTime.MinValue;
+            VolleyHits = 0;
         }
 
         // Data points to be graphed
@@ -214,33 +222,45 @@ namespace TableTennisTracker
 
             using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
             {
+                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
+                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                float xtval = 0;
+                float ytval = 0;
+                float ztval = 0;
+                int Vcount = 0;
 
-            CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-            //this.coordinateMapper.MapColorFrameToCameraSpace(this.PreviousDepthFrame, camSpacePoints);
-            this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-            int index = (1080 - yavg) * 1920 + xavg;
-            float xtval = camSpacePoints[index].X;
-            float ytval = camSpacePoints[index].Y;
-            float ztval = camSpacePoints[index].Z;
-
-            if (ztval < 0 || ztval > 3.5)
-            {
-                for (int a = -5; a <= 5; a++)
+                // Find ball in camera space
+                for (int i = -40; i < 40; i++)
                 {
-                    for (int b = -5; b <= 5; b++)
+                    for (int j = -40; j < 40; j++)
                     {
-                        if (camSpacePoints[index + (a * 1920) + b].Z > 0 || camSpacePoints[index + (a * 1920) + b].Z < 3.5)
+                        int tempIndex = (yavg + i) * 1920 + xavg + j;
+                        int arrVal = 4 * tempIndex;
+                        if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
                         {
-                            xtval = camSpacePoints[index + (a * 1920) + b].X;
-                            ytval = camSpacePoints[index + (a * 1920) + b].Y;
-                            ztval = camSpacePoints[index + (a * 1920) + b].Z;
+                            arrVal = 4;
+                        }
+                        if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
+                        {
+                            xtval += camSpacePoints[tempIndex].X;
+                            ytval += camSpacePoints[tempIndex].Y;
+                            ztval += camSpacePoints[tempIndex].Z;
+                            Vcount++;
                         }
                     }
                 }
-            }
-            bounceLocn.X = xtval;
-            bounceLocn.Y = ytval;
-            bounceLocn.Z = ztval;
+                if (Vcount > 0)
+                {
+                    bounceLocn.X = xtval / Vcount;
+                    bounceLocn.Y = ytval / Vcount;
+                    bounceLocn.Z = ztval / Vcount;
+                } 
+                else
+                {
+                    bounceLocn.X = 0;
+                    bounceLocn.Y = 0;
+                    bounceLocn.Z = 0;
+                }
             return (bounceLocn);
             }
         }
@@ -359,17 +379,6 @@ namespace TableTennisTracker
                                 this.Direction = "Right";
                             }
 
-                            //this.tempBounceXYZ = BounceLocation(PreviousDepthFrame, xavg, yavg);
-                            using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                            {
-                                this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                //if (depthFrame != null)
-                                //{
-                                //    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
-                                //}
-
-                            }
-
                             // Vertical direction and bounce detection
                             if (ydelta > 5)
                             {
@@ -383,10 +392,10 @@ namespace TableTennisTracker
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
                                     // Get xyz coords for potential bounce
-                                    //using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                    //{
-                                    //    this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                    //}
+                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                    {
+                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                    }
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                                 else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
@@ -408,10 +417,10 @@ namespace TableTennisTracker
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
                                     // Get xyz coords for potential bounce
-                                    //using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                    //{
-                                        //this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                    //}
+                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                                    {
+                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
+                                    }
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                             }
@@ -462,7 +471,7 @@ namespace TableTennisTracker
                             this.startLocation.X = xavg;
                             this.startLocation.Y = yavg;
                         }
-                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.5)    // Start volley if ball not moved in 1.5 seconds
+                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.0)    // Start volley if ball not moved in 1.0 seconds
                         {
                             this.startPosTime = DateTime.MinValue;
                             this.startPosition = false;
@@ -489,7 +498,26 @@ namespace TableTennisTracker
             this.inVolley = true;
             this.VertDir = "";
             this.Direction = "";
+            VolleyHits = 0;
+            VolleyStartTime = DateTime.Now;
             PlayBallSet();
+        }
+
+        // Determine volley stats
+        private void VolleyStats()
+        {
+            // Check volley length in hits
+            if (VolleyHits > LongestVolleyHits)
+            {
+                LongestVolleyHits = VolleyHits;
+            }
+
+            // check volley length in time
+            float volleyLength = (float)(DateTime.Now.Subtract(this.VolleyStartTime).TotalSeconds);
+            if (volleyLength > LongestVolleyTime)
+            {
+                LongestVolleyTime = volleyLength;
+            }
         }
 
         // Register point scored
@@ -498,6 +526,7 @@ namespace TableTennisTracker
             this.hitTime = DateTime.MinValue;
             this.inVolley = false;
             this.scoreDelay = DateTime.Now;
+            VolleyStats();
 
             if (player == "P1")
             {
@@ -518,26 +547,27 @@ namespace TableTennisTracker
             }
         }
 
-        // Find longest volley in number of hits - NOT YET WRITTEN
-        private int LongestVolleyHits()
-        {
-            return 0;
-        }
-
-        // Find longest volley in time - NOT YET WRITTEN
-        private float LongestVolleyTime()
-        {
-            return 0;
-        }
-
         // Game over handling
         private void GameOver()
         {
             CurrentGame.Player1Score = PlayerOneScore;
             CurrentGame.Player2Score = PlayerTwoScore;
-            CurrentGame.LongestVolleyHits = LongestVolleyHits();
-            CurrentGame.LongestVolleyTime = LongestVolleyTime();
+            CurrentGame.LongestVolleyHits = LongestVolleyHits;
+            CurrentGame.LongestVolleyTime = LongestVolleyTime;
             gs.AddGame(CurrentGame);
+
+            // Write bounce locn data to file (temporary code for testing)
+            string[] bounceOut = new string[this.Bounces.Count + 1];
+            bounceOut[0] = "X, Y, Z";
+            int i = 1;
+            foreach (DataPoint item in this.Bounces)
+            {
+                bounceOut[i] = item.X.ToString() + ", " + item.Y.ToString() + ", " + item.Z.ToString();
+                i++;
+            }
+            string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            string path1 = System.IO.Path.Combine(myPhotos, "BounceData" + ".txt");
+            File.WriteAllLines(path1, bounceOut);
         }
 
         // Handle change in ball direction
@@ -547,20 +577,22 @@ namespace TableTennisTracker
             {
                 if (!bounce1)
                 {
-                    if (this.Direction == "Left")
-                    {
-                        Score("P1", "No Bounce");
-                    }
-                    else
-                    {
-                        Score("P2", "No Bounce");
-                    }
+                    // Disabled to test if better without change direction scoring
+                    //if (this.Direction == "Left")
+                    //{
+                    //    Score("P1", "No Bounce");
+                    //}
+                    //else
+                    //{
+                    //    Score("P2", "No Bounce");
+                    //}
                     this.hitTime = DateTime.MinValue;
                 }
                 else
                 {
                     this.bounce1 = false;
                     this.hitTime = DateTime.Now;
+                    VolleyHits++;
                 }
             }
         }

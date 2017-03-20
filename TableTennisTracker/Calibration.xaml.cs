@@ -129,20 +129,29 @@ namespace TableTennisTracker
         // Get table level in pixels in specified x range
         public int TableLevel(CameraSpacePoint[] camSpacePoints, int xstart, int xstop)
         {
+            int topRow = 360;
             List<int> tablePts = new List<int>();
-            for (int i = 360; i < 720; i++)
+            for (int i = 720; i > 360; i--)
             {
+                int rowPixelCount = 0;
                 for (int j = xstart; j < xstop; j++)
                 {
                     int index = i * 1920 + j;
                     if (camSpacePoints[index].Z < 2.0 && camSpacePoints[index].Z > 0)
                     {
+                        rowPixelCount++;
                         tablePts.Add(i);
                     }
                 }
+                if (rowPixelCount > 100)
+                {
+                    topRow = i;
+                }
             }
+
             int midIndex = tablePts.Count / 2;
-            return tablePts[midIndex];
+            //return tablePts[midIndex];
+            return topRow;
         }
 
         // Find net x coord in pixels
