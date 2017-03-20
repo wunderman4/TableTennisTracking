@@ -90,6 +90,7 @@ namespace TableTennisTracker
                 {
                     PlayerTwo = p;
 
+                    
                     if (PlayerOne != null)
                     {
                         NavigationService.Navigate(new GamePage(PlayerOne, PlayerTwo));
