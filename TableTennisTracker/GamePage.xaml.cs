@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.Services;
 
 namespace TableTennisTracker
 {
@@ -34,6 +35,7 @@ namespace TableTennisTracker
         SoundPlayer BallSet = new SoundPlayer(@"../../Sounds/BallSet.wav");
         SoundPlayer BadServe = new SoundPlayer(@"../../Sounds/BadServe.wav");
         SoundPlayer GameWin = new SoundPlayer(@"../../Sounds/GameWin.wav");
+        GameService gs = new GameService();
 
         private KinectSensor kinectSensor = null;
         private MultiSourceFrameReader multiSourceFrameReader = null;
@@ -210,12 +212,12 @@ namespace TableTennisTracker
                 return (bounceLocn);
             }
 
-            //using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-            //{
+            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            {
 
             CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-            this.coordinateMapper.MapColorFrameToCameraSpace(this.PreviousDepthFrame, camSpacePoints);
-            //this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+            //this.coordinateMapper.MapColorFrameToCameraSpace(this.PreviousDepthFrame, camSpacePoints);
+            this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
             int index = (1080 - yavg) * 1920 + xavg;
             float xtval = camSpacePoints[index].X;
             float ytval = camSpacePoints[index].Y;
@@ -240,7 +242,7 @@ namespace TableTennisTracker
             bounceLocn.Y = ytval;
             bounceLocn.Z = ztval;
             return (bounceLocn);
-            //}
+            }
         }
 
         // Color frame analysis
@@ -300,7 +302,7 @@ namespace TableTennisTracker
                     if (xavg > 1)
                     {
                         // Off (or rather under) table
-                        if (yavg < tableLevel - 100)
+                        if (yavg < tableLevel - 200)
                         {
                             if (bounce1)
                             {
@@ -361,10 +363,10 @@ namespace TableTennisTracker
                             using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
                             {
                                 this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                if (depthFrame != null)
-                                {
-                                    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
-                                }
+                                //if (depthFrame != null)
+                                //{
+                                //    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
+                                //}
 
                             }
 
@@ -508,19 +510,34 @@ namespace TableTennisTracker
                 PlayScore();
             }
 
-            if (PlayerOneScore == 21)
+            if (PlayerOneScore == 21 || PlayerTwoScore == 21)
             {
-                //this.PointScored = "Player 1 Wins!";
                 gameOver = true;
-                PlayScore();
-                PlayScore();
-                PlayScore();
+                PlayGameWin();
+                GameOver();
             }
-            else if (PlayerTwoScore == 21)
-            {
-                //this.PointScored = "Player 2 Wins!";
-                gameOver = true;
-            }
+        }
+
+        // Find longest volley in number of hits - NOT YET WRITTEN
+        private int LongestVolleyHits()
+        {
+            return 0;
+        }
+
+        // Find longest volley in time - NOT YET WRITTEN
+        private float LongestVolleyTime()
+        {
+            return 0;
+        }
+
+        // Game over handling
+        private void GameOver()
+        {
+            CurrentGame.Player1Score = PlayerOneScore;
+            CurrentGame.Player2Score = PlayerTwoScore;
+            CurrentGame.LongestVolleyHits = LongestVolleyHits();
+            CurrentGame.LongestVolleyTime = LongestVolleyTime();
+            gs.AddGame(CurrentGame);
         }
 
         // Handle change in ball direction

@@ -322,7 +322,7 @@ namespace TableTennisTracker
 
             if (scoreDelay != DateTime.MinValue)
             {
-                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 20000) {
+                if ((float)DateTime.Now.Subtract(this.scoreDelay).TotalSeconds < 2) {
                     pause = true;
                 } else {
                     scoreDelay = DateTime.MinValue;
@@ -338,7 +338,7 @@ namespace TableTennisTracker
                     // If too much time passes without bounce/return, someone missed
                     if (this.hitTime != DateTime.MinValue)
                     {
-                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 20000)
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 2)
                         {
                             if (this.Direction == "Left" && bounce1)
                             {
@@ -428,10 +428,10 @@ namespace TableTennisTracker
                             using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
                             {
                                 this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                if (depthFrame != null)
-                                {
-                                    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
-                                }
+                                //if (depthFrame != null)
+                                //{
+                                //    depthFrame.CopyFrameDataToArray(this.PreviousDepthFrame);
+                                //}
                                 
                             }
 
