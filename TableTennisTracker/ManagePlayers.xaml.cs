@@ -90,16 +90,17 @@ namespace TableTennisTracker
         {
             if (Player != null)
             {
-                if (Player.GamePlayer == null)
-                {
-                    ps.DeletePlayer(Player.Id);
-                    NavigationService.Navigate(new ManagePlayers());
-                }
-                else
+                if (ps.PlayerHasGames(Player.Id))
                 {
                     CantDelete.IsActive = true;
                     await Task.Delay(4000);
                     CantDelete.IsActive = false;
+                }
+                else
+                {
+                    ps.DeletePlayer(Player.Id);
+                    NavigationService.Navigate(new ManagePlayers());
+                    
                 }
                 
             }
