@@ -73,22 +73,30 @@ namespace TableTennisTracker
         public GamePage(Player pOne, Player pTwo)
         {
             InitializeComponent();
-            PlayerOne = pOne;
-            PlayerTwo = pTwo;
+
+            PlayerOne = new Player
+            {
+                Id = pOne.Id
+            };
+            PlayerTwo = new Player
+            {
+                Id = pTwo.Id
+            };
+
             NewGame();
             this.DataContext = this;
             //Player One DataContext
-            PlayerOneUserName.DataContext = PlayerOne;
-            PlayerOneName.DataContext = PlayerOne;
-            PlayerOneNation.DataContext = PlayerOne;
-            PlayerOnePPHand.DataContext = PlayerOne;
-            
+            PlayerOneUserName.DataContext = pOne;
+            PlayerOneName.DataContext = pOne;
+            PlayerOneNation.DataContext = pOne;
+            PlayerOnePPHand.DataContext = pOne;
+
 
             //Player Two DataContext
-            PlayerTwoUserName.DataContext = PlayerTwo;
-            PlayerTwoName.DataContext = PlayerTwo;
-            PlayerTwoNation.DataContext = PlayerTwo;
-            PlayerTwoPPHand.DataContext = PlayerTwo;
+            PlayerTwoUserName.DataContext = pTwo;
+            PlayerTwoName.DataContext = pTwo;
+            PlayerTwoNation.DataContext = pTwo;
+            PlayerTwoPPHand.DataContext = pTwo;
 
             this.PreviousDepthFrame = new UInt16[217088];
             InitVariables();
@@ -655,8 +663,7 @@ namespace TableTennisTracker
         // Add Point button Player One
         private void PlayerOneAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            PlayerOneScore++;
-            PlayScore();
+            Score("P1", "Add Point Button");
         }
 
         //Subtract Point Button Player One
@@ -676,8 +683,7 @@ namespace TableTennisTracker
         // Add Point Button Player Two
         private void PlayerTwoAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            PlayerTwoScore++;
-            PlayScore();
+            Score("P2", "Add Point Button");
         }
 
         // Subtract Point Player Two
