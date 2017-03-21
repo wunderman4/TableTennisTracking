@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -131,7 +132,22 @@ namespace TableTennisTracker.Services
 
         public void AddGame(Game newGame)
         {
+            Player player1 = (from p in _repo.Query<Player>()
+                              where p.Id == newGame.Player1.Id
+                              select p).FirstOrDefault();
+
+            Player player2 = (from p in _repo.Query<Player>()
+                              where p.Id == newGame.Player2.Id
+                              select p).FirstOrDefault();
+
+            newGame.Player1 = player1;
+            newGame.Player2 = player2;
+
             _repo.Add(newGame);
+
+            _db.GamePlayers.Add(new GamePlayer { GameId = newGame.Id, PlayerId = player1.Id });
+            _db.GamePlayers.Add(new GamePlayer { GameId = newGame.Id, PlayerId = player2.Id });
+            _db.SaveChanges();
         }
 
         public void UpdateGame(Game updatedGame)

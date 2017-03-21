@@ -24,9 +24,7 @@ namespace TableTennisTracker
     {
         //Add Services to page
         PlayerService ps = new PlayerService();
-
-
-
+        
         public NewPlayer()
         {
             InitializeComponent();
@@ -81,9 +79,6 @@ namespace TableTennisTracker
                 await Task.Delay(200);
                 NavigationService.Navigate(new Splash());
             }
-
-           
-
         }
     }
 }
