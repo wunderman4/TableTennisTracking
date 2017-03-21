@@ -8,7 +8,7 @@ namespace TableTennisTracker.Interfaces
     {
         void AddGame(Game newGame, List<HitLocation> bounces);
         void DeleteGame(int id);
-        Game GetGame(int id);
+        GamesView GetGame(int id);
         List<GamesView> GetGames();
         List<GamesView> GetPlayerGames(int id);
         void UpdateGame(Game updatedGame);
