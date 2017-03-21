@@ -20,6 +20,8 @@ namespace TableTennisTracker.Services
 
         private HitLocationService _hitLocationSer = new HitLocationService();
 
+        private GamePlayerService _gamePlayerSer = new GamePlayerService();
+
         public GameService()
         {
             this._repo = new GenericRespository(_db);
@@ -145,9 +147,7 @@ namespace TableTennisTracker.Services
 
             _repo.Add(newGame);
 
-            _db.GamePlayers.Add(new GamePlayer { GameId = newGame.Id, PlayerId = player1.Id });
-            _db.GamePlayers.Add(new GamePlayer { GameId = newGame.Id, PlayerId = player2.Id });
-            _db.SaveChanges();
+            _gamePlayerSer.AddGamePlayers(newGame);
         }
 
         public void UpdateGame(Game updatedGame)
@@ -172,6 +172,7 @@ namespace TableTennisTracker.Services
             Game gameToBeDeleted = (from g in _repo.Query<Game>()
                                     where g.Id == id
                                     select g).FirstOrDefault();
+
             //delete the game's hit locations first:
             _hitLocationSer.DeleteHitLocationsGame(id);
             
