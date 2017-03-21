@@ -33,7 +33,7 @@ namespace TableTennisTracker
             Player = p;
 
             // sets page Data Context. 
-            this.DataContext = this;
+            //this.DataContext = this;
             UserNameTextBox.DataContext = Player;
             NameTextBox.DataContext = Player;
             HeightFt.DataContext = Player.HeightFt.ToString();
