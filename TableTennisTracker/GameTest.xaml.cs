@@ -272,6 +272,14 @@ namespace TableTennisTracker
             return (BallLocation);
         }
 
+        // Return median of a list of float values
+        private float FindMedian(List<float> inList)
+        {
+            inList.Sort();
+            int index = inList.Count / 2;
+            return inList[index];
+        }
+
         // Get xyz physical coordinates for bounce location, add to Bounce list - not very good right now
         private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
@@ -280,38 +288,53 @@ namespace TableTennisTracker
             {
                 return (bounceLocn);
             }
-            
-            //using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-            //{
-                
-                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-                this.coordinateMapper.MapColorFrameToCameraSpace(this.PreviousDepthFrame, camSpacePoints);
-                //this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-                int index = (1080 - yavg) * 1920 + xavg;
-                float xtval = camSpacePoints[index].X;
-                float ytval = camSpacePoints[index].Y;
-                float ztval = camSpacePoints[index].Z;
 
-                if (ztval < 0 || ztval > 3.5)
+            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            {
+                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
+                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                List<float> xvals = new List<float>();
+                List<float> yvals = new List<float>();
+                List<float> zvals = new List<float>();
+                int Vcount = 0;
+
+                // Find ball in camera space
+                for (int i = -40; i < 40; i++)
                 {
-                    for (int a = -5; a <= 5; a++)
+                    for (int j = -40; j < 40; j++)
                     {
-                        for (int b = -5; b <= 5; b++)
+                        if (yavg + i > tableLevel)
                         {
-                            if (camSpacePoints[index + (a * 1920) + b].Z > 0 || camSpacePoints[index + (a * 1920) + b].Z < 3.5)
+                            int tempIndex = (yavg + i) * 1920 + xavg + j;
+                            int arrVal = 4 * tempIndex;
+                            if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
                             {
-                                xtval = camSpacePoints[index + (a * 1920) + b].X;
-                                ytval = camSpacePoints[index + (a * 1920) + b].Y;
-                                ztval = camSpacePoints[index + (a * 1920) + b].Z;
+                                arrVal = 4;
+                            }
+                            if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
+                            {
+                                xvals.Add(camSpacePoints[tempIndex].X);
+                                yvals.Add(camSpacePoints[tempIndex].Y);
+                                zvals.Add(camSpacePoints[tempIndex].Z);
+                                Vcount++;
                             }
                         }
                     }
                 }
-                bounceLocn.X = xtval;
-                bounceLocn.Y = ytval;
-                bounceLocn.Z = ztval;
+                if (Vcount > 0)
+                {
+                    bounceLocn.X = FindMedian(xvals);
+                    bounceLocn.Y = FindMedian(yvals);
+                    bounceLocn.Z = FindMedian(zvals);
+                }
+                else
+                {
+                    bounceLocn.X = 0;
+                    bounceLocn.Y = 0;
+                    bounceLocn.Z = 0;
+                }
                 return (bounceLocn);
-            //}
+            }
         }
 
         // Color frame analysis
@@ -735,6 +758,18 @@ namespace TableTennisTracker
             this.serveBounce = false;
             this.PointScored = "Bad Serve!";
             this.inVolley = false;
+        }
+
+        private void ShowTest(object sender, RoutedEventArgs e)
+        {
+            if (Fred.Visibility == Visibility.Visible)
+            {
+                Fred.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                Fred.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
