@@ -232,18 +232,20 @@
       <DependentUpon>SelectPlayers.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IPlayerService.cs" />
+    <Compile Include="Services\GamePlayerService.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Interfaces\IGameService.cs" />
     <Compile Include="Services\HitLocationService.cs" />
     <Compile Include="Interfaces\IHitLocationService.cs" />
+    <Compile Include="Interfaces\IGamePlayerService.cs" />
     <Compile Include="Services\Logging.cs" />
     <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
     <Compile Include="TableTennisTrackerDb.cs" />
-    <Compile Include="Views\GameIdView.cs" />
     <Compile Include="Views\GamesView.cs" />
+    <Compile Include="Views\PlayerWithGames.cs" />
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
