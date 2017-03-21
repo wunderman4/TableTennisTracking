@@ -43,25 +43,67 @@ namespace TableTennisTracker
         }
 
         // Edit Player
-        private void EditPlayer(object sender, RoutedEventArgs e)
+        private async void EditPlayer(object sender, RoutedEventArgs e)
         {
              
             foreach (Player p in PlayerListBox.SelectedItems)
             {
                     Player = p;
             }
-
-            NavigationService.Navigate(new EditPlayer(Player));
+            if (Player != null)
+            {
+                NavigationService.Navigate(new EditPlayer(Player));
+            }
+            else
+            {
+                NoPlayerSelected.IsActive = true;
+                await Task.Delay(2000);
+                NoPlayerSelected.IsActive = false;
+            }
+            
 
         }
 
         private async void DeleteClick(object sender, RoutedEventArgs e)
         {
 
-            ConfirmDelete.Visibility = Visibility.Visible;
-            await Task.Delay(4000);
-            ConfirmDelete.Visibility = Visibility.Collapsed;
+            foreach (Player p in PlayerListBox.SelectedItems)
+            {
+                Player = p;
+            }
 
+            if (Player != null)
+            {
+                ConfirmDelete.Visibility = Visibility.Visible;
+                await Task.Delay(4000);
+                ConfirmDelete.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NoPlayerSelected.IsActive = true;
+                await Task.Delay(2000);
+                NoPlayerSelected.IsActive = false;
+            }
+        }
+
+        private async void ConfirmDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (Player != null)
+            {
+                if (Player.GamePlayer == null)
+                {
+                    ps.DeletePlayer(Player.Id);
+                    NavigationService.Navigate(new ManagePlayers());
+                }
+                else
+                {
+                    CantDelete.IsActive = true;
+                    await Task.Delay(4000);
+                    CantDelete.IsActive = false;
+                }
+                
+            }
+            
         }
     }
 }
