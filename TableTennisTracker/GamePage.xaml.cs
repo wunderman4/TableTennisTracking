@@ -219,6 +219,14 @@ namespace TableTennisTracker
             return (BallLocation);
         }
 
+        // Return median of a list of float values
+        private float FindMedian(List<float> inList)
+        {
+            inList.Sort();
+            int index = inList.Count / 2;
+            return inList[index];
+        }
+
         // Get xyz physical coordinates for bounce location, add to Bounce list - not very good right now
         private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
@@ -232,9 +240,9 @@ namespace TableTennisTracker
             {
                 CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
                 this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-                float xtval = 0;
-                float ytval = 0;
-                float ztval = 0;
+                List<float> xvals = new List<float>();
+                List<float> yvals = new List<float>();
+                List<float> zvals = new List<float>();
                 int Vcount = 0;
 
                 // Find ball in camera space
@@ -242,7 +250,7 @@ namespace TableTennisTracker
                 {
                     for (int j = -40; j < 40; j++)
                     {
-                        if (yavg + i < tableLevel)
+                        if (yavg + i > tableLevel)
                         {
                             int tempIndex = (yavg + i) * 1920 + xavg + j;
                             int arrVal = 4 * tempIndex;
@@ -252,9 +260,9 @@ namespace TableTennisTracker
                             }
                             if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
                             {
-                                xtval += camSpacePoints[tempIndex].X;
-                                ytval += camSpacePoints[tempIndex].Y;
-                                ztval += camSpacePoints[tempIndex].Z;
+                                xvals.Add(camSpacePoints[tempIndex].X);
+                                yvals.Add(camSpacePoints[tempIndex].Y);
+                                zvals.Add(camSpacePoints[tempIndex].Z);
                                 Vcount++;
                             }
                         }
@@ -262,9 +270,9 @@ namespace TableTennisTracker
                 }
                 if (Vcount > 0)
                 {
-                    bounceLocn.X = xtval / Vcount;
-                    bounceLocn.Y = ytval / Vcount;
-                    bounceLocn.Z = ztval / Vcount;
+                    bounceLocn.X = FindMedian(xvals);
+                    bounceLocn.Y = FindMedian(yvals);
+                    bounceLocn.Z = FindMedian(zvals);
                 } 
                 else
                 {
@@ -333,7 +341,7 @@ namespace TableTennisTracker
                     if (xavg > 1)
                     {
                         // Off (or rather under) table
-                        if (yavg < tableLevel - 200)
+                        if (yavg < tableLevel - 100)
                         {
                             if (bounce1)
                             {
@@ -588,15 +596,14 @@ namespace TableTennisTracker
             {
                 if (!bounce1)
                 {
-                    // Disabled to test if better without change direction scoring
-                    //if (this.Direction == "Left")
-                    //{
-                    //    Score("P1", "No Bounce");
-                    //}
-                    //else
-                    //{
-                    //    Score("P2", "No Bounce");
-                    //}
+                    if (this.Direction == "Left")
+                    {
+                        Score("P1", "No Bounce");
+                    }
+                    else
+                    {
+                        Score("P2", "No Bounce");
+                    }
                     this.hitTime = DateTime.MinValue;
                 }
                 else

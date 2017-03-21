@@ -55,6 +55,8 @@
         <StackPanel Margin="10" Grid.Column="0" Grid.Row="1" Name="buttons" Orientation="Horizontal">
             <Button  MinWidth="100" Height="60" Margin="50,0,0,0" Click="PlotIt">Plot Points</Button>
             <Button MinWidth="100" Height="60" Margin="10,0,0,0" Click="StartVolley">Start Volley</Button>
+            <Button MinWidth="100" Height="60" Margin="10,0,20,0" Click="ShowTest">Show It!</Button>
+            <Ellipse Fill="White" Height="60" Width="60" Name="Fred" />
             <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding PointScored}" FontSize="36" Foreground="White" HorizontalAlignment="Center"/>
         </StackPanel>
 
