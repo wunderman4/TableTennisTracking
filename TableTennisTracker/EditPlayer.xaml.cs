@@ -36,8 +36,10 @@ namespace TableTennisTracker
             this.DataContext = this;
             UserNameTextBox.DataContext = Player;
             NameTextBox.DataContext = Player;
-            HeightFt.DataContext = Player;
-            HeightIn.DataContext = Player;
+            HeightFt.DataContext = Player.HeightFt.ToString();
+            HeightIn.DataContext = Player.HeightInch.ToString();
+            //HeightFt.DataContext = Player;
+            //HeightIn.DataContext = Player;
             AgeTextBox.DataContext = Player;
             PPH.DataContext = Player;
             CountryTextBox.DataContext = Player;

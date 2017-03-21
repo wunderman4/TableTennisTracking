@@ -244,6 +244,7 @@
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
+                        Click="ConfirmDelete_Click"
                         >
                         <StackPanel
                             Orientation="Horizontal">
@@ -265,6 +266,33 @@
                 
             </materialDesign:Card>
 
+            <materialDesign:Snackbar 
+                IsActive="False"
+                x:Name="NoPlayerSelected"
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                
+                >
+                <materialDesign:SnackbarMessage 
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Content="PLEASE SELECT A PLAYER..."/>
+            </materialDesign:Snackbar>
+            
+            <materialDesign:Snackbar 
+                IsActive="False"
+                x:Name="CantDelete"
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                
+                >
+                <materialDesign:SnackbarMessage 
+                    FontWeight="Bold"
+                    FontSize="24"
+                    Content="SELECTED PLAYER HAS ALREADY PLAYED A GAME AND CANNOT BE DELETED..."/>
+            </materialDesign:Snackbar>
 
         </Grid>
     </DockPanel>
