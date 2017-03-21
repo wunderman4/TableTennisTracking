@@ -44,7 +44,7 @@ namespace TableTennisTracker
         public List<KeyValuePair<float, float>> _xyData;
         public DateTime timeStarted;
         public List<DataPoint> AllData;
-        public List<DataPoint> Bounces;
+        public List<HitLocation> Bounces;
         public string Direction;
         public string VertDir;
         // Volley tracking variables
@@ -66,7 +66,7 @@ namespace TableTennisTracker
         public bool gameOver;
         public bool PossibleBounce;
         public DataPoint tempBounce;
-        public DataPoint tempBounceXYZ;
+        public HitLocation tempBounceXYZ;
         public UInt16[] PreviousDepthFrame;
 
         // Constructor
@@ -136,7 +136,7 @@ namespace TableTennisTracker
 
             this._xyData = new List<KeyValuePair<float, float>>();
             this.AllData = new List<DataPoint>();
-            this.Bounces = new List<DataPoint>();
+            this.Bounces = new List<HitLocation>();
             this.startLocation = new DataPoint(0, 0, 0, 0);
             this.Direction = "";
             this.VertDir = "";
@@ -228,9 +228,9 @@ namespace TableTennisTracker
         }
 
         // Get xyz physical coordinates for bounce location, add to Bounce list - not very good right now
-        private DataPoint BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
+        private HitLocation BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
-            DataPoint bounceLocn = new TableTennisTracker.DataPoint(0, 0, 0, 0);
+            HitLocation bounceLocn = new Models.HitLocation();
             if (depthFrame == null)
             {
                 return (bounceLocn);
@@ -573,13 +573,13 @@ namespace TableTennisTracker
             CurrentGame.Player2Score = PlayerTwoScore;
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
             CurrentGame.LongestVolleyTime = LongestVolleyTime;
-            gs.AddGame(CurrentGame);
+            gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
             string[] bounceOut = new string[this.Bounces.Count + 1];
             bounceOut[0] = "X, Y, Z";
             int i = 1;
-            foreach (DataPoint item in this.Bounces)
+            foreach (HitLocation item in this.Bounces)
             {
                 bounceOut[i] = item.X.ToString() + ", " + item.Y.ToString() + ", " + item.Z.ToString();
                 i++;

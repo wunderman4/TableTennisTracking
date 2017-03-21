@@ -32,10 +32,10 @@
             <!--............................. Player one Column.........................  -->
             <!--Username Header-->
             <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
+                Grid.Row="0" 
+                Grid.Column="0" 
                 Margin="50,0,50,0"
-                Width="400"
+                Width="400" 
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Name="PlayerOneUserName"

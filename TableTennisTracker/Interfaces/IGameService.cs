@@ -6,7 +6,7 @@ namespace TableTennisTracker.Interfaces
 {
     public interface IGameService
     {
-        void AddGame(Game newGame);
+        void AddGame(Game newGame, List<HitLocation> bounces);
         void DeleteGame(int id);
         Game GetGame(int id);
         List<GamesView> GetGames();

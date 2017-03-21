@@ -132,7 +132,7 @@ namespace TableTennisTracker.Services
             return outGame;
         }
 
-        public void AddGame(Game newGame)
+        public void AddGame(Game newGame, List<HitLocation> bounces)
         {
             Player player1 = (from p in _repo.Query<Player>()
                               where p.Id == newGame.Player1.Id
