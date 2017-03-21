@@ -67,6 +67,7 @@ namespace TableTennisTracker
         public bool PossibleBounce;
         public DataPoint tempBounce;
         public HitLocation tempBounceXYZ;
+        public string _Server;
         public UInt16[] PreviousDepthFrame;
 
         // Constructor
@@ -149,7 +150,22 @@ namespace TableTennisTracker
             this.startPosTime = DateTime.MinValue;
             this.PossibleBounce = false;
             this.scoreDelay = DateTime.MinValue;
+            Server = "";
             VolleyHits = 0;
+        }
+
+        public string Server
+        {
+            get { return _Server;  }
+            set
+            {
+                _Server = value;
+                var handler = PropertyChanged;
+                if (handler != null)
+                {
+                    handler(this, new PropertyChangedEventArgs("Server"));
+                }
+            }
         }
 
         // Data points to be graphed
@@ -284,7 +300,7 @@ namespace TableTennisTracker
             }
         }
 
-        // Color frame analysis
+        // Color frame analysis With ball action analysis
         private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             bool changeDir = false;
@@ -423,7 +439,10 @@ namespace TableTennisTracker
                                     {
                                         // Handle bounce processing
                                         Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                        this.Bounces.Add(tempBounceXYZ);
+                                        if (tempBounceXYZ.X != 0 && tempBounceXYZ.Y != 0 && tempBounceXYZ.Z != 0)
+                                        {
+                                            this.Bounces.Add(tempBounceXYZ);
+                                        }
                                     }
                                     PossibleBounce = false;
                                 }
@@ -446,7 +465,7 @@ namespace TableTennisTracker
                         }
                         else if (inVolley)    // if not served yet, check for serve hit
                         {
-                            // Serve defined as moving in x and negative y, and decently above table 
+                            // Serve defined as moving in x and negative y
                             if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
                             {
                                 this.served = true;
@@ -474,32 +493,102 @@ namespace TableTennisTracker
                     int xavg = (int)BallLocation.X;
                     int yavg = (int)BallLocation.Y;
 
-                    // Determine if ball in start position 1.5 seconds to signal start of volley
-                    if (Math.Abs(yavg - this.tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+                    CheckStartPosition(xavg, yavg);
+                }
+            }
+        }
+
+        // Check if ball is in start position for new volley.  If so set params to start volley
+        public void CheckStartPosition(int xavg, int yavg)
+        {
+            if (Math.Abs(yavg - tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+            {
+                string currentServer = "";
+                if (xavg > netLocation)
+                {
+                    currentServer = "P1";
+                }
+                else
+                {
+                    currentServer = "P2";
+                }
+
+                if (!startPosition)  // Log ball in possible start position
+                {
+                    this.startPosTime = DateTime.Now;
+                    this.startPosition = true;
+                    this.startLocation.X = xavg;
+                    this.startLocation.Y = yavg;
+                }
+                else if (Math.Abs(this.startLocation.X - xavg) > 10 || Math.Abs(this.startLocation.Y - yavg) > 10)    // Check ball not moving, reset if it moved
+                {
+                    this.startPosTime = DateTime.Now;
+                    this.startLocation.X = xavg;
+                    this.startLocation.Y = yavg;
+                }
+                else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.0)    // Start volley if ball not moved in 1.0 seconds
+                {
+                    if (Server == "")
                     {
-                        if (!startPosition)  // Log ball in possible start position
+                        if (currentServer == "P1")
                         {
-                            this.startPosTime = DateTime.Now;
-                            this.startPosition = true;
-                            this.startLocation.X = xavg;
-                            this.startLocation.Y = yavg;
-                        }
-                        else if (Math.Abs(this.startLocation.X - xavg) > 10 || Math.Abs(this.startLocation.Y - yavg) > 10)    // Check ball not moving, reset if it moved
+                            P1Serve();
+                        } else
                         {
-                            this.startPosTime = DateTime.Now;
-                            this.startLocation.X = xavg;
-                            this.startLocation.Y = yavg;
-                        }
-                        else if ((float)(DateTime.Now.Subtract(this.startPosTime).TotalSeconds) > 1.0)    // Start volley if ball not moved in 1.0 seconds
-                        {
-                            this.startPosTime = DateTime.MinValue;
-                            this.startPosition = false;
-                            StartVolley();
-                        }
-                        else
-                        {
+                            P2Serve();
                         }
                     }
+
+                    if (Server == currentServer)
+                    {
+                        this.startPosTime = DateTime.MinValue;
+                        this.startPosition = false;
+                        StartVolley();
+                    }
+                    else
+                    {
+                        //Make some warning sound
+                    }
+                }
+            }
+        }
+
+        // Set Player1 as server
+        public void P1Serve()
+        {
+            Server = "P1";
+            PlayerOneRecord.Visibility = Visibility.Visible;
+            PlayerTwoRecord.Visibility = Visibility.Hidden;
+        }
+
+        // Set Player2 as server
+        public void P2Serve()
+        {
+            Server = "P2";
+            PlayerOneRecord.Visibility = Visibility.Hidden;
+            PlayerTwoRecord.Visibility = Visibility.Visible;
+        }
+
+        // Determine whose serve it is
+        public void DetermineServe(int diff = 0)
+        {
+            if (PlayerOneScore == 20)
+            {
+                P2Serve();
+            }
+            else if (PlayerTwoScore == 20)
+            {
+                P1Serve();
+            }
+            else if ((PlayerOneScore + PlayerTwoScore + diff) % 5 == 0)
+            {
+                if (Server == "P1")
+                {
+                    P2Serve();
+                }
+                else
+                {
+                    P1Serve();
                 }
             }
         }
@@ -557,6 +646,7 @@ namespace TableTennisTracker
                 this.PlayerTwoScore++;
                 PlayScore();
             }
+            DetermineServe();
 
             if (PlayerOneScore == 21 || PlayerTwoScore == 21)
             {
@@ -685,6 +775,7 @@ namespace TableTennisTracker
                 PlayerOneScore--;
                 PlayBadServe();
             }
+            DetermineServe(1);
         }
 
         // Add Point Button Player Two
@@ -705,6 +796,7 @@ namespace TableTennisTracker
                 PlayerTwoScore--;
                 PlayBadServe();
             }
+            DetermineServe(1);
         }
 
 
