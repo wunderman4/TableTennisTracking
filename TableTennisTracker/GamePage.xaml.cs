@@ -234,18 +234,21 @@ namespace TableTennisTracker
                 {
                     for (int j = -40; j < 40; j++)
                     {
-                        int tempIndex = (yavg + i) * 1920 + xavg + j;
-                        int arrVal = 4 * tempIndex;
-                        if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
+                        if (yavg + i < tableLevel)
                         {
-                            arrVal = 4;
-                        }
-                        if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
-                        {
-                            xtval += camSpacePoints[tempIndex].X;
-                            ytval += camSpacePoints[tempIndex].Y;
-                            ztval += camSpacePoints[tempIndex].Z;
-                            Vcount++;
+                            int tempIndex = (yavg + i) * 1920 + xavg + j;
+                            int arrVal = 4 * tempIndex;
+                            if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
+                            {
+                                arrVal = 4;
+                            }
+                            if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
+                            {
+                                xtval += camSpacePoints[tempIndex].X;
+                                ytval += camSpacePoints[tempIndex].Y;
+                                ztval += camSpacePoints[tempIndex].Z;
+                                Vcount++;
+                            }
                         }
                     }
                 }
@@ -659,6 +662,10 @@ namespace TableTennisTracker
         //Subtract Point Button Player One
         private void PlayerOneSubPoint_Click(object sender, RoutedEventArgs e)
         {
+            if (PlayerOneScore == 21)
+            {
+                gameOver = false;
+            }
             if (PlayerOneScore !=0)
             {
                 PlayerOneScore--;
@@ -676,6 +683,10 @@ namespace TableTennisTracker
         // Subtract Point Player Two
         private void PlayerTwoSubPoint_Click(object sender, RoutedEventArgs e)
         {
+            if (PlayerTwoScore == 21)
+            {
+                gameOver = false;
+            }
             if (PlayerTwoScore != 0)
             {
                 PlayerTwoScore--;
