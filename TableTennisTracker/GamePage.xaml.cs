@@ -504,7 +504,7 @@ namespace TableTennisTracker
             if (Math.Abs(yavg - tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
             {
                 string currentServer = "";
-                if (xavg > netLocation)
+                if (xavg < netLocation)
                 {
                     currentServer = "P1";
                 }
