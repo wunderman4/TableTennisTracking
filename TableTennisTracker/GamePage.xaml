@@ -3,6 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+      xmlns:charts="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
       xmlns:local="clr-namespace:TableTennisTracker"
       mc:Ignorable="d" 
       d:DesignHeight="970" d:DesignWidth="1913"
@@ -98,7 +100,7 @@
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="20,0,0,0"
                         FontSize="50"
-                        Click="PlayerOneRecord_Click">
+                        Click="ShowVolleyPlot">
                             <materialDesign:PackIcon 
                         x:Name="PlayerOneBall"
                         Visibility="Collapsed"
@@ -380,6 +382,7 @@
                         x:Name="PlayerTwoRecord"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,0,20,0"
+                        Click="ShowVolleyPlot"
                         FontSize="50">
                             <materialDesign:PackIcon
                         x:Name="PlayerTwoBall"
@@ -388,9 +391,7 @@
                         Width="100"
                         Height="100"
                         Kind="WhiteBalanceSunny"
-                        Foreground="Black"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
+                        FontSize="50"
                          />
                         </Button>
 
@@ -479,9 +480,47 @@
                 </StackPanel>
             </materialDesign:Card>
 
+            <!--Popup window to show plot of a volley-->
+            <Popup Margin="10,10,10,10" Name="VolleyPlot" Width="1860" Height="1000" Placement="AbsolutePoint" HorizontalOffset="40" VerticalOffset="40" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="False">
+                <StackPanel Name="PopupStack" Orientation="Vertical">
+                    <charts:Chart Name="chart1" Title="Volley Plot" Background="Red" Width="1700" Height="680" Margin="20,20,20,20">
+                        <charts:Chart.Series>
+                            <charts:ScatterSeries 
+                                  IndependentValuePath="Key"
+                                  DependentValuePath="Value"
+                                  IsSelectionEnabled="True"
+                                  AnimationSequence="FirstToLast"
+                                  Title=""
+                                  ItemsSource="{Binding}">
+                                <charts:DataPointSeries.DataPointStyle>
+                                    <Style TargetType="{x:Type charts:ScatterDataPoint}">
+                                        <Setter Property="Background" Value="Green" />
+                                        <Setter Property="Width" Value="24" />
+                                        <Setter Property="Height" Value="24" />
+                                    </Style>
+                                </charts:DataPointSeries.DataPointStyle>
+                            </charts:ScatterSeries>
+                        </charts:Chart.Series>
 
+                        <charts:Chart.LegendStyle>
+                            <Style TargetType="Control">
+                                <Setter Property="Width" Value="0" />
+                                <Setter Property="Height" Value="0" />
+                            </Style>
+                        </charts:Chart.LegendStyle>
+
+                        <charts:Chart.Axes>
+                            <charts:LinearAxis Orientation="Y" Minimum="0" Maximum="1080" Interval="0" ShowGridLines="False" />
+                            <charts:LinearAxis Orientation="X" Minimum="0" Maximum="1920" Interval="0" ShowGridLines="False" />
+                        </charts:Chart.Axes>
+                    </charts:Chart>
+                    <Button Width="200" Height="100" Margin="50,0,50,0" Click="ClosePopup">Close Graph</Button>
+                </StackPanel>
+            </Popup>
 
 
         </Grid>
     </DockPanel>
+    
+    
 </Page>

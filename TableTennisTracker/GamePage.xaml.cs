@@ -913,9 +913,30 @@ namespace TableTennisTracker
             GameWin.Play();
         }
 
-        private void PlayerOneRecord_Click(object sender, RoutedEventArgs e)
+        // Create xyData list from AllData, send to XAML plot
+        public void PlotXYData()
         {
-            
+            int i = 0;
+            foreach (DataPoint item in this.AllData)
+            {
+                this.xyData.Add(new KeyValuePair<float, float>(item.X, item.Y));
+                i++;
+            }
+            chart1.DataContext = null;
+            chart1.DataContext = this.xyData;
+        }
+
+        // Show plot of ball locations for volley
+        private void ShowVolleyPlot(object sender, RoutedEventArgs e)
+        {
+            PlotXYData();
+            VolleyPlot.IsOpen = true;
+        }
+
+        // Close Popup
+        private void ClosePopup(object sender, RoutedEventArgs e)
+        {
+            VolleyPlot.IsOpen = false;
         }
 
         /// Execute shutdown tasks
