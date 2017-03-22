@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableTennisTracker.Models;
 
 namespace TableTennisTracker
 {
@@ -20,9 +21,12 @@ namespace TableTennisTracker
     /// </summary>
     public partial class GameSummary : Page
     {
-        public GameSummary()
+        Game PastGame = null;
+
+        public GameSummary(Game _game)
         {
             InitializeComponent();
+            PastGame = _game;
         }
 
         private void GoHome_Click(object sender, RoutedEventArgs e)
