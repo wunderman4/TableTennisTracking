@@ -68,13 +68,13 @@
                             CALIBRATION
                         </Button>
 
-                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        <!--<Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             Margin="4" 
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="GameSummary">
                             GAME SUMMARY
-                        </Button>
+                        </Button>-->
 
                         <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             Margin="4" 

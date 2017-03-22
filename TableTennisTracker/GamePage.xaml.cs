@@ -572,6 +572,8 @@ namespace TableTennisTracker
         // Determine whose serve it is
         public void DetermineServe(int diff = 0)
         {
+            PlayerOneBall.Visibility = Visibility.Collapsed;
+            PlayerTwoBall.Visibility = Visibility.Collapsed;
             if (PlayerOneScore == 20)
             {
                 P2Serve();
@@ -609,6 +611,13 @@ namespace TableTennisTracker
             VolleyHits = 0;
             VolleyStartTime = DateTime.Now;
             PlayBallSet();
+            if (Server == "P1")
+            {
+                PlayerOneBall.Visibility = Visibility.Visible;
+            } else
+            {
+                PlayerTwoBall.Visibility = Visibility.Visible;
+            }
         }
 
         // Determine volley stats
@@ -650,10 +659,51 @@ namespace TableTennisTracker
 
             if (PlayerOneScore == 21 || PlayerTwoScore == 21)
             {
+                PlayerOneSubPoint.Visibility = Visibility.Collapsed;
+                PlayerOneAddPoint.Visibility = Visibility.Collapsed;
+                PlayerTwoSubPoint.Visibility = Visibility.Collapsed;
+                PlayerTwoAddPoint.Visibility = Visibility.Collapsed;
+                UndoGameOverButton.Visibility = Visibility.Visible;
+                GameSummaryButton.Visibility = Visibility.Visible;
+
                 gameOver = true;
                 PlayGameWin();
-                GameOver();
+                
             }
+        }
+
+
+        // Asks if user would like to undo game over
+        private void UndoGameOverButton_Click(object sender, RoutedEventArgs e)
+        {
+            UndoGameOverButton.Visibility = Visibility.Collapsed;
+            GameSummaryButton.Visibility = Visibility.Collapsed;
+            PlayerOneSubPoint.Visibility = Visibility.Visible;
+            PlayerOneAddPoint.Visibility = Visibility.Visible;
+            PlayerTwoSubPoint.Visibility = Visibility.Visible;
+            PlayerTwoAddPoint.Visibility = Visibility.Visible;
+            
+
+            
+            if (PlayerOneScore == 21)
+            {
+                PlayerOneScore--;
+                
+            } else if (PlayerTwoScore == 21)
+            {
+                PlayerTwoScore--;
+            }
+            DetermineServe(1);
+            gameOver = false;
+
+
+        }
+
+        // Confirms Game Over navigates to game summary page
+        private void GameSummaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            GameOver();
+            NavigationService.Navigate(new GameSummary(CurrentGame));
         }
 
         // Game over handling
@@ -884,5 +934,7 @@ namespace TableTennisTracker
                 this.kinectSensor = null;
             }
         }
+
+        
     }
 }

@@ -39,7 +39,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Name="PlayerOneUserName"
-                FontSize="40"
+                FontSize="60"
+                FontStretch="UltraCondensed"
                 Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                 FontWeight="Bold"
                 Text="{Binding UserName}">
@@ -90,7 +91,7 @@
                         <!--Record Button-->
                         <Button
                         Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            Background="Red"
+                            Background="White"
                         Width="150"
                         Height="150"
                         Name="PlayerOneRecord"
@@ -99,10 +100,12 @@
                         FontSize="50"
                         Click="PlayerOneRecord_Click">
                             <materialDesign:PackIcon 
-                        Margin="0,0,7,7"
-                        Width="150"
-                        Height="150"
-                        Kind="RecordRec"
+                        x:Name="PlayerOneBall"
+                        Visibility="Collapsed"
+                        Margin="0,0,0,0"
+                        Width="100"
+                        Height="100"
+                        Kind="WhiteBalanceSunny"
                         Foreground="Black"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -175,6 +178,7 @@
                         Margin="0,50,0,50">
                         <!--Subtract Button-->
                         <Button
+                            Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         Width="350"
                         Name="PlayerOneSubPoint"
@@ -197,7 +201,7 @@
 
                         <!--Add Button-->
                         <Button
-                        
+                        Visibility="Visible"
                         Width="350"
                         Name="PlayerOneAddPoint"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
@@ -216,6 +220,36 @@
                         VerticalAlignment="Center"
                          />
                         </Button>
+
+                        <!--UndoGameOverButton-->
+                        <Button
+                        x:Name="UndoGameOverButton"
+                        Background="Orange"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="50,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="UndoGameOverButton_Click"
+                        >
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="UndoVariant"
+                        VerticalAlignment="Center"
+                         />
+                                <TextBlock
+                                VerticalAlignment="Center">
+                                UNDO LAST POINT
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </StackPanel>
             </materialDesign:Card>
@@ -232,7 +266,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Name="PlayerTwoUserName"
-                FontSize="40"
+                FontSize="60"
+                FontStretch="UltraCondensed"
                 Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                 FontWeight="Bold"
                 Text="{Binding UserName}">
@@ -339,18 +374,20 @@
                         </StackPanel>
                         <Button
                         Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            Background="Red"
+                            Background="White"
                         Width="150"
                         Height="150"
                         x:Name="PlayerTwoRecord"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,0,20,0"
                         FontSize="50">
-                            <materialDesign:PackIcon 
-                        Margin="0,0,7,7"
-                        Width="150"
-                        Height="150"
-                        Kind="RecordRec"
+                            <materialDesign:PackIcon
+                        x:Name="PlayerTwoBall"
+                        Visibility="Collapsed"
+                        Margin="0,0,0,0"
+                        Width="100"
+                        Height="100"
+                        Kind="WhiteBalanceSunny"
                         Foreground="Black"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -365,6 +402,7 @@
                         Margin="0,50,0,50">
                         <!--Subtract Button-->
                         <Button
+                        Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         Width="350"
                         Name="PlayerTwoSubPoint"
@@ -387,7 +425,7 @@
 
                         <!--Add Button-->
                         <Button
-                        
+                        Visibility="Visible"
                         Width="350"
                         Name="PlayerTwoAddPoint"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
@@ -405,7 +443,39 @@
                         VerticalAlignment="Center"
                          />
                         </Button>
+
+                        <!--Game Summary Button-->
+                        <Button
+                        x:Name="GameSummaryButton"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="50,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="GameSummaryButton_Click"
+                        >
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="ChartScatterplotHexbin"
+                        VerticalAlignment="Center"
+                         />
+                                <TextBlock
+                                VerticalAlignment="Center">
+                                GAME SUMMARY
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
+                    
+                    
+
                 </StackPanel>
             </materialDesign:Card>
 
