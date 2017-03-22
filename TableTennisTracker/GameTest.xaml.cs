@@ -760,6 +760,18 @@ namespace TableTennisTracker
             this.inVolley = false;
         }
 
+        // Popup button
+        private void PopItUp(object sender, RoutedEventArgs e)
+        {
+            PopupTest.IsOpen = true;
+        }
+
+        // Close Popup
+        private void ClosePopup(object sender, RoutedEventArgs e)
+        {
+            PopupTest.IsOpen = false;
+        }
+
         private void ShowTest(object sender, RoutedEventArgs e)
         {
             if (Fred.Visibility == Visibility.Visible)

@@ -52,9 +52,48 @@
             </charts:Chart.Axes>
         </charts:Chart>
 
+        <Popup Margin="10,10,10,10" Name="PopupTest" Width="1860" Height="1000" Placement="AbsolutePoint" HorizontalOffset="40" VerticalOffset="40" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="False">
+            <StackPanel Name="PopupStack" Orientation="Vertical">
+                <charts:Chart Name="chart2" Title="Volley Plot" Background="Red" Width="1700" Height="720" Margin="20,20,20,20">
+                    <charts:Chart.Series>
+                        <charts:ScatterSeries 
+                                  IndependentValuePath="Key"
+                                  DependentValuePath="Value"
+                                  IsSelectionEnabled="True"
+                                  AnimationSequence="FirstToLast"
+                                  Title=""
+                                  ItemsSource="{Binding}">
+                            <charts:DataPointSeries.DataPointStyle>
+                                <Style TargetType="{x:Type charts:ScatterDataPoint}">
+                                    <Setter Property="Background" Value="Green" />
+                                    <Setter Property="Width" Value="24" />
+                                    <Setter Property="Height" Value="24" />
+                                </Style>
+                            </charts:DataPointSeries.DataPointStyle>
+                        </charts:ScatterSeries>
+                    </charts:Chart.Series>
+
+                    <charts:Chart.LegendStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Width" Value="0" />
+                            <Setter Property="Height" Value="0" />
+                        </Style>
+                    </charts:Chart.LegendStyle>
+
+                    <charts:Chart.Axes>
+                        <charts:LinearAxis Orientation="Y" Minimum="0" Maximum="1080" Interval="0" ShowGridLines="False" />
+                        <charts:LinearAxis Orientation="X" Minimum="0" Maximum="1920" Interval="0" ShowGridLines="False" />
+                    </charts:Chart.Axes>
+                </charts:Chart>
+                <Button MinWidth="100" Height="60" Margin="50,0,50,0" Click="ClosePopup">Close Popup</Button>
+            </StackPanel>
+        </Popup>
+
         <StackPanel Margin="10" Grid.Column="0" Grid.Row="1" Name="buttons" Orientation="Horizontal">
+
             <Button  MinWidth="100" Height="60" Margin="50,0,0,0" Click="PlotIt">Plot Points</Button>
             <Button MinWidth="100" Height="60" Margin="10,0,0,0" Click="StartVolley">Start Volley</Button>
+            <Button MinWidth="100" Height="60" Margin="10,0,0,0" Click="PopItUp">Show Popup</Button>
             <Button MinWidth="100" Height="60" Margin="10,0,20,0" Click="ShowTest">Show It!</Button>
             <Ellipse Fill="White" Height="60" Width="60" Name="Fred" />
             <TextBlock Height="60" Margin="20,0,0,0" Text="{Binding PointScored}" FontSize="36" Foreground="White" HorizontalAlignment="Center"/>
