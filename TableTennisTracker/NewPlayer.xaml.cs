@@ -24,6 +24,7 @@ namespace TableTennisTracker
     {
         //Add Services to page
         PlayerService ps = new PlayerService();
+        GameService gs = new GameService();
         
         public NewPlayer()
         {

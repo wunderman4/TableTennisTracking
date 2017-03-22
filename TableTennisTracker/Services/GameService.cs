@@ -120,19 +120,37 @@ namespace TableTennisTracker.Services
             return gameList;
         }
 
-
-        public Game GetGame(int id)
+        public GamesView GetGame(int id)
         {
-            Game outGame;
+            GamesView game;
+            List<HitLocation> gameHitLocations;
 
-           outGame = (from g in _repo.Query<Game>()
+            game = (from g in _repo.Query<Game>()
                       where g.Id == id
-                      select g).FirstOrDefault();
+                      select new GamesView
+                      {
+                          Id = g.Id,
+                          Player1Id = g.Player1.Id,
+                          Player2Id = g.Player2.Id,
+                          Player1Score = g.Player1Score,
+                          Player2Score = g.Player2Score,
+                          MaxVelocity = g.MaxVelocity,
+                          LongestVolleyHits = g.LongestVolleyHits,
+                          LongestVolleyTime = g.LongestVolleyTime,
+                          Player1 = g.Player1,
+                          Player2 = g.Player2,
+                      }).FirstOrDefault();
 
-            return outGame;
+            gameHitLocations = (from h in _repo.Query<HitLocation>()
+                                where h.Game.Id == game.Id
+                                select h).ToList();
+
+            game.GameHitLocations = gameHitLocations;
+
+            return game;
         }
 
-        public void AddGame(Game newGame)
+        public void AddGame(Game newGame, List<HitLocation> bounces)
         {
             Player player1 = (from p in _repo.Query<Player>()
                               where p.Id == newGame.Player1.Id
@@ -145,9 +163,24 @@ namespace TableTennisTracker.Services
             newGame.Player1 = player1;
             newGame.Player2 = player2;
 
+            // Add the game to the Games table:
             _repo.Add(newGame);
 
+            // Add the players to the GamePlayer table:
             _gamePlayerSer.AddGamePlayers(newGame);
+
+            // Add the hit locations (bounces) to the HitLocation table:
+
+            Game currentGame = new Game
+            {
+                Id = newGame.Id
+            };
+
+            foreach (HitLocation hitLocation in bounces)
+            {
+                hitLocation.Game = currentGame;
+                _hitLocationSer.AddHitLocation(hitLocation);
+            }
         }
 
         public void UpdateGame(Game updatedGame)
