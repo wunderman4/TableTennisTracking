@@ -46,20 +46,20 @@
 
                 Width="1000"
                 HorizontalAlignment="Center" >
-                    
+
                     <materialDesign:ColorZone 
                     Mode="PrimaryMid"
                     Padding="5" >
                         <StackPanel>
-                        <TextBlock
+                            <TextBlock
                             x:Name="LeaderboardTitle"
-                         Visibility="Collapsed"
+                         Visibility="Visible"
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         LEADERBOARD:
-                        </TextBlock>
+                            </TextBlock>
                             <TextBlock
                                 x:Name="SelectPlayerTitle"
                          Visibility="Collapsed"
@@ -67,11 +67,11 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        LEADERBOARD:
+                        SELECT PLAYER:
                             </TextBlock>
                         </StackPanel>
                     </materialDesign:ColorZone>
-                    
+
                 </materialDesign:Card>
             </materialDesign:TransitioningContent>
 
@@ -88,52 +88,237 @@
                     Width="800"
                     Height="750">
 
-                    <!--SELECT PLAYER ONE SECTION-->
-                    <ItemsControl>
-                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.50}">
-                            <materialDesign:TransitioningContent.OpeningEffects>
-                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
-                            </materialDesign:TransitioningContent.OpeningEffects>
+                    <!--Global Leaderboard-->
+                    <Button
+                        x:Name="GlobalButton"
+                        
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="GlobalButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="Earth"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                GLOBAL LEADERS
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
 
-                            <ListBox 
+                    <!--........................Stats By Player Button.................-->
+                    <Button
+                        x:Name="StatsByPlayer"
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="StatsByPlayer_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="AccountCircle"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                STATS BY PLAYER
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+
+
+                    <!--Player vs Player-->
+                    <Button
+                        x:Name="PVPButton"
+                        
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="PVPButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="AccountMultiple"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                PLAYER V PLAYER
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Hit Locations-->
+                    <Button
+                        x:Name="HitLocationButton"
+                        
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="HitLocationButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CrosshairsGps"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                Margin="0,0,60,0"
+                                Padding="0,0,0,0"
+                                VerticalAlignment="Center">
+                                HIT LOCATIONS
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+
+                    <!--Home Button-->
+                    <Button
+                        x:Name="HomeButton"
+                        Background="Orange"
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="HomeButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="HomeModern"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                HOME
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Hidden By Default Col 0, Row 1-->
+                    <!--SELECT PLAYER ONE SECTION-->
+
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.50}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+
+                        <ListBox 
+                            Visibility="Collapsed"
                             HorizontalAlignment="Stretch"
-                            Name="PlayerListBox"
+                            x:Name="PlayerListBox"
                             Height="600">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border 
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border 
                                     x:Name="Border" 
                                     Padding="8" 
-                                    BorderThickness="0 0 0 1" BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition 
+                                    BorderThickness="0 0 0 1" 
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition 
                                                     SharedSizeGroup="Checkerz" />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <StackPanel 
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                                    <TextBlock 
+                                                <TextBlock 
                                                 FontSize="50"
                                                 FontWeight="Bold" 
                                                 Text="{Binding UserName}" />
-                                                    <TextBlock 
+                                                <TextBlock 
                                                 FontSize="30"
                                                 Text="{Binding PlayerName}" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </materialDesign:TransitioningContent>
-                    </ItemsControl>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </materialDesign:TransitioningContent>
+                    <!--Return Button-->
+                    <Button
+                        x:Name="ReturnButton"
+                        Background="Orange"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="ReturnButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="BackupRestore"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                RETURN
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+
 
 
 
@@ -162,13 +347,25 @@
                     <materialDesign:ColorZone 
                     Mode="PrimaryMid"
                     Padding="5" >
-                        <TextBlock
+                        <StackPanel>
+                            <TextBlock
+                        x:Name="Statistics"
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        EDIT OR DELETE:
-                        </TextBlock>
+                        STATISTICS:
+                            </TextBlock>
+                            <TextBlock
+                        x:Name="SelectPlayerTwoTitle"
+                        Visibility="Collapsed"
+                        FontSize="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                        SELECT PLAYER:
+                            </TextBlock>
+                        </StackPanel>
                     </materialDesign:ColorZone>
                 </materialDesign:Card>
             </materialDesign:TransitioningContent>
@@ -188,70 +385,17 @@
                     Height="750"
                     VerticalAlignment="Center"
                     >
-
-
-                    <!--_____________________Edit Button______________-->
+                    <!-- This is holding the bottom button down.-->
                     <StackPanel
-                        Orientation="Horizontal"
-                        Margin="0,100,0,0">
-                        <Button 
-                        Background="Orange"
-                        Height="300"
-                        Width="300"
-                        Padding="30"
-                        Margin="50"
+                        x:Name="Col1Row1PlaceHolder"
+                        Height="600">
                         
-                        >
-                            <StackPanel>
-                                <materialDesign:PackIcon 
-                        Margin="0,0,0,0"
-                        Width="200"
-                        Height="200"
-                        Kind="AccountConvert"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                         />
-                                <TextBlock
-                                FontSize="30"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                                EDIT PLAYER
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-
-                        <!--_________________________Delete Button __________________-->
-                        <Button
-                        Background="Red"
-                        Height="300"
-                        Width="300"
-                        Padding="30"
-                        Margin="50"
-                        >
-                            <StackPanel>
-                                <materialDesign:PackIcon
-                                Margin="0,0,0,0"
-                                Width="200"
-                                Height="200"
-                                Kind="AccountRemove"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-
-                                </materialDesign:PackIcon>
-                                <TextBlock
-                                FontSize="30"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                                DELETE PLAYER
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
                     </StackPanel>
+                    <!-- StatsByPlayerConfirm-->
                     <Button
-                        Name="ConfirmDelete"
-                        Background="Red"
+                        x:Name="StatsByPlayerConfirm"
                         Visibility="Collapsed"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,20,0,0"
@@ -269,7 +413,7 @@
                          />
                             <TextBlock
                                 VerticalAlignment="Center">
-                                CONFIRM DELETE
+                                SELECT PLAYER
                             </TextBlock>
                         </StackPanel>
                     </Button>
