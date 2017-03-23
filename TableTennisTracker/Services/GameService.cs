@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 using TableTennisTracker.Interfaces;
 using TableTennisTracker.Models;
 using TableTennisTracker.Respository;
-using TableTennisTracker.Views;
+using TableTennisTracker.ModelViews;
 
 namespace TableTennisTracker.Services
 {
     public class GameService : IGameService
     {
-        TableTennisTrackerDb _db = new TableTennisTrackerDb();
-
         private GenericRespository _repo;
 
-        private HitLocationService _hitLocationSer = new HitLocationService();
+        TableTennisTrackerDb _db = new TableTennisTrackerDb();
 
         private GamePlayerService _gamePlayerSer = new GamePlayerService();
+
+        private HitLocationService _hitLocationSer = new HitLocationService();
 
         public GameService()
         {
@@ -160,6 +160,19 @@ namespace TableTennisTracker.Services
                               where p.Id == newGame.Player2.Id
                               select p).FirstOrDefault();
 
+            if(newGame.Player1Score > newGame.Player2Score)
+            {
+                player1.Wins++;
+                player2.Losses++;
+            }
+            else
+            {
+                player1.Losses++;
+                player2.Wins++;
+            }
+
+            _db.SaveChanges();
+
             newGame.Player1 = player1;
             newGame.Player2 = player2;
 
@@ -211,6 +224,74 @@ namespace TableTennisTracker.Services
             
             //now delete the game:
             _repo.Delete(gameToBeDeleted);
+        }
+
+        ///////////////Global Game Stats:////////////////////
+
+        public GamesView GetGameWithLongestVolley()
+        {
+            Player player;
+
+            GamesView game = (from g in _repo.Query<Game>()
+                         orderby g.LongestVolleyHits descending
+                         select new GamesView
+                         {
+                             Id = g.Id,
+                             Player1Id = g.Player1.Id,
+                             Player2Id = g.Player2.Id,
+                             Player1Score = g.Player1Score,
+                             Player2Score = g.Player2Score,
+                             MaxVelocity = g.MaxVelocity,
+                             LongestVolleyHits = g.LongestVolleyHits,
+                             LongestVolleyTime = g.LongestVolleyTime,
+                             Player1 = g.Player1,
+                             Player2 = g.Player2
+                         }).FirstOrDefault();
+
+            player = (from p in _repo.Query<Player>()
+                      where p.Id == game.Player1Id
+                      select p).FirstOrDefault();
+            game.Player1 = player;
+
+            player = (from p in _repo.Query<Player>()
+                      where p.Id == game.Player2Id
+                      select p).FirstOrDefault();
+            game.Player2 = player;
+
+            return game;
+        }
+
+        public GamesView GetGameWithLongestVolleyTime()
+        {
+            Player player;
+
+            GamesView game = (from g in _repo.Query<Game>()
+                         orderby g.LongestVolleyTime descending
+                         select new GamesView
+                        {
+                             Id = g.Id,
+                             Player1Id = g.Player1.Id,
+                             Player2Id = g.Player2.Id,
+                             Player1Score = g.Player1Score,
+                             Player2Score = g.Player2Score,
+                             MaxVelocity = g.MaxVelocity,
+                             LongestVolleyHits = g.LongestVolleyHits,
+                             LongestVolleyTime = g.LongestVolleyTime,
+                             Player1 = g.Player1,
+                             Player2 = g.Player2
+                         }).FirstOrDefault();
+
+            player = (from p in _repo.Query<Player>()
+                      where p.Id == game.Player1Id
+                      select p).FirstOrDefault();
+            game.Player1 = player;
+
+            player = (from p in _repo.Query<Player>()
+                      where p.Id == game.Player2Id
+                      select p).FirstOrDefault();
+            game.Player2 = player;
+
+            return game;
         }
     }
 }
