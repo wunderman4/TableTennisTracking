@@ -38,40 +38,73 @@
                 </materialDesign:TransitioningContent.OpeningEffects>
 
 
+                <!--Col 0, Row 0, Header Title-->
                 <materialDesign:Card 
                 Margin="20,20,20,20"
-                Padding="0" 
                 Grid.Column="0"
                 Grid.Row="0" 
-
                 Width="1000"
                 HorizontalAlignment="Center" >
+                    <StackPanel>
 
-                    <materialDesign:ColorZone 
-                    Mode="PrimaryMid"
-                    Padding="5" >
-                        <StackPanel>
-                            <TextBlock
+                        <materialDesign:ColorZone 
+                    Mode="PrimaryMid">
+                            <StackPanel>
+                                
+                                <!--Leaderboard Title-->
+                                <TextBlock
                             x:Name="LeaderboardTitle"
-                         Visibility="Visible"
+                        Margin="0,5,0,5" 
+                        Visibility="Visible"
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         LEADERBOARD:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                
+                                <!--Select Player Title-->
+                                <TextBlock
                                 x:Name="SelectPlayerTitle"
+                                    Margin="0,5,0,5" 
                          Visibility="Collapsed"
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         SELECT PLAYER:
-                            </TextBlock>
-                        </StackPanel>
-                    </materialDesign:ColorZone>
-
+                                </TextBlock>
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                        <!-- PVP Return Button -->
+                        <Button
+                        x:Name="PVPReturnButton"
+                        Background="Orange"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,0,0,0"
+                        FontSize="50"
+                        Height="70"
+                        Click="ReturnButton_Click"
+                        >
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="75"
+                        Height="75"
+                        Kind="BackupRestore"
+                        VerticalAlignment="Center"
+                         />
+                                <TextBlock
+                                VerticalAlignment="Center">
+                                RETURN
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </materialDesign:Card>
             </materialDesign:TransitioningContent>
 
@@ -83,12 +116,12 @@
                 Padding="0">
 
                 <StackPanel 
-                    Name="PlayerOneSelectArea"
+                    Name="ColZeroRowOne"
                     Margin="0,0,0,0"
                     Width="800"
                     Height="750">
 
-                    <!--Global Leaderboard-->
+                    <!--Global Leaderboard Button-->
                     <Button
                         x:Name="GlobalButton"
                         
@@ -118,7 +151,7 @@
                         </StackPanel>
                     </Button>
 
-                    <!--........................Stats By Player Button.................-->
+                    <!--Stats By Player Button-->
                     <Button
                         x:Name="StatsByPlayer"
                         Visibility="Visible"
@@ -147,8 +180,7 @@
                     </Button>
 
 
-
-                    <!--Player vs Player-->
+                    <!--Player vs Player Button-->
                     <Button
                         x:Name="PVPButton"
                         
@@ -178,7 +210,7 @@
                         </StackPanel>
                     </Button>
 
-                    <!--Hit Locations-->
+                    <!--Hit Locations Button-->
                     <Button
                         x:Name="HitLocationButton"
                         
@@ -242,53 +274,232 @@
                     </Button>
 
                     <!--Hidden By Default Col 0, Row 1-->
-                    <!--SELECT PLAYER ONE SECTION-->
 
-                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.50}">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
-                        </materialDesign:TransitioningContent.OpeningEffects>
-
-                        <ListBox 
+                    <!--Stats By Player Select Player-->
+                    <ListBox 
                             Visibility="Collapsed"
                             HorizontalAlignment="Stretch"
                             x:Name="PlayerListBox"
                             Height="600">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border 
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
                                     x:Name="Border" 
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition 
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
                                                     SharedSizeGroup="Checkerz" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel 
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                                <TextBlock 
+                                            <TextBlock 
                                                 FontSize="50"
                                                 FontWeight="Bold" 
                                                 Text="{Binding UserName}" />
-                                                <TextBlock 
+                                            <TextBlock 
                                                 FontSize="30"
                                                 Text="{Binding PlayerName}" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </materialDesign:TransitioningContent>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!--PVPSelectOne List Box-->
+                    <ListBox 
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Stretch"
+                            x:Name="PVPSelectOne"
+                            Height="600">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                                    x:Name="Border" 
+                                    Padding="8" 
+                                    BorderThickness="0 0 0 1" 
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
+                                                    SharedSizeGroup="Checkerz" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel 
+                                            Margin="8 0 0 0" 
+                                            Grid.Column="1">
+                                            <TextBlock 
+                                                FontSize="50"
+                                                FontWeight="Bold" 
+                                                Text="{Binding UserName}" />
+                                            <TextBlock 
+                                                FontSize="30"
+                                                Text="{Binding PlayerName}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!--PVP One Binding-->
+                    <StackPanel
+                        x:Name="PVPOneBinding"
+                        Visibility="Collapsed"
+                        Height="600">
+                        <!-- USERNAME BINDING -->
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            Width="250"
+                            FontSize="28"
+                            VerticalAlignment="Center">
+                            USERNAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPOneUserName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding UserName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- NAME BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR NAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPOneName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding PlayerName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--NATIONALITY BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            NATIONALITY:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPOneNationality"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Nationality}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--PP HAND! -->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            PADDLE HAND:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPOnePPH"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding HandPreference}">
+                            </TextBlock>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <!--PVP One Confirm Button-->
+                    <Button
+                        x:Name="PVPOneConfirmButton"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="PVPOneConfirmButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CheckboxMarkedCircleOutline"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                SELECT PLAYER
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--PVP One Select New-->
+                    <Button
+                        x:Name="PVPOneSelectNewButton"
+                        Background="Orange"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="PVPOneSelectNewButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="BackupRestore"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                SELECT ANOTHER
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
                     <!--Return Button-->
                     <Button
                         x:Name="ReturnButton"
@@ -319,11 +530,6 @@
                     </Button>
 
 
-
-
-
-
-
                 </StackPanel>
             </materialDesign:Card>
 
@@ -336,6 +542,7 @@
                 </materialDesign:TransitioningContent.OpeningEffects>
 
 
+                <!--Col 1 Row 0 Header Title-->
                 <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
@@ -365,12 +572,13 @@
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         SELECT PLAYER:
                             </TextBlock>
+                            
                         </StackPanel>
                     </materialDesign:ColorZone>
                 </materialDesign:Card>
             </materialDesign:TransitioningContent>
 
-            <!--_____________________Button Area______________-->
+            <!--_____________________CARD AREA______________-->
 
             <materialDesign:Card
                 Grid.Column="1"
@@ -385,12 +593,222 @@
                     Height="750"
                     VerticalAlignment="Center"
                     >
-                    <!-- This is holding the bottom button down.-->
+
+                    <!--PVPSelectTwo List Box-->
+
+                    <ListBox 
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Stretch"
+                            x:Name="PVPSelectTwo"
+                            Height="600">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                                    x:Name="Border" 
+                                    Padding="8" 
+                                    BorderThickness="0 0 0 1" 
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition 
+                                                    SharedSizeGroup="Checkerz" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel 
+                                            Margin="8 0 0 0" 
+                                            Grid.Column="1">
+                                            <TextBlock 
+                                                FontSize="50"
+                                                FontWeight="Bold" 
+                                                Text="{Binding UserName}" />
+                                            <TextBlock 
+                                                FontSize="30"
+                                                Text="{Binding PlayerName}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!--Stats By Player Bindings-->
                     <StackPanel
-                        x:Name="Col1Row1PlaceHolder"
+                        x:Name="StatsByPlayerBinding"
+                        Visibility="Collapsed"
                         Height="600">
-                        
+                        <!-- USERNAME BINDING -->
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            Width="250"
+                            FontSize="28"
+                            VerticalAlignment="Center">
+                            USERNAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="userName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding UserName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- NAME BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR NAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="name"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding PlayerName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--NATIONALITY BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            NATIONALITY:
+                            </TextBlock>
+                            <TextBlock
+                            Name="country"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Nationality}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--PP HAND! -->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            PADDLE HAND:
+                            </TextBlock>
+                            <TextBlock
+                            Name="Name"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding HandPreference}">
+                            </TextBlock>
+                        </StackPanel>
+
                     </StackPanel>
+
+                    <!--PVP Two Binding-->
+                    <StackPanel
+                        x:Name="PVPTwoBinding"
+                        Visibility="Collapsed"
+                        Height="600">
+                        <!-- USERNAME BINDING -->
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            Width="250"
+                            FontSize="28"
+                            VerticalAlignment="Center">
+                            USERNAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPTwoUserName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding UserName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- NAME BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            YOUR NAME:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPTwoName"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding PlayerName}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--NATIONALITY BINDING-->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            NATIONALITY:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPTwoNationality"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Nationality}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!--PP HAND! -->
+
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                            <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="250"
+                            VerticalAlignment="Center">
+                            PADDLE HAND:
+                            </TextBlock>
+                            <TextBlock
+                            Name="PVPTwoPPH"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding HandPreference}">
+                            </TextBlock>
+                        </StackPanel>
+
+                    </StackPanel>
+
+
                     <!-- StatsByPlayerConfirm-->
                     <Button
                         x:Name="StatsByPlayerConfirm"
@@ -401,6 +819,35 @@
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
+                        Click="StatsByPlayerConfirm_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CheckboxMarkedCircleOutline"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                SELECT PLAYER
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <!--PVPTwoConfirm-->
+                    <Button
+                        x:Name="PVPTwoConfirmButton"
+                        Visibility="Collapsed"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="0,20,0,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="PVPTwoConfirmButton_Click"
                         >
                         <StackPanel
                             Orientation="Horizontal">
@@ -419,9 +866,9 @@
                     </Button>
 
                 </StackPanel>
-
             </materialDesign:Card>
 
+            <!--Please Select a Player Snackbar-->
             <materialDesign:Snackbar 
                 IsActive="False"
                 x:Name="NoPlayerSelected"
@@ -436,19 +883,6 @@
                     Content="PLEASE SELECT A PLAYER..."/>
             </materialDesign:Snackbar>
 
-            <materialDesign:Snackbar 
-                IsActive="False"
-                x:Name="CantDelete"
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Center"
-                
-                >
-                <materialDesign:SnackbarMessage 
-                    FontWeight="Bold"
-                    FontSize="24"
-                    Content="SELECTED PLAYER HAS ALREADY PLAYED A GAME AND CANNOT BE DELETED..."/>
-            </materialDesign:Snackbar>
 
         </Grid>
     </DockPanel>

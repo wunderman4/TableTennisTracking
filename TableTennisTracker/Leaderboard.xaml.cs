@@ -24,7 +24,7 @@ namespace TableTennisTracker
     {
         PlayerService ps = new PlayerService();
         List<Player> PlayerList;
-        Player Player = null;
+        // Player Player = null;
 
         public Leaderboard()
         {
@@ -38,13 +38,10 @@ namespace TableTennisTracker
             // Gets list of players
             PlayerList = ps.ListPlayers();
 
-            // assigns each list to the listbox on xaml page. 
+            // assigns each list to the listboxes on xaml page. 
             PlayerListBox.ItemsSource = PlayerList;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            
+            PVPSelectOne.ItemsSource = PlayerList;
+            PVPSelectTwo.ItemsSource = PlayerList;
         }
 
         
@@ -54,6 +51,7 @@ namespace TableTennisTracker
             // Header, Col 0 Row 0 
             LeaderboardTitle.Visibility = Visibility.Collapsed;
             SelectPlayerTitle.Visibility = Visibility.Collapsed;
+            PVPReturnButton.Visibility = Visibility.Collapsed;
 
             // Left Card, Col 0 Row 1
             StatsByPlayer.Visibility = Visibility.Collapsed;
@@ -63,14 +61,23 @@ namespace TableTennisTracker
             HitLocationButton.Visibility = Visibility.Collapsed;
             ReturnButton.Visibility = Visibility.Collapsed;
             HomeButton.Visibility = Visibility.Collapsed;
+            PVPSelectOne.Visibility = Visibility.Collapsed;
+            PVPOneConfirmButton.Visibility = Visibility.Collapsed;
+            PVPOneBinding.Visibility = Visibility.Collapsed;
+            PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
 
             // Header, Col 1, Row 0
 
             // Right Card, Col 1, Row 1
+            StatsByPlayerBinding.Visibility = Visibility.Collapsed;
             StatsByPlayerConfirm.Visibility = Visibility.Collapsed;
+            PVPSelectTwo.Visibility = Visibility.Collapsed;
+            PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
+            PVPTwoBinding.Visibility = Visibility.Collapsed;
 
         }
 
+        // Returns the page to the default view.
         private void ShowDefault()
         {
             LeaderboardTitle.Visibility = Visibility.Visible;
@@ -83,45 +90,89 @@ namespace TableTennisTracker
 
         }
 
-        private void StatsByPlayer_Click(object sender, RoutedEventArgs e)
+        // Changes the page to show stats for a specific player
+        private async void StatsByPlayer_Click(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(350);
             HideAll();
             SelectPlayerTitle.Visibility = Visibility.Visible;
             PlayerListBox.Visibility = Visibility.Visible;
             ReturnButton.Visibility = Visibility.Visible;
             StatsByPlayerConfirm.Visibility = Visibility.Visible;
+            StatsByPlayerBinding.Visibility = Visibility.Hidden;
 
         }
 
-        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        // Resets page to default View
+        private async void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(350);
             HideAll();
             ShowDefault();
             
         }
 
+        // Navigates to splash page
         private async void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             await Task.Delay(350);
             NavigationService.Navigate(new Splash());
         }
 
+        // Shows global Stats
         private void GlobalButton_Click(object sender, RoutedEventArgs e)
         {
             
         }
 
+        // Shows player v player stats
         private void PVPButton_Click(object sender, RoutedEventArgs e)
         {
             HideAll();
-            SelectPlayerTitle.Visibility = Visibility.Visible;
-            PlayerListBox.Visibility = Visibility.Visible;
-            ReturnButton.Visibility = Visibility.Visible;
+            PVPReturnButton.Visibility = Visibility.Visible;
+            PVPSelectOne.Visibility = Visibility.Visible;
+            PVPSelectTwo.Visibility = Visibility.Visible;
+            PVPOneConfirmButton.Visibility = Visibility.Visible;
+            PVPTwoConfirmButton.Visibility = Visibility.Visible;
         }
 
+        // Shows hit location stats by game
         private void HitLocationButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void StatsByPlayerConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            StatsByPlayerBinding.DataContext = PlayerListBox.SelectedItem;
+            StatsByPlayerBinding.Visibility = Visibility.Visible;
+        }
+
+        private void PVPOneConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            PVPOneBinding.DataContext = PVPSelectOne.SelectedItem;
+            PVPOneBinding.Visibility = Visibility.Visible;
+            PVPSelectOne.Visibility = Visibility.Collapsed;
+            PVPOneConfirmButton.Visibility = Visibility.Collapsed;
+            PVPOneSelectNewButton.Visibility = Visibility.Visible;
+            
+        }
+
+        private void PVPTwoConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            PVPTwoBinding.DataContext = PVPSelectTwo.SelectedItem;
+            PVPTwoBinding.Visibility = Visibility.Visible;
+            PVPSelectTwo.Visibility = Visibility.Collapsed;
+            PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
+            
+        }
+
+        private void PVPOneSelectNewButton_Click(object sender, RoutedEventArgs e)
+        {
+            PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
+            PVPOneBinding.Visibility = Visibility.Collapsed;
+            PVPSelectOne.Visibility = Visibility.Visible;
+            PVPOneConfirmButton.Visibility = Visibility.Visible;
         }
     }
 }
