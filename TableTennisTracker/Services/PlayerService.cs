@@ -154,6 +154,8 @@ namespace TableTennisTracker.Services
 
         public string GetPlayerLongestVolley(int id)
         {
+            int zero = 0;
+
             Game playerGame = (from p in _repo.Query<Player>()
                                join gp in _repo.Query<GamePlayer>() on p.Id equals gp.PlayerId
                                join g in _repo.Query<Game>() on gp.GameId equals g.Id
@@ -161,11 +163,20 @@ namespace TableTennisTracker.Services
                                orderby g.LongestVolleyHits descending
                                select g).FirstOrDefault();
 
-            return playerGame.LongestVolleyHits.ToString();
+            if (playerGame == null)
+            {
+                return zero.ToString();
+            }
+            else
+            {
+                return playerGame.LongestVolleyHits.ToString();
+            }
         }
 
         public string GetPlayerLongestVolleyTime(int id)
         {
+            int zero = 0;
+
             Game playerGame = (from p in _repo.Query<Player>()
                                join gp in _repo.Query<GamePlayer>() on p.Id equals gp.PlayerId
                                join g in _repo.Query<Game>() on gp.GameId equals g.Id
@@ -173,7 +184,14 @@ namespace TableTennisTracker.Services
                                orderby g.LongestVolleyTime descending
                                select g).FirstOrDefault();
 
-            return playerGame.LongestVolleyTime.ToString("0.## Seconds");
+            if (playerGame == null)
+            {
+                return zero.ToString("0.## Seconds");
+            }
+            else
+            {
+                return playerGame.LongestVolleyTime.ToString("0.## Seconds");
+            }
         }
 
         ///////////////Global Player Stats:////////////////////
