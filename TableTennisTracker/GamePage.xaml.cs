@@ -472,6 +472,7 @@ namespace TableTennisTracker
                             {
                                 this.served = true;
                                 this.startPosTime = DateTime.MinValue;
+                                VolleyStartTime = DateTime.Now;
                                 this.VertDir = "Down";
                                 if (xdelta > 0)
                                 {
@@ -612,7 +613,6 @@ namespace TableTennisTracker
             this.VertDir = "";
             this.Direction = "";
             VolleyHits = 0;
-            VolleyStartTime = DateTime.Now;
             PlayBallSet();
             if (Server == "P1")
             {
