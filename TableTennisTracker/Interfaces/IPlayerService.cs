@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TableTennisTracker.Models;
+using TableTennisTracker.ModelViews;
 
 namespace TableTennisTracker.Interfaces
 {
@@ -7,9 +8,16 @@ namespace TableTennisTracker.Interfaces
     {
         void AddPlayer(Player newPlayer);
         void DeletePlayer(int id);
-        void Dispose();
         Player GetPlayer(int id);
+        string GetPlayerLongestVolley(int id);
+        string GetPlayerLongestVolleyTime(int id);
+        PlayerWithGames GetPlayerWithGames(int id);
+        Player GetPlayerWithMostGames();
+        Player GetPlayerWithMostLosses();
+        Player GetPlayerWithMostWins();
         List<Player> ListPlayers();
-        void UpdatePlayer(Player newPlayer);
+        List<PlayerWithGames> ListPlayersWithGames();
+        bool PlayerHasGames(int id);
+        void UpdatePlayer(Player updatedPlayer);
     }
 }

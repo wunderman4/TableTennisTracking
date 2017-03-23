@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TableTennisTracker.Models;
-using TableTennisTracker.Views;
+using TableTennisTracker.ModelViews;
 
 namespace TableTennisTracker.Interfaces
 {
@@ -10,6 +10,8 @@ namespace TableTennisTracker.Interfaces
         void DeleteGame(int id);
         GamesView GetGame(int id);
         List<GamesView> GetGames();
+        GamesView GetGameWithLongestVolley();
+        GamesView GetGameWithLongestVolleyTime();
         List<GamesView> GetPlayerGames(int id);
         void UpdateGame(Game updatedGame);
     }
