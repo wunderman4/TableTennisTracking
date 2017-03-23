@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -69,6 +70,7 @@ namespace TableTennisTracker
         public HitLocation tempBounceXYZ;
         public string _Server;
         public UInt16[] PreviousDepthFrame;
+        public bool plotRepeat = false;
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -274,7 +276,7 @@ namespace TableTennisTracker
                             {
                                 arrVal = 4;
                             }
-                            if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
+                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.5)
                             {
                                 xvals.Add(camSpacePoints[tempIndex].X);
                                 yvals.Add(camSpacePoints[tempIndex].Y);
@@ -914,16 +916,24 @@ namespace TableTennisTracker
         }
 
         // Create xyData list from AllData, send to XAML plot
-        public void PlotXYData()
+        public async void PlotXYData()
         {
-            int i = 0;
-            foreach (DataPoint item in this.AllData)
-            {
-                this.xyData.Add(new KeyValuePair<float, float>(item.X, item.Y));
-                i++;
-            }
-            chart1.DataContext = null;
-            chart1.DataContext = this.xyData;
+                for (int i = 0; i < AllData.Count(); i++)
+                {
+                    this.xyData.Add(new KeyValuePair<float, float>(AllData[i].X, AllData[i].Y));
+                    if (i >= 5)
+                    {
+                        this.xyData.Remove(new KeyValuePair<float, float>(AllData[i - 5].X, AllData[i - 5].Y));
+                    }
+                    chart1.DataContext = null;
+                    chart1.DataContext = this.xyData;
+                    await Task.Delay(110);
+                }
+                await Task.Delay(1500);
+                this.xyData.Clear();
+                chart1.DataContext = null;
+                chart1.DataContext = this.xyData;
+            VolleyPlot.IsOpen = false;
         }
 
         // Show plot of ball locations for volley
@@ -931,12 +941,6 @@ namespace TableTennisTracker
         {
             PlotXYData();
             VolleyPlot.IsOpen = true;
-        }
-
-        // Close Popup
-        private void ClosePopup(object sender, RoutedEventArgs e)
-        {
-            VolleyPlot.IsOpen = false;
         }
 
         /// Execute shutdown tasks
@@ -949,11 +953,11 @@ namespace TableTennisTracker
                 this.multiSourceFrameReader = null;
             }
 
-            if (this.kinectSensor != null)
-            {
-                this.kinectSensor.Close();
-                this.kinectSensor = null;
-            }
+            //if (this.kinectSensor != null)
+            //{
+            //    this.kinectSensor.Close();
+            //    this.kinectSensor = null;
+            //}
         }
 
         

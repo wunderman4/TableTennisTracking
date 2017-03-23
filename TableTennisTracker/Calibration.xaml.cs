@@ -158,6 +158,7 @@ namespace TableTennisTracker
         public int FindNet(CameraSpacePoint[] camSpacePoints)
         {
             List<int> netPts = new List<int>();
+            List<float> Zvals = new List<float>();
             for (int i = 360; i < 1080 - GlobalClass.tableHeight - 40; i++)
             {
                 for (int j = 640; j < 1280; j++)
@@ -166,11 +167,14 @@ namespace TableTennisTracker
                     if (camSpacePoints[index].Z < 2.0 && camSpacePoints[index].Z > 0)
                     {
                         netPts.Add(j);
+                        Zvals.Add(camSpacePoints[index].Z);
                     }
                 }
             }
+            Zvals.Sort();
             netPts.Sort();
             int midIndex = netPts.Count / 2;
+            GlobalClass.minZ = Zvals[midIndex];
             return netPts[midIndex];
         }
 
@@ -209,11 +213,11 @@ namespace TableTennisTracker
                 this.multiSourceFrameReader = null;
             }
 
-            if (this.kinectSensor != null)
-            {
-                this.kinectSensor.Close();
-                this.kinectSensor = null;
-            }
+            //if (this.kinectSensor != null)
+            //{
+            //    this.kinectSensor.Close();
+            //    this.kinectSensor = null;
+            //}
         }
     }
 }
