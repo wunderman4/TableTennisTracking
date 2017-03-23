@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TableTennisTracker.Services;
+using TableTennisTracker.Models;
 
-namespace TableTennisTracker.Models
+namespace TableTennisTracker.ModelViews
 {
-    public class Player
+    public class PlayerWithGames
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -21,7 +21,6 @@ namespace TableTennisTracker.Models
         public int Wins { get; set; }
         public int Losses { get; set; }
 
-        public ICollection<GamePlayer> GamePlayer { get; set; }
-
+        public List<Game> Games { get; set; }
     }
 }

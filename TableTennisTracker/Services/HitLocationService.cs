@@ -13,8 +13,6 @@ namespace TableTennisTracker.Services
     {
         TableTennisTrackerDb _db = new TableTennisTrackerDb();
 
-        //private GameService _gameSer = new GameService();
-
         private GenericRespository _repo;
 
         public HitLocationService()

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TableTennisTracker.Models;
 
-namespace TableTennisTracker.Views
+namespace TableTennisTracker.ModelViews
 {
     public class GamesView
     {

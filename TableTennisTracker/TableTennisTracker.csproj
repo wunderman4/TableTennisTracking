@@ -244,8 +244,10 @@
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
     <Compile Include="TableTennisTrackerDb.cs" />
-    <Compile Include="Views\GamesView.cs" />
-    <Compile Include="Views\PlayerWithGames.cs" />
+    <Compile Include="ViewModels\GamesView.cs" />
+    <Compile Include="ViewModels\GlobalGameStats.cs" />
+    <Compile Include="ViewModels\PlayerGameStats.cs" />
+    <Compile Include="ViewModels\PlayerWithGames.cs" />
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

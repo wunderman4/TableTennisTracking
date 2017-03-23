@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 using TableTennisTracker.Interfaces;
 using TableTennisTracker.Models;
 using TableTennisTracker.Respository;
-using TableTennisTracker.Views;
+using TableTennisTracker.ModelViews;
 
 namespace TableTennisTracker.Services
 {
     public class PlayerService : IPlayerService
     {
-        TableTennisTrackerDb _db = new TableTennisTrackerDb();
-
         private GenericRespository _repo;
+
+        private GameService gs = new GameService();
+
+        private TableTennisTrackerDb _db = new TableTennisTrackerDb();
 
         public PlayerService()
         {
@@ -25,7 +27,6 @@ namespace TableTennisTracker.Services
         {
             List<Player> playerList = (from p in _repo.Query<Player>()
                                        select p).ToList();
-
             return playerList;
         }
 
@@ -62,6 +63,14 @@ namespace TableTennisTracker.Services
                 List<Game> games = (from gp in _repo.Query<GamePlayer>()
                                     where gp.PlayerId == player.Id
                                     select gp.Game).ToList();
+
+                foreach (Game game in games)
+                {
+                    GamesView gameData = gs.GetGame(game.Id);
+                    game.Player1 = gameData.Player1;
+                    game.Player2 = gameData.Player2;
+                }
+
                 player.Games = games;
             }
 
@@ -96,6 +105,13 @@ namespace TableTennisTracker.Services
             List<Game> games = (from gp in _repo.Query<GamePlayer>()
                           where gp.PlayerId == id
                           select gp.Game).ToList();
+
+            foreach(Game game in games)
+            {
+                GamesView gameData = gs.GetGame(game.Id);
+                game.Player1 = gameData.Player1;
+                game.Player2 = gameData.Player2;
+            }
 
             playerWithGames.Games = games;
 
@@ -134,9 +150,56 @@ namespace TableTennisTracker.Services
             _repo.Delete(playerToBeDeleted);
         }
 
-        public void Dispose()
+        ///////////////Individual Player Stats:////////////////////
+
+        public string GetPlayerLongestVolley(int id)
         {
-            throw new NotImplementedException();
+            Game playerGame = (from p in _repo.Query<Player>()
+                               join gp in _repo.Query<GamePlayer>() on p.Id equals gp.PlayerId
+                               join g in _repo.Query<Game>() on gp.GameId equals g.Id
+                               where p.Id == id
+                               orderby g.LongestVolleyHits descending
+                               select g).FirstOrDefault();
+
+            return playerGame.LongestVolleyHits.ToString();
+        }
+
+        public string GetPlayerLongestVolleyTime(int id)
+        {
+            Game playerGame = (from p in _repo.Query<Player>()
+                               join gp in _repo.Query<GamePlayer>() on p.Id equals gp.PlayerId
+                               join g in _repo.Query<Game>() on gp.GameId equals g.Id
+                               where p.Id == id
+                               orderby g.LongestVolleyTime descending
+                               select g).FirstOrDefault();
+
+            return playerGame.LongestVolleyTime.ToString();
+        }
+
+        ///////////////Global Player Stats:////////////////////
+
+        public Player GetPlayerWithMostWins()
+        {
+            Player player = (from p in _repo.Query<Player>()
+                             orderby p.Wins descending
+                             select p).FirstOrDefault();
+            return player;
+        }
+
+        public Player GetPlayerWithMostLosses()
+        {
+            Player player = (from p in _repo.Query<Player>()
+                             orderby p.Losses descending
+                             select p).FirstOrDefault();
+            return player;
+        }
+
+        public Player GetPlayerWithMostGames()
+        {
+            Player player = (from p in _repo.Query<Player>()
+                             orderby p.Wins + p.Losses descending
+                             select p).FirstOrDefault();
+            return player;
         }
     }
 }
