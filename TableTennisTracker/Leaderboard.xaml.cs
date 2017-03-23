@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.ModelViews;
 using TableTennisTracker.Services;
 
 namespace TableTennisTracker
@@ -24,7 +25,8 @@ namespace TableTennisTracker
     {
         PlayerService ps = new PlayerService();
         List<Player> PlayerList;
-        // Player Player = null;
+
+        
 
         public Leaderboard()
         {
@@ -65,15 +67,23 @@ namespace TableTennisTracker
             PVPOneConfirmButton.Visibility = Visibility.Collapsed;
             PVPOneBinding.Visibility = Visibility.Collapsed;
             PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
+            PVPOneArea.Visibility = Visibility.Collapsed;
 
             // Header, Col 1, Row 0
+            Statistics.Visibility = Visibility.Collapsed;
+            SelectPlayerTwoTitle.Visibility = Visibility.Collapsed;
+            PVPTitle.Visibility = Visibility.Collapsed;
+
 
             // Right Card, Col 1, Row 1
+            SBPUserNameBinding.Visibility = Visibility.Collapsed;
             StatsByPlayerBinding.Visibility = Visibility.Collapsed;
             StatsByPlayerConfirm.Visibility = Visibility.Collapsed;
             PVPSelectTwo.Visibility = Visibility.Collapsed;
             PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
             PVPTwoBinding.Visibility = Visibility.Collapsed;
+            PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
+            PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
 
         }
 
@@ -86,7 +96,7 @@ namespace TableTennisTracker
             PVPButton.Visibility = Visibility.Visible;
             HitLocationButton.Visibility = Visibility.Visible;
             HomeButton.Visibility = Visibility.Visible;
-            
+            Statistics.Visibility = Visibility.Visible;
 
         }
 
@@ -98,6 +108,7 @@ namespace TableTennisTracker
             SelectPlayerTitle.Visibility = Visibility.Visible;
             PlayerListBox.Visibility = Visibility.Visible;
             ReturnButton.Visibility = Visibility.Visible;
+            Statistics.Visibility = Visibility.Visible;
             StatsByPlayerConfirm.Visibility = Visibility.Visible;
             StatsByPlayerBinding.Visibility = Visibility.Hidden;
 
@@ -134,6 +145,7 @@ namespace TableTennisTracker
             PVPSelectTwo.Visibility = Visibility.Visible;
             PVPOneConfirmButton.Visibility = Visibility.Visible;
             PVPTwoConfirmButton.Visibility = Visibility.Visible;
+            PVPTitle.Visibility = Visibility.Visible;
         }
 
         // Shows hit location stats by game
@@ -142,37 +154,98 @@ namespace TableTennisTracker
 
         }
 
+        // Confirms selection of single player and displays stats
         private void StatsByPlayerConfirm_Click(object sender, RoutedEventArgs e)
         {
-            StatsByPlayerBinding.DataContext = PlayerListBox.SelectedItem;
+            // collapse 
+            Statistics.Visibility = Visibility.Visible;
+
+            // Gather Stats by Selected Player and sets data context
+            Player SinglePlayer = (Player)PlayerListBox.SelectedItem;
+            PlayerGameStats SinglePlayerStats = new PlayerGameStats(SinglePlayer.Id);
+            SBPUserNameBinding.DataContext = SinglePlayer;
+            StatsByPlayerBinding.DataContext = SinglePlayerStats;
+
+            // Shows correct elements 
             StatsByPlayerBinding.Visibility = Visibility.Visible;
         }
 
-        private void PVPOneConfirmButton_Click(object sender, RoutedEventArgs e)
+        // Confirms Selection of first player for PVP
+        private async void PVPOneConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            PVPOneBinding.DataContext = PVPSelectOne.SelectedItem;
-            PVPOneBinding.Visibility = Visibility.Visible;
-            PVPSelectOne.Visibility = Visibility.Collapsed;
-            PVPOneConfirmButton.Visibility = Visibility.Collapsed;
-            PVPOneSelectNewButton.Visibility = Visibility.Visible;
-            
+            if (PVPSelectOne.SelectedItem != null)
+            {
+                // Collapse
+                PVPSelectOne.Visibility = Visibility.Collapsed;
+                PVPOneConfirmButton.Visibility = Visibility.Collapsed;
+
+                // Gather Stats and assign data context
+                Player PVPOne = (Player)PVPSelectOne.SelectedItem;
+                PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
+                PVPOneUserNameBinding.DataContext = PVPOne;
+                PVPOneBinding.DataContext = PVPOneStats;
+
+                // Shows Correct Elements
+                PVPOneBinding.Visibility = Visibility.Visible;
+
+                PVPOneSelectNewButton.Visibility = Visibility.Visible;
+                PVPOneArea.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NoPlayerSelected.IsActive = true;
+                await Task.Delay(3000);
+                NoPlayerSelected.IsActive = false;
+            }
         }
 
-        private void PVPTwoConfirmButton_Click(object sender, RoutedEventArgs e)
+        // Confrims Selection of second player for pvp
+        private async void PVPTwoConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            PVPTwoBinding.DataContext = PVPSelectTwo.SelectedItem;
-            PVPTwoBinding.Visibility = Visibility.Visible;
-            PVPSelectTwo.Visibility = Visibility.Collapsed;
-            PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
-            
+            if (PVPSelectTwo.SelectedItem != null)
+            {
+                // Collapse
+                PVPSelectTwo.Visibility = Visibility.Collapsed;
+                PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
+
+                // Gather Stats and assign data context
+                Player PVPTwo = (Player)PVPSelectTwo.SelectedItem;
+                PlayerGameStats PVPTwoStats = new PlayerGameStats(PVPTwo.Id);
+                PVPTwoUserNameBinding.DataContext = PVPTwo;
+                PVPTwoBinding.DataContext = PVPTwoStats;
+
+                // Shows Correct Elements
+                PVPTwoBinding.Visibility = Visibility.Visible;
+
+                PVPTwoSelectNewButton.Visibility = Visibility.Visible;
+                PVPTwoArea.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NoPlayerSelected.IsActive = true;
+                await Task.Delay(3000);
+                NoPlayerSelected.IsActive = false;
+            }
+
         }
 
+        // Reopens the select player menu to slect different player one
         private void PVPOneSelectNewButton_Click(object sender, RoutedEventArgs e)
         {
             PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
             PVPOneBinding.Visibility = Visibility.Collapsed;
+            PVPOneArea.Visibility = Visibility.Collapsed;
             PVPSelectOne.Visibility = Visibility.Visible;
             PVPOneConfirmButton.Visibility = Visibility.Visible;
+        }
+
+        private void PVPTwoSelectNewButton_Click(object sender, RoutedEventArgs e)
+        {
+            PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
+            PVPTwoBinding.Visibility = Visibility.Collapsed;
+            PVPTwoArea.Visibility = Visibility.Collapsed;
+            PVPSelectTwo.Visibility = Visibility.Visible;
+            PVPTwoConfirmButton.Visibility = Visibility.Visible;
         }
     }
 }
