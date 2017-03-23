@@ -173,7 +173,7 @@ namespace TableTennisTracker.Services
                                orderby g.LongestVolleyTime descending
                                select g).FirstOrDefault();
 
-            return playerGame.LongestVolleyTime.ToString();
+            return playerGame.LongestVolleyTime.ToString("0.## Seconds");
         }
 
         ///////////////Global Player Stats:////////////////////

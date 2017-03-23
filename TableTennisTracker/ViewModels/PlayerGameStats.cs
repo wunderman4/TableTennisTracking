@@ -45,10 +45,19 @@ namespace TableTennisTracker.ModelViews
         }
         private string GetWinLossRatio()
         {
+            decimal ratio;
+
             decimal totalGames = playerWithGames.Wins + playerWithGames.Losses;
 
-            decimal ratio = playerWithGames.Wins / totalGames;
-
+            if(totalGames != 0)
+            {
+                ratio = playerWithGames.Wins / totalGames;
+            }
+            else
+            {
+                ratio = 0;
+            }
+ 
             return ratio.ToString("0.###");
         }
 
@@ -67,30 +76,39 @@ namespace TableTennisTracker.ModelViews
 
             decimal AvgPointSpread = 0;
 
-            foreach (Game game in playerWithGames.Games)
+            decimal totalGames = playerWithGames.Wins + playerWithGames.Losses;
+
+            if (totalGames != 0)
             {
-                if (game.Player1.Id == id)
+                foreach (Game game in playerWithGames.Games)
                 {
-                    if (game.Player1Score > game.Player2Score)
+                    if (game.Player1.Id == id)
                     {
-                        gameSpread += game.Player1Score - game.Player2Score;
+                        if (game.Player1Score > game.Player2Score)
+                        {
+                            gameSpread += game.Player1Score - game.Player2Score;
 
-                        gamesWon++;
+                            gamesWon++;
+                        }
+                    }
+                    else
+                    {
+                        if (game.Player2Score > game.Player1Score)
+                        {
+                            gameSpread += game.Player2Score - game.Player1Score;
+
+                            gamesWon++;
+                        }
                     }
                 }
-                else
-                {
-                    if (game.Player2Score > game.Player1Score)
-                    {
-                        gameSpread += game.Player2Score - game.Player1Score;
 
-                        gamesWon++;
-                    }
-                }
+                AvgPointSpread = gameSpread / gamesWon;
             }
-
-            AvgPointSpread = gameSpread / gamesWon;
-
+            else
+            {
+                AvgPointSpread = 0;
+            }
+            
             return AvgPointSpread.ToString("0.###");
         }
 
@@ -102,29 +120,39 @@ namespace TableTennisTracker.ModelViews
 
             decimal AvgPointSpread = 0;
 
-            foreach (Game game in playerWithGames.Games)
+            decimal totalGames = playerWithGames.Wins + playerWithGames.Losses;
+
+            if (totalGames != 0)
             {
-                if (game.Player1.Id == id)
-                {
-                    if (game.Player2Score > game.Player1Score)
-                    {
-                        gameSpread += game.Player2Score - game.Player1Score;
 
-                        gamesLost++;
+                foreach (Game game in playerWithGames.Games)
+                {
+                    if (game.Player1.Id == id)
+                    {
+                        if (game.Player2Score > game.Player1Score)
+                        {
+                            gameSpread += game.Player2Score - game.Player1Score;
+
+                            gamesLost++;
+                        }
+                    }
+                    else
+                    {
+                        if (game.Player1Score > game.Player2Score)
+                        {
+                            gameSpread += game.Player1Score - game.Player2Score;
+
+                            gamesLost++;
+                        }
                     }
                 }
-                else
-                {
-                    if (game.Player1Score > game.Player2Score)
-                    {
-                        gameSpread += game.Player1Score - game.Player2Score;
 
-                        gamesLost++;
-                    }
-                }
+                AvgPointSpread = gameSpread / gamesLost;
             }
-
-            AvgPointSpread = gameSpread / gamesLost;
+            else
+            {
+                AvgPointSpread = 0;
+            }
 
             return AvgPointSpread.ToString("0.###");
         }
