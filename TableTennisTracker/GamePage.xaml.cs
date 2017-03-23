@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -69,6 +70,7 @@ namespace TableTennisTracker
         public HitLocation tempBounceXYZ;
         public string _Server;
         public UInt16[] PreviousDepthFrame;
+        public bool plotRepeat = false;
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -156,7 +158,7 @@ namespace TableTennisTracker
 
         public string Server
         {
-            get { return _Server;  }
+            get { return _Server; }
             set
             {
                 _Server = value;
@@ -274,7 +276,7 @@ namespace TableTennisTracker
                             {
                                 arrVal = 4;
                             }
-                            if (camSpacePoints[tempIndex].Z > 1 && camSpacePoints[tempIndex].Z < 3.5)
+                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.5)
                             {
                                 xvals.Add(camSpacePoints[tempIndex].X);
                                 yvals.Add(camSpacePoints[tempIndex].Y);
@@ -289,14 +291,14 @@ namespace TableTennisTracker
                     bounceLocn.X = FindMedian(xvals);
                     bounceLocn.Y = FindMedian(yvals);
                     bounceLocn.Z = FindMedian(zvals);
-                } 
+                }
                 else
                 {
                     bounceLocn.X = 0;
                     bounceLocn.Y = 0;
                     bounceLocn.Z = 0;
                 }
-            return (bounceLocn);
+                return (bounceLocn);
             }
         }
 
@@ -470,6 +472,7 @@ namespace TableTennisTracker
                             {
                                 this.served = true;
                                 this.startPosTime = DateTime.MinValue;
+                                VolleyStartTime = DateTime.Now;
                                 this.VertDir = "Down";
                                 if (xdelta > 0)
                                 {
@@ -533,7 +536,8 @@ namespace TableTennisTracker
                         if (currentServer == "P1")
                         {
                             P1Serve();
-                        } else
+                        }
+                        else
                         {
                             P2Serve();
                         }
@@ -609,12 +613,12 @@ namespace TableTennisTracker
             this.VertDir = "";
             this.Direction = "";
             VolleyHits = 0;
-            VolleyStartTime = DateTime.Now;
             PlayBallSet();
             if (Server == "P1")
             {
                 PlayerOneBall.Visibility = Visibility.Visible;
-            } else
+            }
+            else
             {
                 PlayerTwoBall.Visibility = Visibility.Visible;
             }
@@ -668,7 +672,7 @@ namespace TableTennisTracker
 
                 gameOver = true;
                 PlayGameWin();
-                
+
             }
         }
 
@@ -682,14 +686,15 @@ namespace TableTennisTracker
             PlayerOneAddPoint.Visibility = Visibility.Visible;
             PlayerTwoSubPoint.Visibility = Visibility.Visible;
             PlayerTwoAddPoint.Visibility = Visibility.Visible;
-            
 
-            
+
+
             if (PlayerOneScore == 21)
             {
                 PlayerOneScore--;
-                
-            } else if (PlayerTwoScore == 21)
+
+            }
+            else if (PlayerTwoScore == 21)
             {
                 PlayerTwoScore--;
             }
@@ -805,6 +810,8 @@ namespace TableTennisTracker
             PlayBadServe();
             this.serveBounce = false;
             this.inVolley = false;
+            PlayerOneBall.Visibility = Visibility.Collapsed;
+            PlayerTwoBall.Visibility = Visibility.Collapsed;
         }
 
         // Add Point button Player One
@@ -820,7 +827,7 @@ namespace TableTennisTracker
             {
                 gameOver = false;
             }
-            if (PlayerOneScore !=0)
+            if (PlayerOneScore != 0)
             {
                 PlayerOneScore--;
                 PlayBadServe();
@@ -853,7 +860,7 @@ namespace TableTennisTracker
         // Player One Score and Game Board Update 
         public int PlayerOneScore
         {
-            get {return _playerOneScore; }
+            get { return _playerOneScore; }
             set
             {
                 if (_playerOneScore != value)
@@ -871,7 +878,7 @@ namespace TableTennisTracker
         // Player Two Score and Game Board Update
         public int PlayerTwoScore
         {
-            get {return _playerTwoScore; }
+            get { return _playerTwoScore; }
             set
             {
                 if (_playerTwoScore != value)
@@ -890,7 +897,7 @@ namespace TableTennisTracker
         // Plays Point Scored Sound
         private void PlayScore()
         {
-            PointScored.Load(); 
+            PointScored.Load();
             PointScored.Play();
         }
         // Plays Ball Set Sound
@@ -914,16 +921,24 @@ namespace TableTennisTracker
         }
 
         // Create xyData list from AllData, send to XAML plot
-        public void PlotXYData()
+        public async void PlotXYData()
         {
-            int i = 0;
-            foreach (DataPoint item in this.AllData)
+            for (int i = 0; i < AllData.Count(); i++)
             {
-                this.xyData.Add(new KeyValuePair<float, float>(item.X, item.Y));
-                i++;
+                this.xyData.Add(new KeyValuePair<float, float>(AllData[i].X, AllData[i].Y));
+                if (i >= 5)
+                {
+                    this.xyData.Remove(new KeyValuePair<float, float>(AllData[i - 5].X, AllData[i - 5].Y));
+                }
+                chart1.DataContext = null;
+                chart1.DataContext = this.xyData;
+                await Task.Delay(110);
             }
+            await Task.Delay(1500);
+            this.xyData.Clear();
             chart1.DataContext = null;
             chart1.DataContext = this.xyData;
+            VolleyPlot.IsOpen = false;
         }
 
         // Show plot of ball locations for volley
@@ -931,12 +946,6 @@ namespace TableTennisTracker
         {
             PlotXYData();
             VolleyPlot.IsOpen = true;
-        }
-
-        // Close Popup
-        private void ClosePopup(object sender, RoutedEventArgs e)
-        {
-            VolleyPlot.IsOpen = false;
         }
 
         /// Execute shutdown tasks
@@ -949,13 +958,13 @@ namespace TableTennisTracker
                 this.multiSourceFrameReader = null;
             }
 
-            if (this.kinectSensor != null)
-            {
-                this.kinectSensor.Close();
-                this.kinectSensor = null;
-            }
+            //if (this.kinectSensor != null)
+            //{
+            //    this.kinectSensor.Close();
+            //    this.kinectSensor = null;
+            //}
         }
 
-        
+
     }
 }

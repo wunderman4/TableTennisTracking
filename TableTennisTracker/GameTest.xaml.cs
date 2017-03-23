@@ -761,9 +761,36 @@ namespace TableTennisTracker
         }
 
         // Popup button
-        private void PopItUp(object sender, RoutedEventArgs e)
+        private async void PopItUp(object sender, RoutedEventArgs e)
         {
+            List<KeyValuePair<float, float>> dataPoints = new List<KeyValuePair<float, float>>();
+            for (int i = 1; i < 20; i++)
+            {
+                dataPoints.Add(new KeyValuePair<float, float>(i , i));
+            }
+
+            List<KeyValuePair<float, float>> plotPoints = new List<KeyValuePair<float, float>>();
+
             PopupTest.IsOpen = true;
+
+            while (true)
+            {
+                for (int i = 0; i < dataPoints.Count; i++)
+                {
+                    plotPoints.Add(dataPoints[i]);
+                    if (i >= 5)
+                    {
+                        plotPoints.Remove(dataPoints[i - 5]);
+                    }
+                    chart2.DataContext = null;
+                    chart2.DataContext = plotPoints;
+                    await Task.Delay(100);
+                }
+                await Task.Delay(1500);
+                plotPoints.Clear();
+                chart2.DataContext = null;
+                chart2.DataContext = plotPoints;
+            }
         }
 
         // Close Popup
@@ -772,6 +799,7 @@ namespace TableTennisTracker
             PopupTest.IsOpen = false;
         }
 
+        // Show the white circle
         private void ShowTest(object sender, RoutedEventArgs e)
         {
             if (Fred.Visibility == Visibility.Visible)
