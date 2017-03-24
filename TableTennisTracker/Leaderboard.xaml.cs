@@ -84,6 +84,7 @@ namespace TableTennisTracker
             PVPTwoBinding.Visibility = Visibility.Collapsed;
             PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
             PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
+            PVPTwoUserNameBinding.Visibility = Visibility.Collapsed;
 
         }
 
