@@ -102,7 +102,15 @@ namespace TableTennisTracker.ModelViews
                     }
                 }
 
-                AvgPointSpread = gameSpread / gamesWon;
+                if (gamesWon != 0)
+                {
+                    AvgPointSpread = gameSpread / gamesWon;
+                }
+                else
+                {
+                    AvgPointSpread = 0;
+                }
+
             }
             else
             {
@@ -147,7 +155,14 @@ namespace TableTennisTracker.ModelViews
                     }
                 }
 
-                AvgPointSpread = gameSpread / gamesLost;
+                if(gamesLost != 0)
+                {
+                    AvgPointSpread = gameSpread / gamesLost;
+                }
+                else
+                {
+                    AvgPointSpread = 0;
+                }
             }
             else
             {
