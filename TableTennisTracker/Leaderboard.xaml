@@ -19,7 +19,7 @@
 
     <DockPanel>
 
-        
+
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -138,7 +138,7 @@
                 IsIndeterminate="True"
                 Margin="20,0,20,5"/>
 
-            <!--Col 0, Row 1 NOW ROW TWO -->
+            <!--Col 0, Row 2 -->
             <materialDesign:Card
                 Grid.Column="0"
                 Grid.Row="2"
@@ -152,18 +152,17 @@
                     Height="750">
 
 
-                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <StackPanel>
-                        <!--Global Leaderboard Button-->
-                        <Button
+                    <ItemsControl>
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:2" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <!--Global Leaderboard Button-->
+                            <Button
                         x:Name="GlobalButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -172,28 +171,31 @@
                         VerticalAlignment="Bottom"
                         Click="GlobalButton_Click"
                         >
-                            <StackPanel
+                                <StackPanel
                             Orientation="Horizontal">
-                                <materialDesign:PackIcon 
+                                    <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="Earth"
                         VerticalAlignment="Center"
                          />
-                                <TextBlock
+                                    <TextBlock
                                 VerticalAlignment="Center">
                                 GLOBAL LEADERS
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </materialDesign:TransitioningContent>
                         <!--Stats By Player Button-->
-                        <Button
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:2" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <Button
                         x:Name="StatsByPlayer"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -201,30 +203,33 @@
                         Height="125"
                         Click="StatsByPlayer_Click"
                         >
-                            <StackPanel
+                                <StackPanel
                             Orientation="Horizontal">
-                                <materialDesign:PackIcon 
+                                    <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="AccountCircle"
                         VerticalAlignment="Center"
                          />
-                                <TextBlock
+                                    <TextBlock
                                 VerticalAlignment="Center">
                                 STATS BY PLAYER
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </materialDesign:TransitioningContent>
 
                         <!--Player vs Player Button-->
-                        <Button
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:2" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <Button
                         x:Name="PVPButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -233,29 +238,32 @@
                         VerticalAlignment="Bottom"
                         Click="PVPButton_Click"
                         >
-                            <StackPanel
+                                <StackPanel
                             Orientation="Horizontal">
-                                <materialDesign:PackIcon 
+                                    <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="AccountMultiple"
                         VerticalAlignment="Center"
                          />
-                                <TextBlock
+                                    <TextBlock
                                 VerticalAlignment="Center">
                                 PLAYER V PLAYER
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </materialDesign:TransitioningContent>
                         <!--Hit Locations Button-->
-                        <Button
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:2" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <Button
                         x:Name="HitLocationButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,20,0,0"
@@ -264,32 +272,35 @@
                         VerticalAlignment="Bottom"
                         Click="HitLocationButton_Click"
                         >
-                            <StackPanel
+                                <StackPanel
                             Orientation="Horizontal">
-                                <materialDesign:PackIcon 
+                                    <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="CrosshairsGps"
                         VerticalAlignment="Center"
                          />
-                                <TextBlock
+                                    <TextBlock
                                 Margin="0,0,60,0"
                                 Padding="0,0,0,0"
                                 VerticalAlignment="Center">
                                 HIT LOCATIONS
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </materialDesign:TransitioningContent>
 
                         <!--Home Button-->
-                        <Button
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:2" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <Button
                         x:Name="HomeButton"
                         Background="Orange"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -298,23 +309,23 @@
                         VerticalAlignment="Bottom"
                         Click="HomeButton_Click"
                         >
-                            <StackPanel
+                                <StackPanel
                             Orientation="Horizontal">
-                                <materialDesign:PackIcon 
+                                    <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="HomeModern"
                         VerticalAlignment="Center"
                          />
-                                <TextBlock
+                                    <TextBlock
                                 VerticalAlignment="Center">
                                 HOME
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                        </StackPanel>
-                    </materialDesign:TransitioningContent>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </materialDesign:TransitioningContent>
+                    </ItemsControl>
 
                     <!--............Hidden By Default Col 0, Row 1.................-->
 
@@ -587,7 +598,6 @@
                         x:Name="PVPOneConfirmButton"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -617,7 +627,6 @@
                         Background="Orange"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -647,7 +656,6 @@
                         Background="Orange"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -999,6 +1007,7 @@
                             </TextBlock>
                         </StackPanel>
 
+                        <!--PVP Two Stat Bindings-->
                         <StackPanel
                             x:Name="PVPTwoBinding">
                             <!-- Wins Binding -->
@@ -1156,12 +1165,88 @@
 
                     </StackPanel>
 
+                    <StackPanel
+                        x:Name="GlobalStatsArea"
+                        Visibility="Visible"
+                        Height="600">
+                        <!--Global Leaderboard Bindings-->
+
+                        <StackPanel
+                            x:Name="GlobalStatBinding">
+                            <!-- Global Most Wins Binding -->
+                            <TextBlock
+                                Margin="0,10,0,10"
+                                FontSize="32"
+                                HorizontalAlignment="Center">
+                                PLAYER WITH MOST WINS:
+                            </TextBlock>
+                            <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,10,0,10">
+                                <TextBlock
+                                    Name="GPlayerMostWins"
+                            Margin="0,0,10,0"
+                            Width="400"
+                            FontSize="28"
+                            VerticalAlignment="Center"
+                                    Text="{Binding PlayerWithMostWins.UserName}">
+                                </TextBlock>
+                                <TextBlock
+                            Name="GMostWins"
+                            FontSize="32"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding MostWins}">
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!--Global Longest Volleys Hits-->
+                            <TextBlock
+                                    Margin="0,0,10,0"
+                                    FontSize="32"
+                                HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                    PLAYERS WITH LONGEST VOLLEY BY HITS:
+                            </TextBlock>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Margin="25,10,0,10">
+                                <TextBlock
+                                    Name="GLongestVolleyHits"
+                                    Margin="0,0,10,0"
+                                    FontSize="28"
+                                    Width="260"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding GameWithLongestVolleyHits.Player1.UserName}">
+                                </TextBlock>
+                                <TextBlock
+                                    Name="GMostHits"
+                                    FontSize="32"
+                                    Width="260"
+                                    HorizontalAlignment="Center"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                                    Text="{Binding GameWithLongestVolleyHits.LongestVolleyHits}">
+                                </TextBlock>
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    Width="260"
+                                    VerticalAlignment="Center"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                    Text="{Binding GameWithLongestVolleyHits.Player2.UserName}">
+
+                                </TextBlock>
+                            </StackPanel>
+
+
+                        </StackPanel>
+
+                    </StackPanel>
+
                     <!-- StatsByPlayerConfirm Button-->
                     <Button
                         x:Name="StatsByPlayerConfirm"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -1190,7 +1275,6 @@
                         x:Name="PVPTwoConfirmButton"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -1220,7 +1304,6 @@
                         Background="Orange"
                         Visibility="Collapsed"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
@@ -1250,7 +1333,7 @@
                                     </TransformGroup>
                                 </materialDesign:PackIcon.RenderTransform>
                             </materialDesign:PackIcon>
-                            
+
                         </StackPanel>
                     </Button>
 

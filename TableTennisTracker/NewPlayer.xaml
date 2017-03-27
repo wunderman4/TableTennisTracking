@@ -251,7 +251,6 @@
                         <Button
                         Foreground="Black"
                         Background="Red"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,70,0,0"
@@ -440,7 +439,6 @@
                         <Button
                         Name="Confrim"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,70,0,0"

@@ -350,6 +350,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ping_pong_table_tennis_ball_xzi_icon.ico" />
+    <Resource Include="Images\favicon.ico" />
     <Content Include="Sounds\BadServe.wav" />
     <Content Include="Sounds\BallSet.wav" />
     <Content Include="Sounds\GameWin.wav" />

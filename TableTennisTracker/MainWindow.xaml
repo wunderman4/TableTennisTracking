@@ -19,6 +19,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        Icon="Images\favicon.ico"
         >
 
     <k:KinectRegion x:Name="kinectRegion">
