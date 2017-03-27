@@ -240,6 +240,7 @@
     <Compile Include="Interfaces\IGamePlayerService.cs" />
     <Compile Include="Services\Logging.cs" />
     <Compile Include="Services\PlayerService.cs" />
+    <Compile Include="Services\ValidationRules.cs" />
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -348,10 +349,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ping_pong_table_tennis_ball_xzi_icon.ico" />
     <Content Include="Sounds\BadServe.wav" />
     <Content Include="Sounds\BallSet.wav" />
     <Content Include="Sounds\GameWin.wav" />
     <Content Include="Sounds\PointScored.wav" />
+    <Content Include="Sounds\WrongPlayer2.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

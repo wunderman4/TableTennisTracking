@@ -38,7 +38,7 @@
             <ItemsControl>
             <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
                 
             
@@ -81,7 +81,7 @@
                     <ItemsControl>   
                     <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.50}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                                <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
                     
                     <ListBox 
@@ -127,13 +127,14 @@
 
                     <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
                         </materialDesign:TransitioningContent.OpeningEffects>
                     
                     <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
-                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:RippleAssist.Feedback="#DD000000"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -161,7 +162,7 @@
                 Grid.Row="0"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
             
             <materialDesign:Card 
@@ -202,7 +203,7 @@
                     <!--SELECT PLAYER ONE SECTION-->
                     <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight"  />
                         </materialDesign:TransitioningContent.OpeningEffects>
                     
                     <ListBox 
@@ -246,13 +247,14 @@
 
                     <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
                         </materialDesign:TransitioningContent.OpeningEffects>
                     
                     <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"

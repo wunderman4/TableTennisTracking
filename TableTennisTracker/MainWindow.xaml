@@ -15,7 +15,11 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized" >
+        Title="MainWindow" Height="1080" Width="1920" 
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        >
 
     <k:KinectRegion x:Name="kinectRegion">
 
@@ -99,7 +103,7 @@
                         <DockPanel>
                             <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
                                         x:Name="MenuToggleButton" Checked="MenuToggleButton_Checked"/>
-                            
+
                             <TextBlock 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
