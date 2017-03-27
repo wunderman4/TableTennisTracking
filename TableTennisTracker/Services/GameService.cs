@@ -27,6 +27,10 @@ namespace TableTennisTracker.Services
             this._repo = new GenericRespository(_db);
         }
 
+        /// <summary>
+        /// GetGames() - returns all games
+        /// </summary>
+        /// <returns>List of GamesView</returns>
         public List<GamesView> GetGames()
         {
             int playerId;
@@ -71,7 +75,12 @@ namespace TableTennisTracker.Services
 
             return gameList;
         }
-
+        
+        /// <summary>
+        /// GetPlayerGames(int player's id) - returns all games for a particular player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of GamesView for a player</returns>
         public List<GamesView> GetPlayerGames(int id)
         {
             int playerId;
@@ -120,6 +129,11 @@ namespace TableTennisTracker.Services
             return gameList;
         }
 
+        /// <summary>
+        /// GetGame(int game id) - returns a single game
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>a single GamesView</returns>
         public GamesView GetGame(int id)
         {
             GamesView game;
@@ -175,6 +189,10 @@ namespace TableTennisTracker.Services
 
             newGame.Player1 = player1;
             newGame.Player2 = player2;
+
+            DateTime myDateTime = DateTime.Now;
+            
+            newGame.CreatedDate = myDateTime;
 
             // Add the game to the Games table:
             _repo.Add(newGame);
@@ -292,6 +310,45 @@ namespace TableTennisTracker.Services
             game.Player2 = player;
 
             return game;
+        }
+
+        /// <summary>
+        /// GetGamesFor(int player1Id, int player2Id)
+        /// Get all games for a particular pair of players
+        /// </summary>
+        /// <param name="player1Id"></param>
+        /// <param name="player2Id"></param>
+        /// <returns>Returns a list of GamesView(s) (without hit locations)</returns>
+        public List<GamesView> GetGamesFor(int player1Id, int player2Id)
+        {
+            List<GamesView> gameList = (from g in _repo.Query<Game>()
+                                        where g.Player1.Id == player1Id && g.Player2.Id == player2Id
+                                        select new GamesView
+                                        {
+                                            Id = g.Id,
+                                            Player1Id = g.Player1.Id,
+                                            Player2Id = g.Player2.Id,
+                                            Player1 = g.Player1,
+                                            Player2 = g.Player2
+                                        }).ToList();
+
+            List<GamesView> gameList1 = (from g in _repo.Query<Game>()
+                                        where g.Player1.Id == player2Id && g.Player2.Id == player1Id
+                                        select new GamesView
+                                        {
+                                            Id = g.Id,
+                                            Player1Id = g.Player1.Id,
+                                            Player2Id = g.Player2.Id,
+                                            Player1 = g.Player1,
+                                            Player2 = g.Player2
+                                        }).ToList();
+
+            foreach(GamesView game in gameList1)
+            {
+                gameList.Add(game);
+            }
+
+            return gameList;
         }
     }
 }
