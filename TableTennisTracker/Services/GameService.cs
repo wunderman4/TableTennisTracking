@@ -233,9 +233,35 @@ namespace TableTennisTracker.Services
 
         public void DeleteGame(int id)
         {
+            Player player1,player2;
+
             Game gameToBeDeleted = (from g in _repo.Query<Game>()
                                     where g.Id == id
                                     select g).FirstOrDefault();
+
+            GamesView gameData = GetGame(id);
+
+            player1 = (from p in _repo.Query<Player>()
+                      where p.Id == gameData.Player1.Id
+                      select p).FirstOrDefault();
+
+            player2 = (from p in _repo.Query<Player>()
+                       where p.Id == gameData.Player2.Id
+                       select p).FirstOrDefault();
+
+            // adjust the player's Win/Losses:
+
+            if(gameToBeDeleted.Player1Score > gameToBeDeleted.Player2Score)
+            {
+                player1.Wins--;
+                player2.Losses--;
+            }
+            else
+            {
+                player2.Wins--;
+                player1.Losses--;
+            }
+            _db.SaveChanges();
 
             //delete the game's hit locations first:
             _hitLocationSer.DeleteHitLocationsGame(id);
