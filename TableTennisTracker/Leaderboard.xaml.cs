@@ -24,7 +24,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class Leaderboard : Page
     {
-
+        
         BackgroundWorker workerOne;
         PlayerService ps = new PlayerService();
         List<Player> PlayerList;
@@ -37,15 +37,18 @@ namespace TableTennisTracker
             GetPlayers();
             workerOne = new BackgroundWorker();
             workerOne.DoWork += new DoWorkEventHandler(workerOne_DoWork);
+            ProgressAnimation();
+        }
+
+        private async void ProgressAnimation()
+        {
+            await Task.Delay(2000);
+            PBarOne.Visibility = Visibility.Collapsed;
         }
 
         private void workerOne_DoWork(object sender, DoWorkEventArgs e)
         {
-            // Gather Stats and assign data context
-            Player PVPOne = (Player)PVPSelectOne.SelectedItem;
-            PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
-            PVPOneUserNameBinding.DataContext = PVPOne;
-            PVPOneBinding.DataContext = PVPOneStats;
+            
         }
 
         // Gets the list of players
@@ -98,6 +101,7 @@ namespace TableTennisTracker
             PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
             PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
             PVPTwoArea.Visibility = Visibility.Collapsed;
+            GlobalStatsArea.Visibility = Visibility.Collapsed;
 
         }
 
@@ -147,7 +151,9 @@ namespace TableTennisTracker
         // Shows global Stats
         private void GlobalButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            GlobalGameStats GlobalStats = new GlobalGameStats();
+            GlobalStatBinding.DataContext = GlobalStats;
+            GlobalStatsArea.Visibility = Visibility.Visible;
         }
 
         // Shows player v player stats
@@ -171,6 +177,8 @@ namespace TableTennisTracker
         // Confirms selection of single player and displays stats
         private void StatsByPlayerConfirm_Click(object sender, RoutedEventArgs e)
         {
+
+            
             // collapse 
             Statistics.Visibility = Visibility.Visible;
 
@@ -194,11 +202,11 @@ namespace TableTennisTracker
                 PVPOneConfirmButton.Visibility = Visibility.Collapsed;
 
                 workerOne.RunWorkerAsync();
-                //// Gather Stats and assign data context
-                //Player PVPOne = (Player)PVPSelectOne.SelectedItem;
-                //PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
-                //PVPOneUserNameBinding.DataContext = PVPOne;
-                //PVPOneBinding.DataContext = PVPOneStats;
+                // Gather Stats and assign data context
+                Player PVPOne = (Player)PVPSelectOne.SelectedItem;
+                PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
+                PVPOneUserNameBinding.DataContext = PVPOne;
+                PVPOneBinding.DataContext = PVPOneStats;
 
                 // Shows Correct Elements
                 PVPOneBinding.Visibility = Visibility.Visible;
