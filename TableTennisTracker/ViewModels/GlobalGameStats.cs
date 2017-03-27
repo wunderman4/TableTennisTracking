@@ -58,10 +58,13 @@ namespace TableTennisTracker.ModelViews
             this.MostGames = (PlayerWithMostGames.Wins + PlayerWithMostGames.Losses).ToString();
 
             this.GameWithLongestVolleyHits = gs.GetGameWithLongestVolley();
+            this.LongestVolleyHits = GameWithLongestVolleyHits.LongestVolleyHits.ToString();
+
             this.GameWtihLongestVolleyTime = gs.GetGameWithLongestVolleyTime();
+            this.LongestVolleyTime = GameWtihLongestVolleyTime.LongestVolleyTime.ToString("0.##");
 
             this.PlayerWithBestWinRatio = this.GetPlayerWithBestWinRatio();
-
+            
             this.PlayerWithGreatestAvgPointSpreadWins = this.GetPlayerWithGreatestAvgPointSpreadWins();
             this.PlayerWithLeastAvgPointSpreadLosses = this.GetPlayerWithGreatestAvgPointSpreadLosses();
         }
@@ -84,7 +87,7 @@ namespace TableTennisTracker.ModelViews
                 {
                     decimal ratio = player.Wins / totalGames;
 
-                    string playerRatio = ratio.ToString() + " : " + player.Id.ToString();
+                    string playerRatio = ratio.ToString("0.##") + " : " + player.Id.ToString();
 
                     ratioList.Add(playerRatio);
                 }
