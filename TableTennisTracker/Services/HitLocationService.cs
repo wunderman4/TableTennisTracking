@@ -19,18 +19,40 @@ namespace TableTennisTracker.Services
         {
             this._repo = new GenericRespository(_db);
         }
-
+        /// <summary>
+        /// GetHitLocations() - returns all hit locations
+        /// </summary>
+        /// <returns> List of HitLocation</returns>
         public List<HitLocation> GetHitLocations()
         {
             List<HitLocation> hitLocationList = (from h in _repo.Query<HitLocation>()
                                                  select h).ToList();
             return hitLocationList;
         }
-
+        /// <summary>
+        /// GetHitLocationsGame(int id) - returns hit locations for the
+        ///                               passed in game id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of HitLocation</returns>
         public List<HitLocation> GetHitLocationsGame(int id)
         {
             List<HitLocation> hitLocationList = (from h in _repo.Query<HitLocation>()
                                                  where h.Game.Id == id
+                                                 select h).ToList();
+            return hitLocationList;
+        }
+        /// <summary>
+        /// GetHitLocationsGameVolley(int id, int volleyNbr) - 
+        /// returns all the hit locations for a particular game and volley ids
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="volleyNbr"></param>
+        /// <returns></returns>
+        public List<HitLocation> GetHitLocationsGameVolley(int id, int volleyNbr)
+        {
+            List<HitLocation> hitLocationList = (from h in _repo.Query<HitLocation>()
+                                                 where h.Game.Id == id && h.Volley == volleyNbr
                                                  select h).ToList();
             return hitLocationList;
         }
@@ -47,8 +69,6 @@ namespace TableTennisTracker.Services
             Game currentGame = (from g in _repo.Query<Game>()
                                 where g.Id == newHitLocation.Game.Id
                                 select g).FirstOrDefault();
-
-            //Game currentGame = _gameSer.GetGame(newHitLocation.Game.Id);
 
             newHitLocation.Game = currentGame;
 

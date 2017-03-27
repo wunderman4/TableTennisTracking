@@ -16,6 +16,7 @@ namespace TableTennisTracker.Models
         public float MaxVelocity { get; set; }
         public float LongestVolleyTime { get; set; }
         public int LongestVolleyHits { get; set; }
+        public DateTime CreatedDate { get; set; }
         public ICollection<HitLocation> GameHitLocations { get; set; }
 
         public ICollection<GamePlayer> GamePlayer { get; set; }
