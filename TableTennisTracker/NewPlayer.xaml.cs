@@ -25,10 +25,15 @@ namespace TableTennisTracker
         //Add Services to page
         PlayerService ps = new PlayerService();
         GameService gs = new GameService();
-        
+
+        public int? TestAge { get; set; }
+
+
         public NewPlayer()
         {
             InitializeComponent();
+            this.DataContext = this;
+            
         }
 
         // Navigates Home
@@ -59,7 +64,6 @@ namespace TableTennisTracker
             {
 
                 // Converts DataTypes 
-                int age = Convert.ToInt32(AgeTextBox.Text);
                 int heightFeet = Convert.ToInt32(HeightFt.Text.ToString());
                 int heightInches = Convert.ToInt32(HeightIn.Text.ToString());
                 // Creates New Player
@@ -67,7 +71,7 @@ namespace TableTennisTracker
                 {
                     UserName = UserNameTextBox.Text,
                     PlayerName = NameTextBox.Text,
-                    Age = age,
+                    Age = (int)TestAge,
                     HeightFt = heightFeet,
                     HeightInch = heightInches,
                     Nationality = CountryTextBox.Text,
