@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace TableTennisTracker
     /// </summary>
     public partial class Leaderboard : Page
     {
+
+        BackgroundWorker workerOne;
         PlayerService ps = new PlayerService();
         List<Player> PlayerList;
 
@@ -32,6 +35,17 @@ namespace TableTennisTracker
         {
             InitializeComponent();
             GetPlayers();
+            workerOne = new BackgroundWorker();
+            workerOne.DoWork += new DoWorkEventHandler(workerOne_DoWork);
+        }
+
+        private void workerOne_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Gather Stats and assign data context
+            Player PVPOne = (Player)PVPSelectOne.SelectedItem;
+            PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
+            PVPOneUserNameBinding.DataContext = PVPOne;
+            PVPOneBinding.DataContext = PVPOneStats;
         }
 
         // Gets the list of players
@@ -76,7 +90,6 @@ namespace TableTennisTracker
 
 
             // Right Card, Col 1, Row 1
-            SBPUserNameBinding.Visibility = Visibility.Collapsed;
             StatsByPlayerBinding.Visibility = Visibility.Collapsed;
             StatsByPlayerConfirm.Visibility = Visibility.Collapsed;
             PVPSelectTwo.Visibility = Visibility.Collapsed;
@@ -84,7 +97,7 @@ namespace TableTennisTracker
             PVPTwoBinding.Visibility = Visibility.Collapsed;
             PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
             PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
-            PVPTwoUserNameBinding.Visibility = Visibility.Collapsed;
+            PVPTwoArea.Visibility = Visibility.Collapsed;
 
         }
 
@@ -180,17 +193,19 @@ namespace TableTennisTracker
                 PVPSelectOne.Visibility = Visibility.Collapsed;
                 PVPOneConfirmButton.Visibility = Visibility.Collapsed;
 
-                // Gather Stats and assign data context
-                Player PVPOne = (Player)PVPSelectOne.SelectedItem;
-                PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
-                PVPOneUserNameBinding.DataContext = PVPOne;
-                PVPOneBinding.DataContext = PVPOneStats;
+                workerOne.RunWorkerAsync();
+                //// Gather Stats and assign data context
+                //Player PVPOne = (Player)PVPSelectOne.SelectedItem;
+                //PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
+                //PVPOneUserNameBinding.DataContext = PVPOne;
+                //PVPOneBinding.DataContext = PVPOneStats;
 
                 // Shows Correct Elements
                 PVPOneBinding.Visibility = Visibility.Visible;
 
                 PVPOneSelectNewButton.Visibility = Visibility.Visible;
                 PVPOneArea.Visibility = Visibility.Visible;
+                
             }
             else
             {
@@ -230,7 +245,7 @@ namespace TableTennisTracker
 
         }
 
-        // Reopens the select player menu to slect different player one
+        // Reopens the select player menu to select different player one
         private void PVPOneSelectNewButton_Click(object sender, RoutedEventArgs e)
         {
             PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
@@ -239,7 +254,8 @@ namespace TableTennisTracker
             PVPSelectOne.Visibility = Visibility.Visible;
             PVPOneConfirmButton.Visibility = Visibility.Visible;
         }
-
+        
+        // Reopens the slect player menu to select different player two
         private void PVPTwoSelectNewButton_Click(object sender, RoutedEventArgs e)
         {
             PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
@@ -248,5 +264,18 @@ namespace TableTennisTracker
             PVPSelectTwo.Visibility = Visibility.Visible;
             PVPTwoConfirmButton.Visibility = Visibility.Visible;
         }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
+            PBarOne.Visibility = Visibility.Visible;
+
+        }
+
+        private void StopWork(object sender, DoWorkEventArgs e)
+        {
+            PBarOne.Visibility = Visibility.Collapsed;
+        }
+
     }
 }
