@@ -19,6 +19,7 @@
 
     <DockPanel>
 
+        
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -27,20 +28,20 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Name="Heading_0" Height="Auto" />
-                <RowDefinition Name="Form_1" Height="Auto"/>
+                <RowDefinition Name="ProgressBar" Height="30"/>
                 <RowDefinition Name="Snackbar" Height="Auto"/>
             </Grid.RowDefinitions>
             <!--.............................Column One, Player Enters Information...........  -->
 
             <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
 
 
                 <!--Col 0, Row 0, Header Title-->
                 <materialDesign:Card 
-                Margin="20,20,20,20"
+                Margin="20,20,20,10"
                 Grid.Column="0"
                 Grid.Row="0" 
                 Width="1000"
@@ -50,7 +51,7 @@
                         <materialDesign:ColorZone 
                     Mode="PrimaryMid">
                             <StackPanel>
-                                
+
                                 <!--Leaderboard Title-->
                                 <TextBlock
                             x:Name="LeaderboardTitle"
@@ -62,7 +63,7 @@
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         LEADERBOARD:
                                 </TextBlock>
-                                
+
                                 <!--Select Player Title-->
                                 <TextBlock
                                 x:Name="SelectPlayerTitle"
@@ -108,10 +109,39 @@
                 </materialDesign:Card>
             </materialDesign:TransitioningContent>
 
-            <!--Col 0, Row 1 -->
-            <materialDesign:Card
+            <!--Progress Bars -->
+            <ProgressBar 
+                Visibility="Collapsed"
+                x:Name="PBarSpan"
                 Grid.Column="0"
                 Grid.Row="1"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+                IsIndeterminate="True" 
+                Margin="20,0,20,5" />
+
+            <ProgressBar
+                Visibility="Visible"
+                x:Name="PBarOne"
+                Grid.Column="0"
+                Grid.Row="1"
+                VerticalAlignment="Center"
+                IsIndeterminate="True"
+                Margin="20,0,20,5"/>
+
+            <ProgressBar
+                Visibility="Collapsed"
+                x:Name="PBarTwo"
+                Grid.Column="1"
+                Grid.Row="1"
+                VerticalAlignment="Center"
+                IsIndeterminate="True"
+                Margin="20,0,20,5"/>
+
+            <!--Col 0, Row 1 NOW ROW TWO -->
+            <materialDesign:Card
+                Grid.Column="0"
+                Grid.Row="2"
                 Margin="10,0,10,10"
                 Padding="0">
 
@@ -121,102 +151,112 @@
                     Width="800"
                     Height="750">
 
-                    <!--Global Leaderboard Button-->
-                    <Button
+
+                    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.1}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <StackPanel>
+                        <!--Global Leaderboard Button-->
+                        <Button
                         x:Name="GlobalButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
                         Click="GlobalButton_Click"
                         >
-                        <StackPanel
+                            <StackPanel
                             Orientation="Horizontal">
-                            <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="Earth"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock
+                                <TextBlock
                                 VerticalAlignment="Center">
                                 GLOBAL LEADERS
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
 
-                    <!--Stats By Player Button-->
-                    <Button
+                        <!--Stats By Player Button-->
+                        <Button
                         x:Name="StatsByPlayer"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
                         Click="StatsByPlayer_Click"
                         >
-                        <StackPanel
+                            <StackPanel
                             Orientation="Horizontal">
-                            <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="AccountCircle"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock
+                                <TextBlock
                                 VerticalAlignment="Center">
                                 STATS BY PLAYER
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
 
 
-                    <!--Player vs Player Button-->
-                    <Button
+                        <!--Player vs Player Button-->
+                        <Button
                         x:Name="PVPButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
                         Click="PVPButton_Click"
                         >
-                        <StackPanel
+                            <StackPanel
                             Orientation="Horizontal">
-                            <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="AccountMultiple"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock
+                                <TextBlock
                                 VerticalAlignment="Center">
                                 PLAYER V PLAYER
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
 
-                    <!--Hit Locations Button-->
-                    <Button
+                        <!--Hit Locations Button-->
+                        <Button
                         x:Name="HitLocationButton"
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,20,0,0"
                         FontSize="55"
@@ -224,54 +264,57 @@
                         VerticalAlignment="Bottom"
                         Click="HitLocationButton_Click"
                         >
-                        <StackPanel
+                            <StackPanel
                             Orientation="Horizontal">
-                            <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="CrosshairsGps"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock
+                                <TextBlock
                                 Margin="0,0,60,0"
                                 Padding="0,0,0,0"
                                 VerticalAlignment="Center">
                                 HIT LOCATIONS
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
 
 
-                    <!--Home Button-->
-                    <Button
+                        <!--Home Button-->
+                        <Button
                         x:Name="HomeButton"
                         Background="Orange"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
                         Click="HomeButton_Click"
                         >
-                        <StackPanel
+                            <StackPanel
                             Orientation="Horizontal">
-                            <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="HomeModern"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock
+                                <TextBlock
                                 VerticalAlignment="Center">
                                 HOME
-                            </TextBlock>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
                         </StackPanel>
-                    </Button>
+                    </materialDesign:TransitioningContent>
 
                     <!--............Hidden By Default Col 0, Row 1.................-->
 
@@ -384,157 +427,157 @@
 
                         <StackPanel
                             x:Name="PVPOneBinding">
-                        <!-- Wins Binding -->
-                        <StackPanel
+                            <!-- Wins Binding -->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             Width="450"
                             FontSize="28"
                             VerticalAlignment="Center">
                             NUMBER OF WINS:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneWins"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Wins}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!-- Losses BINDING-->
-                        <StackPanel
+                            <!-- Losses BINDING-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             NUMBER OF LOSSES:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneLosses"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Losses}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Total Games BINDING-->
-                        <StackPanel
+                            <!--Total Games BINDING-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             TOTAL GAME PLAYED:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneTotalGames"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding TotalGames}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Win Loss Ratio Binding -->
-                        <StackPanel
+                            <!--Win Loss Ratio Binding -->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             WIN LOSS RATIO:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneWinLossRatio"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding WinLossRatio}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Avg Point Spread Wins-->
-                        <StackPanel
+                            <!--Avg Point Spread Wins-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             AVG WINNING POINT SPREAD:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneAvgPointSpreadWins"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding AvgPointSpreadWins}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Avg Point Spread Losses-->
-                        <StackPanel
+                            <!--Avg Point Spread Losses-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             AVG LOSING POINT SPREAD:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneAvgPointSpread"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding AvgPointSpreadLosses}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Longest Volley Hits-->
-                        <StackPanel
+                            <!--Longest Volley Hits-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             LONGEST VOLLEY BY HITS:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneLongestVolleyHits"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding LongestVolleyHits}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <!--Longest Volley Time-->
-                        <StackPanel
+                            <!--Longest Volley Time-->
+                            <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                            <TextBlock
+                                <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             LONGEST VOLLEY BY TIME:
-                            </TextBlock>
-                            <TextBlock
+                                </TextBlock>
+                                <TextBlock
                             Name="PVPOneLongestVolleyTime"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding LongestVolleyTime}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
                         </StackPanel>
 
                     </StackPanel>
@@ -546,6 +589,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -575,6 +619,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -604,6 +649,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -634,13 +680,13 @@
                 Grid.Column="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
 
 
                 <!--Col 1 Row 0 Header Title-->
                 <materialDesign:Card 
-                Margin="20,20,20,20"
+                Margin="20,20,20,10"
                 Padding="0" 
                 Grid.Column="1"
                 Grid.Row="0" 
@@ -682,18 +728,18 @@
                                 PLAYER V PLAYER
                             </TextBlock>
 
-                            
+
                         </StackPanel>
                     </materialDesign:ColorZone>
                 </materialDesign:Card>
-                
+
             </materialDesign:TransitioningContent>
 
-            <!--_____________________CARD AREA______________-->
+            <!--_____________________Col 1 Row 2!______________-->
 
             <materialDesign:Card
                 Grid.Column="1"
-                Grid.Row="1"
+                Grid.Row="2"
                 Margin="10,0,10,10"
                 Padding="0">
 
@@ -866,7 +912,7 @@
                             Text="{Binding AvgPointSpreadWins}">
                             </TextBlock>
                         </StackPanel>
-                        
+
                         <!--Avg Point Spread Losses-->
                         <StackPanel
                         Orientation="Horizontal"
@@ -885,7 +931,7 @@
                             Text="{Binding AvgPointSpreadLosses}">
                             </TextBlock>
                         </StackPanel>
-                        
+
                         <!--Longest Volley Hits-->
                         <StackPanel
                         Orientation="Horizontal"
@@ -904,7 +950,7 @@
                             Text="{Binding LongestVolleyHits}">
                             </TextBlock>
                         </StackPanel>
-                        
+
                         <!--Longest Volley Time-->
                         <StackPanel
                         Orientation="Horizontal"
@@ -923,8 +969,8 @@
                             Text="{Binding LongestVolleyTime}">
                             </TextBlock>
                         </StackPanel>
-                        
-                        
+
+
                     </StackPanel>
 
                     <!--PVP Two Stat Bindings-->
@@ -1117,6 +1163,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -1145,6 +1192,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -1165,7 +1213,7 @@
                             </TextBlock>
                         </StackPanel>
                     </Button>
-                    
+
                     <!--PVP Two Select New Button-->
                     <Button
                         x:Name="PVPTwoSelectNewButton"
@@ -1174,6 +1222,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="0,20,0,0"
                         FontSize="55"
                         Height="125"
@@ -1181,20 +1230,30 @@
                         >
                         <StackPanel
                             Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center">
+                                SELECT ANOTHER
+                            </TextBlock>
                             <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="UndoVariant"
-                        VerticalAlignment="Center"
-                         />
-                            <TextBlock
-                                VerticalAlignment="Center">
-                                SELECT ANOTHER
-                            </TextBlock>
+                        VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                         >
+                                <materialDesign:PackIcon.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                                        <SkewTransform AngleY="0" AngleX="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </materialDesign:PackIcon.RenderTransform>
+                            </materialDesign:PackIcon>
+                            
                         </StackPanel>
                     </Button>
-                    
+
 
                 </StackPanel>
             </materialDesign:Card>
