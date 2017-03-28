@@ -241,11 +241,11 @@
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <Button
+                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Foreground="Black"
                         Background="Red"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,0"
+                        Margin="0,70,0,20"
                         FontSize="55"
                         Height="125"
                         Click="CancelEdit">CANCEL
@@ -430,11 +430,11 @@
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <Button
+                            materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Name="Confrim"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,0"
+                        Margin="0,70,0,20"
                         FontSize="55"
                         Height="125"
                         Click="Submit"
