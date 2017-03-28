@@ -226,6 +226,9 @@
     <Compile Include="NewPlayer.xaml.cs">
       <DependentUpon>NewPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlotHitLocations.xaml.cs">
+      <DependentUpon>PlotHitLocations.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Respository\GenericRespository.cs" />
     <Compile Include="Interfaces\IGenericRespository.cs" />
     <Compile Include="SelectPlayers.xaml.cs">
@@ -290,6 +293,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlotHitLocations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

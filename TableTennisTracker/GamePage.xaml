@@ -33,6 +33,11 @@
             </Grid.RowDefinitions>
             <!--............................. Player one Column.........................  -->
             <!--Username Header-->
+            <StackPanel
+                Grid.Row="0" 
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left">
             <TextBlock
                 Grid.Row="0" 
                 Grid.Column="0" 
@@ -47,6 +52,12 @@
                 FontWeight="Bold"
                 Text="{Binding UserName}">
             </TextBlock>
+            <TextBlock  
+                x:Name="P1ScoreMessage"
+                Margin="50,0,50,0"
+                FontSize="50"
+                Text="{Binding ScoreMessageString}" />
+            </StackPanel>
 
             <!--Score Card-->
             <materialDesign:Card 
@@ -71,7 +82,6 @@
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}"
                         Text="{Binding PlayerOneScore}" />
-
 
                 </materialDesign:ColorZone>
             </materialDesign:Card>
@@ -259,7 +269,12 @@
             <!-- ..................Column Two, Bound Information On this side........ -->
 
             <!--Username Header-->
-            <TextBlock
+            <StackPanel
+                    Grid.Row="0" 
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right">
+                <TextBlock
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="400"
@@ -274,6 +289,12 @@
                 FontWeight="Bold"
                 Text="{Binding UserName}">
             </TextBlock>
+            <TextBlock  
+                            x:Name="P2ScoreMessage"
+                            FontSize="50"
+                            Margin="10,0,0,0"
+                            Text="{Binding ScoreMessageString}" />
+            </StackPanel>
 
             <!--Score Card-->
             <materialDesign:Card 
@@ -523,8 +544,7 @@
                     </charts:Chart>
                 </StackPanel>
             </Popup>
-
-
+            
         </Grid>
     </DockPanel>
     

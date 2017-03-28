@@ -25,7 +25,9 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Name="Heading_0" Height="150" />
-            <RowDefinition Name="Form_1" Height="Auto"/>
+            <RowDefinition Name="Form_1" Height="260"/>
+            <RowDefinition Name="WinnerBanner" Height="160" />
+            <RowDefinition Name="Form_2" Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--.......................Column One Player One..............................-->
@@ -49,12 +51,14 @@
                     Mode="PrimaryMid"
                     Padding="5" >
                     <TextBlock
-                        FontSize="50"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        PLAYER ONE SCORE
-                    </TextBlock>
+                            FontSize="50"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="50,0,0,0"
+                            Name="P1UserNameDisplay"
+                            Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                            Text="{Binding UserName}" >
+                        </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
         </materialDesign:TransitioningContent>
@@ -68,128 +72,307 @@
             <StackPanel 
                     Margin="0,0,0,0"
                     Width="800"
-                    Height="Auto">
+                    Height="Auto"
+                    Orientation="Horizontal">
 
-                <!-- USERNAME BINDING -->
                 <StackPanel
+                    Orientation="Vertical"
+                    Width="400"
+                    Margin="20,20,20,20">
+
+                    <!-- WINS BINDING -->
+                    <StackPanel
                         Orientation="Horizontal"
                         Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            Width="200"
+                            FontSize="36"
+                            VerticalAlignment="Center">
+                            WINS:
+                        </TextBlock>
+                        <TextBlock
+                            Name="P1Wins"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Wins}">
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- LOSSES BINDING-->
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="36"
+                            Width="200"
+                            VerticalAlignment="Center">
+                            LOSSES:
+                        </TextBlock>
+                        <TextBlock
+                            Name="P1Losses"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Losses}">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel>
+                    <!--Score Card-->
+                    <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
+                Grid.Column="0"
+                Grid.Row="0" 
+                Width="300"
+                Height="200"
+                HorizontalAlignment="Right" >
+                        <materialDesign:ColorZone 
+                    Mode="PrimaryMid"
+                    Padding="0"
+                    Height="200"
+                    Width="300"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                            <TextBlock
+                        Name="P1Score"
+                        FontSize="140"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                        Text="{Binding Player1Score}" />
+
+
+                        </materialDesign:ColorZone>
+                    </materialDesign:Card>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <materialDesign:TransitioningContent 
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="ExpandIn" Duration="0:0:4" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+            <StackPanel 
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <TextBlock 
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                FontSize="90" >
+                WINNER:
+            </TextBlock>
+            <TextBlock
+                FontSize="100"
+                FontWeight="ExtraBold"
+                VerticalAlignment="Center"
+                Margin="20,0,0,0"
+                Name="GameWinner"
+                Text="{Binding UserName}"
+                />
+        </StackPanel>
+        </materialDesign:TransitioningContent>
+
+        <materialDesign:Card
+                Grid.Column="0"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Margin="10,20,10,10"
+                Padding="0" VerticalAlignment="Bottom">
+
+            <StackPanel
+                    Orientation="Vertical"
+                    Width="1840"
+                    Margin="20,20,20,20">
+
+                <!-- LONGEST VOLLEY BINDING -->
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="25,20,0,20">
                     <TextBlock
                             Margin="0,0,10,0"
-                            Width="250"
-                            FontSize="28"
+                            Width="340"
+                            FontSize="32"
                             VerticalAlignment="Center">
-                            USERNAME:
+                            LONGEST VOLLEY HITS:
                     </TextBlock>
                     <TextBlock
-                            Name="P1UserNameDisplay"
-                            FontSize="32"
+                            Name="VolleyHits"
+                            FontSize="36"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=UserNameTextBox}">
+                            Text="{Binding LongestVolleyHits}">
+                    </TextBlock>
+
+                    <TextBlock
+                            Margin="80,0,10,0"
+                            FontSize="32"
+                            Width="350"
+                            VerticalAlignment="Center">
+                            LONGEST VOLLEY TIME:
+                    </TextBlock>
+                    <TextBlock
+                            Name="VolleyTime"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding LongestVolleyTime}">
+                    </TextBlock>
+
+                    <TextBlock
+                            Margin="80,0,10,0"
+                            Width="200"
+                            FontSize="32"
+                            VerticalAlignment="Center">
+                            FASTEST HIT:
+                    </TextBlock>
+                    <TextBlock
+                            Name="FastestHit"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding MaxVelocity}">
                     </TextBlock>
                 </StackPanel>
 
-                <!-- NAME BINDING-->
-
                 <StackPanel
                         Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            YOUR NAME:
-                    </TextBlock>
-                    <TextBlock
-                            Name="P1NameDisplay"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=NameTextBox}">
-                    </TextBlock>
-                </StackPanel>
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,20">
+                    
+                
+            
 
-                <!--NATIONALITY BINDING-->
-
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            NATIONALITY:
-                    </TextBlock>
-                    <TextBlock
-                            Name="P1countryDisplay"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=CountryTextBox}">
-                    </TextBlock>
-                </StackPanel>
-
-                <!--PP HAND! -->
-
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            PADDLE HAND:
-                    </TextBlock>
-                    <TextBlock
-                            Name="P1PPHandDisplay"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=PPH}">
-                    </TextBlock>
-                </StackPanel>
-
-
-                <!-- _________________________Go Home Button_________________________-->
-                <materialDesign:TransitioningContent 
+            <!-- _________________________Go Home Button_________________________-->
+            <materialDesign:TransitioningContent 
                 Grid.Column="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
-                    <materialDesign:TransitioningContent.OpeningEffects>
-                        <materialDesign:TransitionEffect Kind="SlideInFromRight" />
-                    </materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitioningContent.OpeningEffects>
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                </materialDesign:TransitioningContent.OpeningEffects>
 
-                    <Button
+                        <Button
                         Name="GoHome"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,0"
+                        Margin="0,40,20,0"
                         FontSize="55"
                         Height="125"
                         Click="GoHome_Click"
                         >
-                        <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon 
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="HomeModern"
                         VerticalAlignment="Center"
                          />
-                            <TextBlock 
+                                <TextBlock 
                                 FontWeight="Bold"
                                 VerticalAlignment="Center">
                                 RETURN HOME
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </materialDesign:TransitioningContent>
+
+                    <!--Hit Locations Button-->
+                    <materialDesign:TransitioningContent
+                        OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideinFromBottom" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        
+                    <Button
+                        x:Name="HitLocationButton"
+                        
+                        Visibility="Visible"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="40,0,20,0"
+                        FontSize="55"
+                        Height="125"
+                        VerticalAlignment="Bottom"
+                        Click="HitLocationButton_Click"
+                        >
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                        Margin="0,0,0,0"
+                        Width="125"
+                        Height="125"
+                        Kind="CrosshairsGps"
+                        VerticalAlignment="Center"
+                         />
+                            <TextBlock
+                                Margin="0,0,20,0"
+                                Padding="0,0,0,0"
+                                VerticalAlignment="Center">
+                                HIT LOCATIONS
                             </TextBlock>
                         </StackPanel>
-
                     </Button>
-                </materialDesign:TransitioningContent>
+                    </materialDesign:TransitioningContent>
 
+                    <!--Play Again Button-->
+                    <materialDesign:TransitioningContent
+                        OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+
+                        <Button
+                        Name="PlayAgain"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        materialDesign:RippleAssist.Feedback="#DD000000" 
+                        Margin="40,40,20,0"
+                        FontSize="55"
+                        Height="125"
+                        Click="PlayAgain_Click"
+                        >
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon 
+                                    Margin="0,0,0,0"
+                                    Width="125"
+                                    Height="125"
+                                    Kind="Autorenew"
+                                    VerticalAlignment="Center"
+                                />
+                                <TextBlock
+                                FontWeight="Bold"
+                                    Margin="0,0,20,0"
+                                VerticalAlignment="Center">
+                                PLAY AGAIN
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </materialDesign:TransitioningContent>
+                </StackPanel>
             </StackPanel>
         </materialDesign:Card>
 
-        <!--.......................Column Two Player Two............................. -->
+
+
+
+
+
+
+
+
+
+
+        <!--.......................Column Two Player Two..............................-->
+
         <materialDesign:TransitioningContent 
                 Grid.Column="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
@@ -209,11 +392,13 @@
                     Mode="PrimaryMid"
                     Padding="5" >
                     <TextBlock
-                        FontSize="50"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        PLAYER TWO SCORE
+                            FontSize="50"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="50,0,0,0"
+                            Name="P2UserNameDisplay"
+                            Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                            Text="{Binding UserName}" >
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
@@ -228,124 +413,129 @@
             <StackPanel 
                     Margin="0,0,0,0"
                     Width="800"
-                    Height="Auto">
+                    Height="Auto"
+                    Orientation="Horizontal">
 
-                <!-- USERNAME BINDING -->
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            Width="250"
-                            FontSize="28"
-                            VerticalAlignment="Center">
-                            USERNAME:
-                    </TextBlock>
-                    <TextBlock
-                            Name="userName"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=UserNameTextBox}">
-                    </TextBlock>
-                </StackPanel>
-
-                <!-- NAME BINDING-->
-
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            YOUR NAME:
-                    </TextBlock>
-                    <TextBlock
-                            Name="name"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=NameTextBox}">
-                    </TextBlock>
-                </StackPanel>
-
-                <!--NATIONALITY BINDING-->
-
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            NATIONALITY:
-                    </TextBlock>
-                    <TextBlock
-                            Name="country"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=CountryTextBox}">
-                    </TextBlock>
-                </StackPanel>
-
-                <!--PP HAND! -->
-
-                <StackPanel
-                        Orientation="Horizontal"
-                        Margin="25,25,0,20">
-                    <TextBlock
-                            Margin="0,0,10,0"
-                            FontSize="28"
-                            Width="250"
-                            VerticalAlignment="Center">
-                            PADDLE HAND:
-                    </TextBlock>
-                    <TextBlock
-                            Name="Name"
-                            FontSize="32"
-                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                            Text="{Binding Text, ElementName=PPH}">
-                    </TextBlock>
-                </StackPanel>
-
-
-                <materialDesign:TransitioningContent 
+                <StackPanel>
+                    <!--Score Card-->
+                    <materialDesign:Card 
+                Margin="20,20,20,20"
+                Padding="0" 
                 Grid.Column="1"
-                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
-                    <materialDesign:TransitioningContent.OpeningEffects>
-                        <materialDesign:TransitionEffect Kind="SlideInFromRight" />
-                    </materialDesign:TransitioningContent.OpeningEffects>
-
-                    <Button
-                        Name="PlayAgain"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
-                        materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,0"
-                        FontSize="55"
-                        Height="125"
-                        Click="PlayAgain_Click"
-                        >
-                        <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon 
-                        Margin="0,0,0,0"
-                        Width="125"
-                        Height="125"
-                        Kind="Autorenew"
-                        VerticalAlignment="Center"
-                         />
+                Grid.Row="0" 
+                Width="300"
+                Height="200"
+                HorizontalAlignment="Right" >
+                        <materialDesign:ColorZone 
+                    Mode="PrimaryMid"
+                    Padding="0"
+                    Height="200"
+                    Width="300"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                             <TextBlock
-                                FontWeight="Bold"
-                                VerticalAlignment="Center">
-                                PLAY AGAIN
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
-                </materialDesign:TransitioningContent>
+                        Name="P2Score"
+                        FontSize="140"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                        Text="{Binding Player2Score}" />
+
+
+                        </materialDesign:ColorZone>
+                    </materialDesign:Card>
+                </StackPanel>
+
+                <StackPanel
+                    Orientation="Vertical"
+                    Width="400"
+                    Margin="40,20,20,20">
+
+                    <!-- WINS BINDING -->
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            Width="200"
+                            FontSize="36"
+                            VerticalAlignment="Center">
+                            WINS:
+                        </TextBlock>
+                        <TextBlock
+                            Name="P2Wins"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Wins}">
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- LOSSES BINDING-->
+
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,25,0,20">
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="36"
+                            Width="200"
+                            VerticalAlignment="Center">
+                            LOSSES:
+                        </TextBlock>
+                        <TextBlock
+                            Name="P2Losses"
+                            FontSize="36"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding Losses}">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
 
             </StackPanel>
         </materialDesign:Card>
+
+        <!--<materialDesign:Card
+                Grid.Column="1"
+                Grid.Row="2"
+                Margin="10,0,00,10"
+                Padding="0" VerticalAlignment="Bottom">
+
+            <StackPanel
+                    Orientation="Vertical"
+                    Width="800"
+                    Margin="20,20,20,20">
+
+                --><!-- FASTEST BALL BINDING --><!--
+                <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,20,0,20">
+
+                </StackPanel>
+
+                <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25,20,0,20">
+                    <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="28"
+                            Width="300"
+                            VerticalAlignment="Center">
+                            
+                    </TextBlock>
+                </StackPanel>
+
+
+                
+            </StackPanel>
+        </materialDesign:Card>-->
+
+
+
+
+
+
+
 
         <materialDesign:Snackbar 
                 IsActive="False"
