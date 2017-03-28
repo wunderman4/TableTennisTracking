@@ -597,11 +597,43 @@ namespace TableTennisTracker
                         }
                         else if (inVolley)    // if not served yet, check for serve hit
                         {
+                            int xStartDelta = 0;
+                            if (Server == "P1")
+                            {
+                                xStartDelta = xavg - (int)startLocation.X;
+                            }
+                            else
+                            {
+                                xStartDelta = (int)startLocation.X - xavg;
+                            }
+
+                            if (xStartDelta > 20)
+                            {
+                                served = true;
+                                if (ydelta > 10)
+                                {
+                                    VertDir = "Down";
+                                } 
+                                else if (yavg - tableLevel < 75)
+                                {
+                                    VertDir = "Up";
+                                    serveBounce = true;
+                                }
+
+                                if (xdelta > 0)
+                                {
+                                    this.Direction = "Left";
+                                }
+                                else
+                                {
+                                    this.Direction = "Right";
+                                }
+                            }
+
                             // Serve defined as moving in x and negative y
-                            if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
+                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
                             {
                                 this.served = true;
-                                this.startPosTime = DateTime.MinValue;
                                 VolleyStartTime = DateTime.Now;
                                 this.VertDir = "Down";
                                 if (xdelta > 0)
