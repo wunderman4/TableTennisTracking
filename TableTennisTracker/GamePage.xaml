@@ -54,6 +54,7 @@
             </TextBlock>
             <TextBlock  
                 x:Name="P1ScoreMessage"
+                Visibility="Hidden"
                 Margin="50,0,50,0"
                 FontSize="50"
                 Text="{Binding ScoreMessageString}" />
@@ -290,10 +291,11 @@
                 Text="{Binding UserName}">
             </TextBlock>
             <TextBlock  
-                            x:Name="P2ScoreMessage"
-                            FontSize="50"
-                            Margin="10,0,0,0"
-                            Text="{Binding ScoreMessageString}" />
+                x:Name="P2ScoreMessage"
+                Visibility="Hidden"
+                FontSize="50"
+                Margin="10,0,0,0"
+                Text="{Binding ScoreMessageString}" />
             </StackPanel>
 
             <!--Score Card-->

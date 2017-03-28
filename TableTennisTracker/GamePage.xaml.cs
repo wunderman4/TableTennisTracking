@@ -453,19 +453,19 @@ namespace TableTennisTracker
                         {
                             if (this.Direction == "Left" && bounce1)
                             {
-                                Score("P2", "Time Limit");
+                                Score("P2", "Time Limit - no return");
                             }
                             else if (this.Direction == "Left")
                             {
-                                Score("P1", "Time Limit");
+                                Score("P1", "Time Limit - no bounce");
                             }
                             else if (this.Direction == "Right" && bounce1)
                             {
-                                Score("P1", "Time Limit");
+                                Score("P1", "Time Limit - no return");
                             }
                             else
                             {
-                                Score("P2", "Time Limit");
+                                Score("P2", "Time Limit - no bounce");
                             }
                         }
                     }
@@ -500,22 +500,22 @@ namespace TableTennisTracker
                             {
                                 if (this.Direction == "Left")
                                 {
-                                    Score("P2", "Below Table");
+                                    Score("P2", "Below Table - no return");
                                 }
                                 else
                                 {
-                                    Score("P1", "Below Table");
+                                    Score("P1", "Below Table - no return");
                                 }
                             }
                             else
                             {
                                 if (this.Direction == "Left")
                                 {
-                                    Score("P1", "Below Table");
+                                    Score("P1", "Below Table - no bounce");
                                 }
                                 else
                                 {
-                                    Score("P2", "Below Table");
+                                    Score("P2", "Below Table - no bounce");
                                 }
                             }
                         }
@@ -597,6 +597,7 @@ namespace TableTennisTracker
                         }
                         else if (inVolley)    // if not served yet, check for serve hit
                         {
+                            // check for low, shallow bounce serve
                             int xStartDelta = 0;
                             if (Server == "P1")
                             {
@@ -607,14 +608,14 @@ namespace TableTennisTracker
                                 xStartDelta = (int)startLocation.X - xavg;
                             }
 
-                            if (xStartDelta > 20)
+                            if (xStartDelta > 30)
                             {
                                 served = true;
                                 if (ydelta > 10)
                                 {
                                     VertDir = "Down";
                                 } 
-                                else if (yavg - tableLevel < 75)
+                                else if (yavg - tableLevel < 50)
                                 {
                                     VertDir = "Up";
                                     serveBounce = true;
@@ -630,7 +631,7 @@ namespace TableTennisTracker
                                 }
                             }
 
-                            // Serve defined as moving in x and negative y
+                            // Serve defined as moving in x and negative y (slower serve, easy bounce detection)
                              else if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
                             {
                                 this.served = true;
@@ -670,6 +671,7 @@ namespace TableTennisTracker
                     int yavg = (int)BallLocation.Y;
 
                     CheckStartPosition(xavg, yavg);
+
                 }
             }
         }
@@ -984,11 +986,11 @@ namespace TableTennisTracker
                 }
                 else if (this.Direction == "Right" && hit.X < netLocation)   // Wrong side of net
                 {
-                    Score("P2", "Hit Net");
+                    Score("P2", "Bounce wrong side");
                 }
                 else if (this.Direction == "Left" && hit.X > netLocation)    // Wrong side of net
                 {
-                    Score("P1", "Hit Net");
+                    Score("P1", "Bounce wrong side");
                 }
                 else     // Legal bounce
                 {
