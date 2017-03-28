@@ -27,7 +27,8 @@ namespace TableTennisTracker
 
         private async void NewGame(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(300);
+            PBMain.Visibility = Visibility.Visible;
+            await Task.Delay(1900);
             NavigationService.Navigate(new SelectPlayers());
 
 
@@ -35,14 +36,17 @@ namespace TableTennisTracker
 
         private async void NewPlayer(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(300);
+            PBMain.Visibility = Visibility.Visible;
+            await Task.Delay(1900);
             NavigationService.Navigate(new NewPlayer());
 
 
         }
         private async void Leaderboard(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(300);
+
+            PBMain.Visibility = Visibility.Visible;
+            await Task.Delay(1900);
             NavigationService.Navigate(new Leaderboard());
 
 

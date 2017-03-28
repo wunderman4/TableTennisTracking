@@ -24,8 +24,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class Leaderboard : Page
     {
-
-        BackgroundWorker workerOne;
+        
         PlayerService ps = new PlayerService();
         List<Player> PlayerList;
 
@@ -35,19 +34,14 @@ namespace TableTennisTracker
         {
             InitializeComponent();
             GetPlayers();
-            workerOne = new BackgroundWorker();
-            workerOne.DoWork += new DoWorkEventHandler(workerOne_DoWork);
+            //workerOne = new BackgroundWorker();
+            //workerOne.DoWork += new DoWorkEventHandler(workerOne_DoWork);
+            ProgressAnimation();
+            
         }
 
-        private void workerOne_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // Gather Stats and assign data context
-            Player PVPOne = (Player)PVPSelectOne.SelectedItem;
-            PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
-            PVPOneUserNameBinding.DataContext = PVPOne;
-            PVPOneBinding.DataContext = PVPOneStats;
-        }
-
+        //.................................... Page Load Methods...........................................
+        
         // Gets the list of players
         private void GetPlayers()
         {
@@ -60,7 +54,15 @@ namespace TableTennisTracker
             PVPSelectTwo.ItemsSource = PlayerList;
         }
 
-        
+        // Shows then Collpases Progess bar on Page Load
+        private async void ProgressAnimation()
+        {
+            await Task.Delay(2500);
+            PBarOne.Visibility = Visibility.Collapsed;
+        }
+
+        //..................................... Show All & Hide All Elemets...................................
+
         // Hides all elemnts to wipe board for elements we want to show. 
         private void HideAll()
         {
@@ -79,7 +81,7 @@ namespace TableTennisTracker
             HomeButton.Visibility = Visibility.Collapsed;
             PVPSelectOne.Visibility = Visibility.Collapsed;
             PVPOneConfirmButton.Visibility = Visibility.Collapsed;
-            PVPOneBinding.Visibility = Visibility.Collapsed;
+            //PVPOneBinding.Visibility = Visibility.Collapsed;
             PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
             PVPOneArea.Visibility = Visibility.Collapsed;
 
@@ -98,6 +100,7 @@ namespace TableTennisTracker
             PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
             PVPTwoSelectNewButton.Visibility = Visibility.Collapsed;
             PVPTwoArea.Visibility = Visibility.Collapsed;
+            GlobalStatsArea.Visibility = Visibility.Collapsed;
 
         }
 
@@ -114,7 +117,19 @@ namespace TableTennisTracker
 
         }
 
-        // Changes the page to show stats for a specific player
+        //.......................................Default Page View Buttons.................................
+
+        // Button to Show global Stats
+        private async void GlobalButton_Click(object sender, RoutedEventArgs e)
+        {
+            PBarSpan.Visibility = Visibility.Visible;
+            Task<GlobalGameStats> GetGlobalStats = Task.Factory.StartNew(() => GlobalStats());
+            GlobalStatBinding.DataContext = await GetGlobalStats;
+            GlobalStatsArea.Visibility = Visibility.Visible;
+            PBarSpan.Visibility = Visibility.Collapsed;
+        }
+
+        // Button to show single player stats
         private async void StatsByPlayer_Click(object sender, RoutedEventArgs e)
         {
             await Task.Delay(350);
@@ -128,29 +143,7 @@ namespace TableTennisTracker
 
         }
 
-        // Resets page to default View
-        private async void ReturnButton_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Delay(350);
-            HideAll();
-            ShowDefault();
-            
-        }
-
-        // Navigates to splash page
-        private async void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Delay(350);
-            NavigationService.Navigate(new Splash());
-        }
-
-        // Shows global Stats
-        private void GlobalButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        // Shows player v player stats
+        // Button to Show player v player stats
         private void PVPButton_Click(object sender, RoutedEventArgs e)
         {
             HideAll();
@@ -162,26 +155,45 @@ namespace TableTennisTracker
             PVPTitle.Visibility = Visibility.Visible;
         }
 
-        // Shows hit location stats by game
+        // Button to Show hit location stats by game
         private void HitLocationButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        // Confirms selection of single player and displays stats
-        private void StatsByPlayerConfirm_Click(object sender, RoutedEventArgs e)
+        // Button to Navigate to splash page
+        private async void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            // collapse 
-            Statistics.Visibility = Visibility.Visible;
+            await Task.Delay(350);
+            NavigationService.Navigate(new Splash());
+        }
 
-            // Gather Stats by Selected Player and sets data context
-            Player SinglePlayer = (Player)PlayerListBox.SelectedItem;
-            PlayerGameStats SinglePlayerStats = new PlayerGameStats(SinglePlayer.Id);
-            SBPUserNameBinding.DataContext = SinglePlayer;
-            StatsByPlayerBinding.DataContext = SinglePlayerStats;
+        //........................................Confrim Selection Buttons..................................
 
-            // Shows correct elements 
-            StatsByPlayerBinding.Visibility = Visibility.Visible;
+        // Confirms selection of single player and displays stats
+        private async void StatsByPlayerConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlayerListBox.SelectedItem != null) {
+
+                PBarSpan.Visibility = Visibility.Visible;
+                // Gather Stats by Selected Player and sets data context
+                Player SinglePlayer = (Player)PlayerListBox.SelectedItem;
+                Task<PlayerGameStats> SingleStats = Task.Factory.StartNew(() => SingleGet(SinglePlayer.Id));
+                SBPUserNameBinding.DataContext = SinglePlayer;
+                StatsByPlayerBinding.DataContext = await SingleStats;
+
+                // collapse 
+                Statistics.Visibility = Visibility.Visible;
+                PBarSpan.Visibility = Visibility.Collapsed;
+                // Shows correct elements 
+                StatsByPlayerBinding.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NoPlayerSelected.IsActive = true;
+                await Task.Delay(3000);
+                NoPlayerSelected.IsActive = false;
+            }
         }
 
         // Confirms Selection of first player for PVP
@@ -189,20 +201,18 @@ namespace TableTennisTracker
         {
             if (PVPSelectOne.SelectedItem != null)
             {
+                PBarOne.Visibility = Visibility.Visible;
+                // Gather Stats and assign data context
+                Player PVPOne = (Player)PVPSelectOne.SelectedItem;
+                Task<PlayerGameStats> OneStats = Task.Factory.StartNew(() => PVPOneGet(PVPOne.Id));
+                PVPOneBinding.DataContext = await OneStats;
+                PVPOneUserNameBinding.DataContext = PVPOne;
+
                 // Collapse
                 PVPSelectOne.Visibility = Visibility.Collapsed;
                 PVPOneConfirmButton.Visibility = Visibility.Collapsed;
-
-                workerOne.RunWorkerAsync();
-                //// Gather Stats and assign data context
-                //Player PVPOne = (Player)PVPSelectOne.SelectedItem;
-                //PlayerGameStats PVPOneStats = new PlayerGameStats(PVPOne.Id);
-                //PVPOneUserNameBinding.DataContext = PVPOne;
-                //PVPOneBinding.DataContext = PVPOneStats;
-
+                PBarOne.Visibility = Visibility.Collapsed;
                 // Shows Correct Elements
-                PVPOneBinding.Visibility = Visibility.Visible;
-
                 PVPOneSelectNewButton.Visibility = Visibility.Visible;
                 PVPOneArea.Visibility = Visibility.Visible;
                 
@@ -220,19 +230,21 @@ namespace TableTennisTracker
         {
             if (PVPSelectTwo.SelectedItem != null)
             {
+
+                PBarTwo.Visibility = Visibility.Visible;
+                // Gather Stats and assign data context
+                Player PVPTwo = (Player)PVPSelectTwo.SelectedItem;
+                Task<PlayerGameStats> PVPTwoStats = Task.Factory.StartNew(()=> PVPTwoGet(PVPTwo.Id));
+                PVPTwoUserNameBinding.DataContext = PVPTwo;
+                PVPTwoBinding.DataContext = await PVPTwoStats;
+
                 // Collapse
                 PVPSelectTwo.Visibility = Visibility.Collapsed;
                 PVPTwoConfirmButton.Visibility = Visibility.Collapsed;
-
-                // Gather Stats and assign data context
-                Player PVPTwo = (Player)PVPSelectTwo.SelectedItem;
-                PlayerGameStats PVPTwoStats = new PlayerGameStats(PVPTwo.Id);
-                PVPTwoUserNameBinding.DataContext = PVPTwo;
-                PVPTwoBinding.DataContext = PVPTwoStats;
+                PBarTwo.Visibility = Visibility.Collapsed;
 
                 // Shows Correct Elements
                 PVPTwoBinding.Visibility = Visibility.Visible;
-
                 PVPTwoSelectNewButton.Visibility = Visibility.Visible;
                 PVPTwoArea.Visibility = Visibility.Visible;
             }
@@ -245,11 +257,50 @@ namespace TableTennisTracker
 
         }
 
+        //...................................... All Loading Calls For Async Programming........................
+        //Gloabal Stats Loading
+        private GlobalGameStats GlobalStats()
+        {
+            GlobalGameStats GlobalGameStats = new GlobalGameStats();
+            return GlobalGameStats;
+        }
+
+        private PlayerGameStats PVPOneGet(int id)
+        {
+            
+            PlayerGameStats PVPOneStats = new PlayerGameStats(id);
+
+            return PVPOneStats;
+        }
+
+        private PlayerGameStats PVPTwoGet(int id)
+        {
+            PlayerGameStats PVPTwoStats = new PlayerGameStats(id);
+
+            return PVPTwoStats;
+        }
+
+        private PlayerGameStats SingleGet(int id)
+        {
+            PlayerGameStats SinglePlayerStats = new PlayerGameStats(id);
+            return SinglePlayerStats;
+        }
+
+        //........................................ Return and Select Another Buttons..........................
+
+        // Returns Button to reset page
+        private async void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(350);
+            HideAll();
+            ShowDefault();
+
+        }
+
         // Reopens the select player menu to select different player one
         private void PVPOneSelectNewButton_Click(object sender, RoutedEventArgs e)
         {
             PVPOneSelectNewButton.Visibility = Visibility.Collapsed;
-            PVPOneBinding.Visibility = Visibility.Collapsed;
             PVPOneArea.Visibility = Visibility.Collapsed;
             PVPSelectOne.Visibility = Visibility.Visible;
             PVPOneConfirmButton.Visibility = Visibility.Visible;
@@ -265,17 +316,6 @@ namespace TableTennisTracker
             PVPTwoConfirmButton.Visibility = Visibility.Visible;
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            
-            PBarOne.Visibility = Visibility.Visible;
-
-        }
-
-        private void StopWork(object sender, DoWorkEventArgs e)
-        {
-            PBarOne.Visibility = Visibility.Collapsed;
-        }
 
     }
 }
