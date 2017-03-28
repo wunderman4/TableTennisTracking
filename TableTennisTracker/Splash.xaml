@@ -136,6 +136,15 @@
                 </materialDesign:ColorZone>
             </materialDesign:Card>-->
 
+            <ProgressBar
+                x:Name="PBMain"
+                IsIndeterminate="True"
+                Visibility="Collapsed"
+                VerticalAlignment="Top"
+                Grid.Row="1"
+                Margin="0,20,0,0">
+            </ProgressBar>
+            
             <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}"
                                                  Grid.Row="0">
                 <materialDesign:TransitioningContent.OpeningEffects>

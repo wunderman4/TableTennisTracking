@@ -418,7 +418,7 @@
                         Height="600">
 
                         <StackPanel
-                        x:Name="PVPOneUserNameBinding"
+                            x:Name="PVPOneUserNameBinding"
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
                             <TextBlock
@@ -438,157 +438,157 @@
 
                         <StackPanel
                             x:Name="PVPOneBinding">
-                            <!-- Wins Binding -->
-                            <StackPanel
+                        <!-- Wins Binding -->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             Width="450"
                             FontSize="28"
                             VerticalAlignment="Center">
                             NUMBER OF WINS:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneWins"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Wins}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!-- Losses BINDING-->
-                            <StackPanel
+                        <!-- Losses BINDING-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             NUMBER OF LOSSES:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneLosses"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding Losses}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Total Games BINDING-->
-                            <StackPanel
+                        <!--Total Games BINDING-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             TOTAL GAME PLAYED:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneTotalGames"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding TotalGames}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Win Loss Ratio Binding -->
-                            <StackPanel
+                        <!--Win Loss Ratio Binding -->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             WIN LOSS RATIO:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneWinLossRatio"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding WinLossRatio}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Avg Point Spread Wins-->
-                            <StackPanel
+                        <!--Avg Point Spread Wins-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             AVG WINNING POINT SPREAD:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneAvgPointSpreadWins"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding AvgPointSpreadWins}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Avg Point Spread Losses-->
-                            <StackPanel
+                        <!--Avg Point Spread Losses-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             AVG LOSING POINT SPREAD:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneAvgPointSpread"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding AvgPointSpreadLosses}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Longest Volley Hits-->
-                            <StackPanel
+                        <!--Longest Volley Hits-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             LONGEST VOLLEY BY HITS:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneLongestVolleyHits"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding LongestVolleyHits}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
 
-                            <!--Longest Volley Time-->
-                            <StackPanel
+                        <!--Longest Volley Time-->
+                        <StackPanel
                         Orientation="Horizontal"
                         Margin="25,10,0,10">
-                                <TextBlock
+                            <TextBlock
                             Margin="0,0,10,0"
                             FontSize="28"
                             Width="450"
                             VerticalAlignment="Center">
                             LONGEST VOLLEY BY TIME:
-                                </TextBlock>
-                                <TextBlock
+                            </TextBlock>
+                            <TextBlock
                             Name="PVPOneLongestVolleyTime"
                             FontSize="32"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding LongestVolleyTime}">
-                                </TextBlock>
-                            </StackPanel>
+                            </TextBlock>
+                        </StackPanel>
                         </StackPanel>
 
                     </StackPanel>
