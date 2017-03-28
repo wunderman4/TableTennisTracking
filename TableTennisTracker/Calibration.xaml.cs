@@ -137,7 +137,7 @@ namespace TableTennisTracker
                 for (int j = xstart; j < xstop; j++)
                 {
                     int index = i * 1920 + j;
-                    if (camSpacePoints[index].Z < 2.0 && camSpacePoints[index].Z > 0)
+                    if (camSpacePoints[index].Z < 2.5 && camSpacePoints[index].Z > 0)
                     {
                         rowPixelCount++;
                         tablePts.Add(i);
@@ -164,7 +164,7 @@ namespace TableTennisTracker
                 for (int j = 640; j < 1280; j++)
                 {
                     int index = i * 1920 + j;
-                    if (camSpacePoints[index].Z < 2.0 && camSpacePoints[index].Z > 0)
+                    if (camSpacePoints[index].Z < 2.5 && camSpacePoints[index].Z > 0)
                     {
                         netPts.Add(j);
                         Zvals.Add(camSpacePoints[index].Z);

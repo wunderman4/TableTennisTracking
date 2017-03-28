@@ -263,7 +263,6 @@
                         <Button
                         Name="GoHome"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="0,40,20,0"
                         FontSize="55"
@@ -299,7 +298,6 @@
                         
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="40,0,20,0"
                         FontSize="55"
@@ -336,7 +334,6 @@
                         <Button
                         Name="PlayAgain"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         Margin="40,40,20,0"
                         FontSize="55"

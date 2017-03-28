@@ -35,6 +35,8 @@ namespace TableTennisTracker
     /// </summary>
     public partial class GamePage : Page, INotifyPropertyChanged
     {
+        public bool debug = false;
+
         public event PropertyChangedEventHandler PropertyChanged;
         Player PlayerOne = null;
         Player PlayerTwo = null;
@@ -83,6 +85,7 @@ namespace TableTennisTracker
         public BallCoords PreviousXYZ;
         public string _Server;
         public bool plotRepeat = false;
+        public string _scoreMessageString;
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -152,6 +155,7 @@ namespace TableTennisTracker
             this.AllData = new List<DataPoint>();
             this.Bounces = new List<HitLocation>();
             this.startLocation = new DataPoint(0, 0, 0, 0);
+            this.tempBounceXYZ = new HitLocation();
             this.Direction = "";
             this.VertDir = "";
             this.bounce1 = false;
@@ -399,12 +403,22 @@ namespace TableTennisTracker
         // Calculate ball speed in m/s
         private double BallSpeed(BallCoords currLocn, BallCoords prevLocn)
         {
-            double deltax = currLocn.X - prevLocn.X;
-            double deltay = currLocn.Y - prevLocn.Y;
-            double deltaz = currLocn.Z - prevLocn.Z;
-            double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
-            double distance = Math.Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
-            return distance / deltat;
+            if (currLocn.X != 0 && currLocn.Y != 0 && currLocn.Z != 0 && prevLocn.X != 0 && prevLocn.Y != 0 && prevLocn.Z != 0)
+            {
+                double deltax = currLocn.X - prevLocn.X;
+                double deltay = currLocn.Y - prevLocn.Y;
+                double deltaz = currLocn.Z - prevLocn.Z;
+                if (deltaz > 0.3 || deltaz < -0.3)
+                {
+                    deltaz = 0;
+                }
+                double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
+                double distance = Math.Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
+                return distance / deltat;
+            } else
+            {
+                return 0;
+            }
         }
 
         // Color frame analysis With ball action analysis
@@ -422,6 +436,7 @@ namespace TableTennisTracker
                 else
                 {
                     scoreDelay = DateTime.MinValue;
+                    pause = false;
                 }
             }
 
@@ -548,11 +563,6 @@ namespace TableTennisTracker
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
-                                    // Get xyz coords for potential bounce
-                                    tempBounceXYZ.X = CurrentXYZ.X;
-                                    tempBounceXYZ.Y = CurrentXYZ.Y;
-                                    tempBounceXYZ.Z = CurrentXYZ.Z;
-                                    tempBounceXYZ.Volley = VolleyNumber;
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                                 else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
@@ -560,11 +570,16 @@ namespace TableTennisTracker
                                     if (!changeDir)
                                     {
                                         // Handle bounce processing
-                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                        if (tempBounceXYZ.X != 0 && tempBounceXYZ.Y != 0 && tempBounceXYZ.Z != 0)
+                                        if (PreviousXYZ.X != 0 && PreviousXYZ.Y != 0 && PreviousXYZ.Z != 0 && this.serveBounce)
                                         {
-                                            this.Bounces.Add(tempBounceXYZ);
+                                            HitLocation bounceXYZ = new HitLocation();
+                                            bounceXYZ.X = PreviousXYZ.X;
+                                            bounceXYZ.Y = PreviousXYZ.Y;
+                                            bounceXYZ.Z = PreviousXYZ.Z;
+                                            bounceXYZ.Volley = VolleyNumber;
+                                            this.Bounces.Add(bounceXYZ);
                                         }
+                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
                                     }
                                     PossibleBounce = false;
                                 }
@@ -576,11 +591,6 @@ namespace TableTennisTracker
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
-                                    // Get xyz coords for potential bounce
-                                    tempBounceXYZ.X = CurrentXYZ.X;
-                                    tempBounceXYZ.Y = CurrentXYZ.Y;
-                                    tempBounceXYZ.Z = CurrentXYZ.Z;
-                                    tempBounceXYZ.Volley = VolleyNumber;
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                             }
@@ -606,9 +616,13 @@ namespace TableTennisTracker
                         }
                         // Add current location to points list
                         this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                        double currentSpeed = 0;
 
                         // Check ball speed
-                        double currentSpeed = BallSpeed(CurrentXYZ, PreviousXYZ);
+                        if (PreviousXYZ != null)
+                        {
+                            currentSpeed = BallSpeed(CurrentXYZ, PreviousXYZ);
+                        }
                         if (currentSpeed > maxSpeed)
                         {
                             maxSpeed = currentSpeed;
@@ -631,7 +645,7 @@ namespace TableTennisTracker
         // Check if ball is in start position for new volley.  If so set params to start volley
         public void CheckStartPosition(int xavg, int yavg)
         {
-            if (Math.Abs(yavg - tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+            if (Math.Abs(yavg - tableLevel) < 300 && (xavg > netLocation + 300 || xavg < netLocation - 300))
             {
                 string currentServer = "";
                 if (xavg < netLocation)
@@ -770,6 +784,21 @@ namespace TableTennisTracker
             }
         }
 
+        // Point scored message
+        public string ScoreMessageString
+        {
+            get { return _scoreMessageString; }
+            set
+            {
+                _scoreMessageString = value;
+                var handler = PropertyChanged;
+                if (handler != null)
+                {
+                    handler(this, new PropertyChangedEventArgs("ScoreMessageString"));
+                }
+            }
+        }
+
         // Register point scored
         private void Score(string player, string message)
         {
@@ -779,17 +808,29 @@ namespace TableTennisTracker
             VolleyStats();
             VolleyNumber++;
 
+            ScoreMessageString = message;
+
             if (player == "P1")
             {
                 this.PlayerOneScore++;
                 PlayScore();
                 PlayerOneUserName.TextDecorations = TextDecorations.Underline;
+                if (debug)
+                {
+                    P1ScoreMessage.Visibility = Visibility.Visible;
+                }
+                P2ScoreMessage.Visibility = Visibility.Hidden;
             }
             else
             {
                 this.PlayerTwoScore++;
                 PlayScore();
                 PlayerTwoUserName.TextDecorations = TextDecorations.Underline;
+                P1ScoreMessage.Visibility = Visibility.Hidden;
+                if (debug)
+                {
+                    P2ScoreMessage.Visibility = Visibility.Visible;
+                }
             }
             DetermineServe();
 
@@ -851,7 +892,7 @@ namespace TableTennisTracker
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
             CurrentGame.LongestVolleyTime = LongestVolleyTime;
             CurrentGame.MaxVelocity = (float)maxSpeed;
-         //   gs.AddGame(CurrentGame, Bounces);
+            gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
             string[] bounceOut = new string[this.Bounces.Count + 1];

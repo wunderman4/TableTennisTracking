@@ -9,7 +9,7 @@ namespace TableTennisTracker
     class GlobalClass
     {
         // Default table values
-        public static int tableHeight = 575;
+        public static int tableHeight = 440;
         public static int netLocation = 960;
         public static float minZ = 1;
     }
