@@ -22,11 +22,21 @@ using TableTennisTracker.Services;
 
 namespace TableTennisTracker
 {
+    public class BallCoords
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
+        public DateTime Time { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for GamePage.xaml
     /// </summary>
     public partial class GamePage : Page, INotifyPropertyChanged
     {
+        public bool debug = false;
+
         public event PropertyChangedEventHandler PropertyChanged;
         Player PlayerOne = null;
         Player PlayerTwo = null;
@@ -49,6 +59,7 @@ namespace TableTennisTracker
         public string Direction;
         public string VertDir;
         // Volley tracking variables
+        bool pause;
         public bool bounce1;
         public bool serveBounce;
         public bool inVolley;
@@ -56,6 +67,8 @@ namespace TableTennisTracker
         public int LongestVolleyHits;
         public DateTime VolleyStartTime;
         public float LongestVolleyTime;
+        public int VolleyNumber;
+        public double maxSpeed;
         public DateTime hitTime;
         public int tableLevel;
         public int netLocation;
@@ -68,9 +81,11 @@ namespace TableTennisTracker
         public bool PossibleBounce;
         public DataPoint tempBounce;
         public HitLocation tempBounceXYZ;
+        public BallCoords CurrentXYZ;
+        public BallCoords PreviousXYZ;
         public string _Server;
-        public UInt16[] PreviousDepthFrame;
         public bool plotRepeat = false;
+        public string _scoreMessageString;
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -101,7 +116,6 @@ namespace TableTennisTracker
             PlayerTwoNation.DataContext = pTwo;
             PlayerTwoPPHand.DataContext = pTwo;
 
-            this.PreviousDepthFrame = new UInt16[217088];
             InitVariables();
 
             this.kinectSensor = KinectSensor.GetDefault();
@@ -141,6 +155,7 @@ namespace TableTennisTracker
             this.AllData = new List<DataPoint>();
             this.Bounces = new List<HitLocation>();
             this.startLocation = new DataPoint(0, 0, 0, 0);
+            this.tempBounceXYZ = new HitLocation();
             this.Direction = "";
             this.VertDir = "";
             this.bounce1 = false;
@@ -154,6 +169,9 @@ namespace TableTennisTracker
             this.scoreDelay = DateTime.MinValue;
             Server = "";
             VolleyHits = 0;
+            VolleyNumber = 1;
+            maxSpeed = 0;
+            pause = false;
         }
 
         public string Server
@@ -205,7 +223,7 @@ namespace TableTennisTracker
 
                         // Find location of the ball based on pixel colors
                         int vcount = 0;
-                        for (int i = 0; i < colorFrameDescription.Width * colorFrameDescription.Height; i++)
+                        for (int i = 0; i < colorFrameDescription.Width * (colorFrameDescription.Height - (tableLevel - 200)); i++)
                         {
                             int j = i * 4;
                             //if (myBytes[j] < 140 && myBytes[j] > 100 && myBytes[j + 1] < 80 && myBytes[j + 1] > 40 && myBytes[j + 2] < 180 && myBytes[j + 2] > 120)
@@ -234,6 +252,7 @@ namespace TableTennisTracker
                     }
                 }
             }
+            BallLocation.Time = (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds);
             return (BallLocation);
         }
 
@@ -245,7 +264,7 @@ namespace TableTennisTracker
             return inList[index];
         }
 
-        // Get xyz physical coordinates for bounce location, add to Bounce list - not very good right now
+        // Get xyz physical coordinates for bounce location, add to Bounce list
         private HitLocation BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
             HitLocation bounceLocn = new Models.HitLocation();
@@ -291,6 +310,7 @@ namespace TableTennisTracker
                     bounceLocn.X = FindMedian(xvals);
                     bounceLocn.Y = FindMedian(yvals);
                     bounceLocn.Z = FindMedian(zvals);
+                    bounceLocn.Volley = VolleyNumber;
                 }
                 else
                 {
@@ -302,11 +322,110 @@ namespace TableTennisTracker
             }
         }
 
+        // Get xyz physical coordinates 
+        private BallCoords XYZLocation(DepthFrame depthFrame, int xavg, int yavg)
+        {
+            BallCoords ballLocn = new BallCoords();
+            if (depthFrame == null)
+            {
+                return (ballLocn);
+            }
+
+            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+            {
+                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
+                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
+                List<float> xvals = new List<float>();
+                List<float> yvals = new List<float>();
+                List<float> zvals = new List<float>();
+                int Vcount = 0;
+
+                // Find ball in camera space
+                for (int i = -40; i < 40; i++)
+                {
+                    for (int j = -40; j < 40; j++)
+                    {
+                        if (yavg + i > tableLevel)
+                        {
+                            int tempIndex = (yavg + i) * 1920 + xavg + j;
+                            int arrVal = 4 * tempIndex;
+                            if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
+                            {
+                                arrVal = 4;
+                            }
+                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.5)
+                            {
+                                xvals.Add(camSpacePoints[tempIndex].X);
+                                yvals.Add(camSpacePoints[tempIndex].Y);
+                                zvals.Add(camSpacePoints[tempIndex].Z);
+                                Vcount++;
+                            }
+                        }
+                    }
+                }
+                if (Vcount > 0)
+                {
+                    ballLocn.X = FindMedian(xvals);
+                    ballLocn.Y = FindMedian(yvals);
+                    ballLocn.Z = FindMedian(zvals);
+                    ballLocn.Time = DateTime.Now;
+                }
+                else
+                {
+                    ballLocn.X = 0;
+                    ballLocn.Y = 0;
+                    ballLocn.Z = 0;
+                }
+                return (ballLocn);
+            }
+        }
+
+        // Check if ball location is reasonable comopared to previous location, return false if not
+        private bool ReasonableLocation(DataPoint NewLocation)
+        {
+            DataPoint PrevLocation = AllData[AllData.Count - 1];
+            double deltaTimeSteps = (NewLocation.Time - PrevLocation.Time) / 0.03;
+            float deltax = NewLocation.X - PrevLocation.X;
+            float deltay = NewLocation.Y - PrevLocation.Y;
+            double distanceTravelled = Math.Sqrt((deltax * deltax + deltay * deltay));
+
+            // check for travel of more than 200 pixels per time step
+            if (distanceTravelled > 200 * deltaTimeSteps)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        // Calculate ball speed in m/s
+        private double BallSpeed(BallCoords currLocn, BallCoords prevLocn)
+        {
+            if (currLocn.X != 0 && currLocn.Y != 0 && currLocn.Z != 0 && prevLocn.X != 0 && prevLocn.Y != 0 && prevLocn.Z != 0)
+            {
+                double deltax = currLocn.X - prevLocn.X;
+                double deltay = currLocn.Y - prevLocn.Y;
+                double deltaz = currLocn.Z - prevLocn.Z;
+                if (deltaz > 0.3 || deltaz < -0.3)
+                {
+                    deltaz = 0;
+                }
+                double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
+                double distance = Math.Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
+                return distance / deltat;
+            } else
+            {
+                return 0;
+            }
+        }
+
         // Color frame analysis With ball action analysis
         private void Frame_Arrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             bool changeDir = false;
-            bool pause = false;
+            
 
             if (scoreDelay != DateTime.MinValue)
             {
@@ -317,6 +436,7 @@ namespace TableTennisTracker
                 else
                 {
                     scoreDelay = DateTime.MinValue;
+                    pause = false;
                 }
             }
 
@@ -355,9 +475,24 @@ namespace TableTennisTracker
                     int xavg = (int)BallLocation.X;
                     int yavg = (int)BallLocation.Y;
 
+                    // Check if location seems reasonable, set xavg to 1 (default no ball found value) if not
+                    if (AllData.Count > 0)
+                    {
+                        if (!ReasonableLocation(BallLocation))
+                        {
+                            xavg = 1;
+                        }
+                    }
+
                     // If good data point, analyze it
                     if (xavg > 1)
                     {
+                        // Get ball xyz coordinates
+                        using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
+                        {
+                            CurrentXYZ = XYZLocation(depthFrame, xavg, yavg);
+                        }
+
                         // Off (or rather under) table
                         if (yavg < tableLevel - 100)
                         {
@@ -428,11 +563,6 @@ namespace TableTennisTracker
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
-                                    // Get xyz coords for potential bounce
-                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                    {
-                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                    }
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                                 else if (PossibleBounce)  // if no direction change one frame later, possible bounce is a bounce
@@ -440,11 +570,16 @@ namespace TableTennisTracker
                                     if (!changeDir)
                                     {
                                         // Handle bounce processing
-                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
-                                        if (tempBounceXYZ.X != 0 && tempBounceXYZ.Y != 0 && tempBounceXYZ.Z != 0)
+                                        if (PreviousXYZ.X != 0 && PreviousXYZ.Y != 0 && PreviousXYZ.Z != 0 && this.serveBounce)
                                         {
-                                            this.Bounces.Add(tempBounceXYZ);
+                                            HitLocation bounceXYZ = new HitLocation();
+                                            bounceXYZ.X = PreviousXYZ.X;
+                                            bounceXYZ.Y = PreviousXYZ.Y;
+                                            bounceXYZ.Z = PreviousXYZ.Z;
+                                            bounceXYZ.Volley = VolleyNumber;
+                                            this.Bounces.Add(bounceXYZ);
                                         }
+                                        Bounce(new DataPoint(tempBounce.X, tempBounce.Y, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
                                     }
                                     PossibleBounce = false;
                                 }
@@ -456,11 +591,6 @@ namespace TableTennisTracker
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
-                                    // Get xyz coords for potential bounce
-                                    using (DepthFrame depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame())
-                                    {
-                                        this.tempBounceXYZ = BounceLocation(depthFrame, xavg, yavg);
-                                    }
                                     this.tempBounce = new DataPoint(xavg, yavg, 0, 0);
                                 }
                             }
@@ -486,7 +616,18 @@ namespace TableTennisTracker
                         }
                         // Add current location to points list
                         this.AllData.Add(new DataPoint(xavg, yavg, 0, (float)(DateTime.Now.Subtract(this.timeStarted).TotalSeconds)));
+                        double currentSpeed = 0;
 
+                        // Check ball speed
+                        if (PreviousXYZ != null)
+                        {
+                            currentSpeed = BallSpeed(CurrentXYZ, PreviousXYZ);
+                        }
+                        if (currentSpeed > maxSpeed)
+                        {
+                            maxSpeed = currentSpeed;
+                        }
+                        PreviousXYZ = CurrentXYZ;
                     }
                 }
                 else   // Check for ball in start position to start volley
@@ -504,7 +645,7 @@ namespace TableTennisTracker
         // Check if ball is in start position for new volley.  If so set params to start volley
         public void CheckStartPosition(int xavg, int yavg)
         {
-            if (Math.Abs(yavg - tableLevel) < 30 && (xavg > netLocation + 300 || xavg < netLocation - 300))
+            if (Math.Abs(yavg - tableLevel) < 300 && (xavg > netLocation + 300 || xavg < netLocation - 300))
             {
                 string currentServer = "";
                 if (xavg < netLocation)
@@ -622,6 +763,8 @@ namespace TableTennisTracker
             {
                 PlayerTwoBall.Visibility = Visibility.Visible;
             }
+            PlayerOneUserName.TextDecorations = null;
+            PlayerTwoUserName.TextDecorations = null;
         }
 
         // Determine volley stats
@@ -641,6 +784,21 @@ namespace TableTennisTracker
             }
         }
 
+        // Point scored message
+        public string ScoreMessageString
+        {
+            get { return _scoreMessageString; }
+            set
+            {
+                _scoreMessageString = value;
+                var handler = PropertyChanged;
+                if (handler != null)
+                {
+                    handler(this, new PropertyChangedEventArgs("ScoreMessageString"));
+                }
+            }
+        }
+
         // Register point scored
         private void Score(string player, string message)
         {
@@ -648,16 +806,31 @@ namespace TableTennisTracker
             this.inVolley = false;
             this.scoreDelay = DateTime.Now;
             VolleyStats();
+            VolleyNumber++;
+
+            ScoreMessageString = message;
 
             if (player == "P1")
             {
                 this.PlayerOneScore++;
                 PlayScore();
+                PlayerOneUserName.TextDecorations = TextDecorations.Underline;
+                if (debug)
+                {
+                    P1ScoreMessage.Visibility = Visibility.Visible;
+                }
+                P2ScoreMessage.Visibility = Visibility.Hidden;
             }
             else
             {
                 this.PlayerTwoScore++;
                 PlayScore();
+                PlayerTwoUserName.TextDecorations = TextDecorations.Underline;
+                P1ScoreMessage.Visibility = Visibility.Hidden;
+                if (debug)
+                {
+                    P2ScoreMessage.Visibility = Visibility.Visible;
+                }
             }
             DetermineServe();
 
@@ -708,7 +881,7 @@ namespace TableTennisTracker
         private void GameSummaryButton_Click(object sender, RoutedEventArgs e)
         {
             GameOver();
-            NavigationService.Navigate(new GameSummary(CurrentGame));
+            NavigationService.Navigate(new GameSummary(CurrentGame, Bounces));
         }
 
         // Game over handling
@@ -718,6 +891,7 @@ namespace TableTennisTracker
             CurrentGame.Player2Score = PlayerTwoScore;
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
             CurrentGame.LongestVolleyTime = LongestVolleyTime;
+            CurrentGame.MaxVelocity = (float)maxSpeed;
             gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
@@ -923,6 +1097,9 @@ namespace TableTennisTracker
         // Create xyData list from AllData, send to XAML plot
         public async void PlotXYData()
         {
+            // Pause ball tracking while showing volley graph
+            pause = true;
+
             for (int i = 0; i < AllData.Count(); i++)
             {
                 this.xyData.Add(new KeyValuePair<float, float>(AllData[i].X, AllData[i].Y));
@@ -939,6 +1116,9 @@ namespace TableTennisTracker
             chart1.DataContext = null;
             chart1.DataContext = this.xyData;
             VolleyPlot.IsOpen = false;
+
+            // resume ball tracking
+            pause = false;
         }
 
         // Show plot of ball locations for volley
