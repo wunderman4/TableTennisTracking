@@ -416,7 +416,7 @@
                         x:Name="PVPOneArea"
                         Visibility="Collapsed"
                         Height="600">
-
+                        <!--UserName Binding-->
                         <StackPanel
                             x:Name="PVPOneUserNameBinding"
                         Orientation="Horizontal"
@@ -690,8 +690,7 @@
                 <materialDesign:TransitioningContent.OpeningEffects>
                     <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
-
-
+                
                 <!--Col 1 Row 0 Header Title-->
                 <materialDesign:Card 
                 Margin="20,20,20,10"
@@ -705,15 +704,15 @@
                     Mode="PrimaryMid"
                     Padding="5" >
                         <StackPanel>
-                            <!--Statistics Title-->
+                            <!-- Welcome Title-->
                             <TextBlock
-                        x:Name="Statistics"
+                        x:Name="Welcome"
                         Visibility="Visible"
                         FontSize="50"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        STATISTICS:
+                        WELCOME!
                             </TextBlock>
                             <!--Select Player Title-->
                             <TextBlock
@@ -725,7 +724,7 @@
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
                         SELECT PLAYER:
                             </TextBlock>
-                            <!--Stats By Player Title-->
+                            <!--PVP Title-->
                             <TextBlock
                         x:Name="PVPTitle"
                         Visibility="Collapsed"
@@ -733,7 +732,27 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                                PLAYER V PLAYER
+                                PLAYER V PLAYER:
+                            </TextBlock>
+                            <!--Col 1 Stats Title-->
+                            <TextBlock
+                        x:Name="ColOneStatsByPlayerTitle"
+                        Visibility="Collapsed"
+                        FontSize="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                                STATS BY PLAYER:
+                            </TextBlock>
+                            <!--Global Leaders Title-->
+                            <TextBlock
+                        x:Name="GlobalLeadersTitle"
+                        Visibility="Collapsed"
+                        FontSize="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
+                                GLOBAL LEADERS:
                             </TextBlock>
 
 
@@ -1167,73 +1186,231 @@
 
                     <StackPanel
                         x:Name="GlobalStatsArea"
-                        Visibility="Visible"
-                        Height="600">
+                        Visibility="Collapsed"
+                        Height="700">
                         <!--Global Leaderboard Bindings-->
-
                         <StackPanel
                             x:Name="GlobalStatBinding">
-                            <!-- Global Most Wins Binding -->
+                            <!-- Global Most Wins -->
                             <TextBlock
-                                Margin="0,10,0,10"
+                                x:Name="PMW"
+                                Margin="0,10,0,0"
                                 FontSize="32"
                                 HorizontalAlignment="Center">
                                 PLAYER WITH MOST WINS:
                             </TextBlock>
+                            <ProgressBar
+                                Width="700"></ProgressBar>
+                            <!--Most Wins Binding-->
                             <StackPanel
                         Orientation="Horizontal"
-                        Margin="25,10,0,10">
+                                HorizontalAlignment="Left"
+                                Width="800"
+                        Margin="0,10,0,50">
                                 <TextBlock
                                     Name="GPlayerMostWins"
-                            Margin="0,0,10,0"
-                            Width="400"
+                            Margin="50,0,0,0"
+                            Width="350"
                             FontSize="28"
                             VerticalAlignment="Center"
                                     Text="{Binding PlayerWithMostWins.UserName}">
                                 </TextBlock>
                                 <TextBlock
                             Name="GMostWins"
-                            FontSize="32"
+                            FontSize="28"
+                                    Margin="0,0,50,0"
+                                    TextAlignment="Right"
+                                    Width="350"
+                            Foreground="#76FF03"
                             Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                             Text="{Binding MostWins}">
                                 </TextBlock>
                             </StackPanel>
 
-                            <!--Global Longest Volleys Hits-->
+                            <!-- PlayerWithMostGames -->
                             <TextBlock
-                                    Margin="0,0,10,0"
+                                Margin="0,0,0,0"
+                                FontSize="32"
+                                HorizontalAlignment="Center">
+                                PLAYER WITH MOST GAMES PLAYED:
+                            </TextBlock>
+                            <ProgressBar
+                                Width="700"></ProgressBar>
+                            <!--Most Games Binding-->
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Width="800"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,50">
+                                <TextBlock
+                                    Name="GPlayerMostGames"
+                                    Margin="50,10,0,0"
+                                    Width="350"
+                                    FontSize="28"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding PlayerWithMostGames.UserName}">
+                                </TextBlock>
+                                <TextBlock
+                                    Name="GMostGames"
+                                    FontSize="28"
+                                    Width="350"
+                                    Margin="0,10,50,0"
+                                    TextAlignment="Right"
+                                    Foreground="#76FF03"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding MostGames}">
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!-- PlayerWithBestWinRatio -->
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                FontSize="32"
+                                HorizontalAlignment="Center">
+                                PLAYER WITH BEST WIN RATIO:
+                            </TextBlock>
+                            <ProgressBar
+                                Width="700"></ProgressBar>
+                            <!--Best Ratio Binding-->
+                            <StackPanel
+                                Width="800"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                Margin="0,10,0,50">
+                                <TextBlock
+                                    Name="GPlayerBestRatio"
+                                    Margin="50,0,10,0"
+                                    Width="350"
+                                    FontSize="28"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding PlayerWithBestWinRatio.UserName}">
+                                </TextBlock>
+                                <TextBlock
+                                    Name="GBestRatio"
+                                    FontSize="28"
+                                    Margin="0,0,50,0"
+                                    Width="350"
+                                    TextAlignment="Right"
+                            Foreground="#76FF03"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding BestWinRatio}">
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!--PlayerWithBestSpreadWins-->
+                            <TextBlock
+                                Margin="0,0,0,0"
+                                FontSize="32"
+                                HorizontalAlignment="Center">
+                                PLAYER WITH BEST WIN SPREAD:
+                            </TextBlock>
+                            <ProgressBar
+                                Width="700"></ProgressBar>
+                            
+                            <!--BestSpreadBinding-->
+                            <StackPanel
+                                Width="800"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                Margin="0,10,0,50">
+                                <TextBlock
+                                    Name="GPlayerWinSpread"
+                                    Margin="50,0,10,0"
+                                    Width="350"
+                                    FontSize="28"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding PlayerWithGreatestAvgPointSpreadWins.UserName}">
+                                </TextBlock>
+                                <TextBlock
+                                    Name="GBestWinSpread"
+                                    FontSize="28"
+                                    Margin="0,0,50,0"
+                                    Width="350"
+                                    TextAlignment="Right"
+                            Foreground="#76FF03"
+                            Style="{DynamicResource MaterialDesignBody2TextBlock}" 
+                            Text="{Binding BestAvgPointSpreadWins}">
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!--Global Longest Volleys Hit and Time-->
+                            <TextBlock
+                                    Margin="0,0,0,0"
                                     FontSize="32"
                                 HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                                    PLAYERS WITH LONGEST VOLLEY BY HITS:
+                                    LONGEST VOLLEY BY HITS AND TIME:
                             </TextBlock>
+                            <ProgressBar
+                                Width="700"></ProgressBar>
+                            
+                            <!--Longest Volley Hits-->
                             <StackPanel
                                 Orientation="Horizontal"
-                                Margin="25,10,0,10">
+                                Margin="0,10,0,0"
+                                Width="800">
                                 <TextBlock
                                     Name="GLongestVolleyHits"
-                                    Margin="0,0,10,0"
+                                    Margin="50,0,0,0"
                                     FontSize="28"
-                                    Width="260"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Left"
-                                    Text="{Binding GameWithLongestVolleyHits.Player1.UserName}">
+                                    Width="300"
+                                    VerticalAlignment="Center">
+                                    <Run Text="{Binding GameWithLongestVolleyHits.Player1.UserName}"></Run>
                                 </TextBlock>
                                 <TextBlock
                                     Name="GMostHits"
-                                    FontSize="32"
-                                    Width="260"
-                                    HorizontalAlignment="Center"
-                                    Style="{DynamicResource MaterialDesignBody2TextBlock}" 
-                                    Text="{Binding GameWithLongestVolleyHits.LongestVolleyHits}">
+                                    FontSize="28"
+                                    Width="100"
+                                    TextAlignment="Center"
+                                    Foreground="#76FF03"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}" >
+                                    <Run Text="{Binding GameWithLongestVolleyHits.LongestVolleyHits}">
+                                    </Run>
+
                                 </TextBlock>
                                 <TextBlock
-                                    Margin="0,0,10,0"
-                                    Width="260"
+                                    Margin="0,0,50,10"
+                                    Width="300"
+                                    FontSize="28"
                                     VerticalAlignment="Center"
-                                    Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                    Text="{Binding GameWithLongestVolleyHits.Player2.UserName}">
+                                    TextAlignment="Right"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}">
+                                    <Run Text="{Binding GameWithLongestVolleyHits.Player2.UserName}">
+                                    </Run>
+                                </TextBlock>
+                            </StackPanel>
 
+                            <!--Longest Volley Time-->
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Margin="0,10,0,25"
+                                Width="800">
+                                <TextBlock
+                                    Margin="50,0,0,0"
+                                    FontSize="28"
+                                    Width="300"
+                                    VerticalAlignment="Center">
+                                    <Run Text="{Binding GameWtihLongestVolleyTime.Player1.UserName}"></Run>
+                                </TextBlock>
+                                <TextBlock
+                                    FontSize="28"
+                                    Width="100"
+                                    TextAlignment="Center"
+                                    Foreground="#76FF03"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}">
+                                    <Run Text="{Binding LongestVolleyTime}">
+                                    </Run>s
+
+                                </TextBlock>
+                                <TextBlock
+                                    Margin="0,0,50,0"
+                                    Width="300"
+                                    FontSize="28"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Right"
+                                    Style="{DynamicResource MaterialDesignBody2TextBlock}">
+                                    <Run Text="{Binding GameWtihLongestVolleyTime.Player2.UserName}">
+                                    </Run>
                                 </TextBlock>
                             </StackPanel>
 

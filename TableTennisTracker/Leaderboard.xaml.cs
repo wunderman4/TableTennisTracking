@@ -61,7 +61,7 @@ namespace TableTennisTracker
             PBarOne.Visibility = Visibility.Collapsed;
         }
 
-        //..................................... Show All & Hide All Elemets...................................
+        //..................................... Show Default & Hide All Elemets...................................
 
         // Hides all elemnts to wipe board for elements we want to show. 
         private void HideAll()
@@ -86,9 +86,11 @@ namespace TableTennisTracker
             PVPOneArea.Visibility = Visibility.Collapsed;
 
             // Header, Col 1, Row 0
-            Statistics.Visibility = Visibility.Collapsed;
+            Welcome.Visibility = Visibility.Collapsed;
             SelectPlayerTwoTitle.Visibility = Visibility.Collapsed;
             PVPTitle.Visibility = Visibility.Collapsed;
+            ColOneStatsByPlayerTitle.Visibility = Visibility.Collapsed;
+            GlobalLeadersTitle.Visibility = Visibility.Collapsed;
 
 
             // Right Card, Col 1, Row 1
@@ -102,6 +104,7 @@ namespace TableTennisTracker
             PVPTwoArea.Visibility = Visibility.Collapsed;
             GlobalStatsArea.Visibility = Visibility.Collapsed;
 
+
         }
 
         // Returns the page to the default view.
@@ -113,7 +116,7 @@ namespace TableTennisTracker
             PVPButton.Visibility = Visibility.Visible;
             HitLocationButton.Visibility = Visibility.Visible;
             HomeButton.Visibility = Visibility.Visible;
-            Statistics.Visibility = Visibility.Visible;
+            Welcome.Visibility = Visibility.Visible;
 
         }
 
@@ -125,8 +128,14 @@ namespace TableTennisTracker
             PBarSpan.Visibility = Visibility.Visible;
             Task<GlobalGameStats> GetGlobalStats = Task.Factory.StartNew(() => GlobalStats());
             GlobalStatBinding.DataContext = await GetGlobalStats;
-            GlobalStatsArea.Visibility = Visibility.Visible;
+
+            // Collapse 
             PBarSpan.Visibility = Visibility.Collapsed;
+            Welcome.Visibility = Visibility.Collapsed;
+            // Show
+            GlobalStatsArea.Visibility = Visibility.Visible;
+            GlobalLeadersTitle.Visibility = Visibility.Visible;
+            
         }
 
         // Button to show single player stats
@@ -137,9 +146,9 @@ namespace TableTennisTracker
             SelectPlayerTitle.Visibility = Visibility.Visible;
             PlayerListBox.Visibility = Visibility.Visible;
             ReturnButton.Visibility = Visibility.Visible;
-            Statistics.Visibility = Visibility.Visible;
             StatsByPlayerConfirm.Visibility = Visibility.Visible;
             StatsByPlayerBinding.Visibility = Visibility.Hidden;
+            ColOneStatsByPlayerTitle.Visibility = Visibility.Visible;
 
         }
 
@@ -183,10 +192,11 @@ namespace TableTennisTracker
                 StatsByPlayerBinding.DataContext = await SingleStats;
 
                 // collapse 
-                Statistics.Visibility = Visibility.Visible;
                 PBarSpan.Visibility = Visibility.Collapsed;
+                
                 // Shows correct elements 
                 StatsByPlayerBinding.Visibility = Visibility.Visible;
+                
             }
             else
             {
@@ -257,7 +267,8 @@ namespace TableTennisTracker
 
         }
 
-        //...................................... All Loading Calls For Async Programming........................
+        //...................................... Loading Calls For Async Programming........................
+        
         //Gloabal Stats Loading
         private GlobalGameStats GlobalStats()
         {
