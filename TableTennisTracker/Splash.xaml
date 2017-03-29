@@ -65,9 +65,9 @@
                 </materialDesign:ColorZone>
             </materialDesign:Card>
             
-            -->
-            <!--Start Game Card-->
-            <!--
+            
+            --><!--Start Game Card--><!--
+           
             <materialDesign:Card 
                 Margin="20,0,20,0"
                 Padding="0" 
@@ -100,9 +100,9 @@
                 </materialDesign:ColorZone>
             </materialDesign:Card>
             
-            -->
-            <!--Leaderboard Card-->
-            <!--
+            
+            --><!--Leaderboard Card--><!--
+            
             <materialDesign:Card 
                 Margin="40,10,10,0"
                 Padding="0" 
