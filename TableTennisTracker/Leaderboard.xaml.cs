@@ -158,7 +158,7 @@ namespace TableTennisTracker
         // Button to Show hit location stats by game
         private void HitLocationButton_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new PlotHitLocations(null, "Leaderboard"));
         }
 
         // Button to Navigate to splash page

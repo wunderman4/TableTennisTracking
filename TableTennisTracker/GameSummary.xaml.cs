@@ -25,15 +25,13 @@ namespace TableTennisTracker
         Game PastGame = null;
         Player PlayerOne;
         Player PlayerTwo;
-        public List<HitLocation> Bounces;
 
-        public GameSummary(Game _game, List<HitLocation> _bounces)
+        public GameSummary(Game _game)
         {
             PlayerService ps = new PlayerService();
 
             InitializeComponent();
             PastGame = _game;
-            Bounces = _bounces;
 
             PlayerOne = ps.GetPlayer(PastGame.Player1.Id);
             PlayerTwo = ps.GetPlayer(PastGame.Player2.Id);
@@ -83,7 +81,7 @@ namespace TableTennisTracker
 
         private void HitLocationButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new PlotHitLocations(Bounces, PastGame, "GameSummary"));
+            NavigationService.Navigate(new PlotHitLocations(PastGame, "GameSummary"));
         }
 
         private void GoHome_Click(object sender, RoutedEventArgs e)
