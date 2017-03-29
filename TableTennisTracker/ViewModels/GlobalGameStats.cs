@@ -41,6 +41,7 @@ namespace TableTennisTracker.ModelViews
         public Player PlayerWithLeastAvgPointSpreadLosses { get; set; }
         public string LeastAvgPointSpreadLosses { get; set; }
 
+        //string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
         public GlobalGameStats()
         {
             this.gs = new GameService();
@@ -51,8 +52,8 @@ namespace TableTennisTracker.ModelViews
             this.PlayerWithMostWins = ps.GetPlayerWithMostWins();
             this.MostWins = PlayerWithMostWins.Wins.ToString();
 
-            this.PlayerWithMostLosses = ps.GetPlayerWithMostLosses();
-            this.MostLosses = PlayerWithMostLosses.Losses.ToString();
+            //this.PlayerWithMostLosses = ps.GetPlayerWithMostLosses();
+            //this.MostLosses = PlayerWithMostLosses.Losses.ToString();
 
             this.PlayerWithMostGames = ps.GetPlayerWithMostGames();
             this.MostGames = (PlayerWithMostGames.Wins + PlayerWithMostGames.Losses).ToString();

@@ -40,6 +40,7 @@ namespace TableTennisTracker.Services
             else
                 return true;
         }
+
         public List<PlayerWithGames> ListPlayersWithGames()
         {
             List<PlayerWithGames> playersWtihGames = (from p in _repo.Query<Player>()
@@ -76,6 +77,7 @@ namespace TableTennisTracker.Services
 
             return playersWtihGames;
         }
+
         public Player GetPlayer(int id)
         {
             return (from p in _repo.Query<Player>()
