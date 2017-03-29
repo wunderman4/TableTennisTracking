@@ -96,10 +96,6 @@ namespace TableTennisTracker
             Main.Content = new Calibration();
         }
 
-        //private void GameSummary(object sender, RoutedEventArgs e)
-        //{
-        //    Main.Content = new GameSummary();
-        //}
 
         private async void ManagePlayers(object sender, RoutedEventArgs e)
         {
