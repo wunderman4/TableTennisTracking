@@ -47,7 +47,8 @@ namespace TableTennisTracker.Services
                                         Player2Score = g.Player2Score,
                                         MaxVelocity = g.MaxVelocity,
                                         LongestVolleyHits = g.LongestVolleyHits,
-                                        LongestVolleyTime = g.LongestVolleyTime
+                                        LongestVolleyTime = g.LongestVolleyTime,
+                                        CreatedDate = g.CreatedDate
                                     }).ToList();
 
             foreach(GamesView game in gameList)
@@ -98,8 +99,8 @@ namespace TableTennisTracker.Services
                                         Player2Score = g.Player2Score,
                                         MaxVelocity = g.MaxVelocity,
                                         LongestVolleyHits = g.LongestVolleyHits,
-                                        LongestVolleyTime = g.LongestVolleyTime
-
+                                        LongestVolleyTime = g.LongestVolleyTime,
+                                        CreatedDate = g.CreatedDate
                                     }).ToList();
            
 
@@ -153,6 +154,7 @@ namespace TableTennisTracker.Services
                           LongestVolleyTime = g.LongestVolleyTime,
                           Player1 = g.Player1,
                           Player2 = g.Player2,
+                          CreatedDate = g.CreatedDate
                       }).FirstOrDefault();
 
             gameHitLocations = (from h in _repo.Query<HitLocation>()
@@ -191,7 +193,6 @@ namespace TableTennisTracker.Services
             newGame.Player2 = player2;
 
             DateTime myDateTime = DateTime.Now;
-            
             newGame.CreatedDate = myDateTime;
 
             // Add the game to the Games table:
@@ -289,7 +290,8 @@ namespace TableTennisTracker.Services
                              LongestVolleyHits = g.LongestVolleyHits,
                              LongestVolleyTime = g.LongestVolleyTime,
                              Player1 = g.Player1,
-                             Player2 = g.Player2
+                             Player2 = g.Player2,
+                             CreatedDate = g.CreatedDate
                          }).FirstOrDefault();
 
             player = (from p in _repo.Query<Player>()
@@ -322,7 +324,8 @@ namespace TableTennisTracker.Services
                              LongestVolleyHits = g.LongestVolleyHits,
                              LongestVolleyTime = g.LongestVolleyTime,
                              Player1 = g.Player1,
-                             Player2 = g.Player2
+                             Player2 = g.Player2,
+                             CreatedDate = g.CreatedDate
                          }).FirstOrDefault();
 
             player = (from p in _repo.Query<Player>()
