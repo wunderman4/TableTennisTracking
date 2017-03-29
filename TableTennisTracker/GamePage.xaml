@@ -38,7 +38,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left">
-            <TextBlock
+                <TextBlock
                 Grid.Row="0" 
                 Grid.Column="0" 
                 Margin="50,0,50,0"
@@ -51,9 +51,10 @@
                 Style="{DynamicResource MaterialDesignBody2TextBlock}" 
                 FontWeight="Bold"
                 Text="{Binding UserName}">
-            </TextBlock>
+                </TextBlock>
             <TextBlock  
                 x:Name="P1ScoreMessage"
+                Visibility="Hidden"
                 Margin="50,0,50,0"
                 FontSize="50"
                 Text="{Binding ScoreMessageString}" />
@@ -290,10 +291,11 @@
                 Text="{Binding UserName}">
             </TextBlock>
             <TextBlock  
-                            x:Name="P2ScoreMessage"
-                            FontSize="50"
-                            Margin="10,0,0,0"
-                            Text="{Binding ScoreMessageString}" />
+                x:Name="P2ScoreMessage"
+                Visibility="Hidden"
+                FontSize="50"
+                Margin="10,0,0,0"
+                Text="{Binding ScoreMessageString}" />
             </StackPanel>
 
             <!--Score Card-->
@@ -505,9 +507,25 @@
             </materialDesign:Card>
 
             <!--Popup window to show plot of a volley-->
-            <Popup Margin="10,10,10,10" Name="VolleyPlot" Width="1860" Height="1000" Placement="AbsolutePoint" HorizontalOffset="40" VerticalOffset="40" HorizontalAlignment="Center" VerticalAlignment="Center" IsOpen="False">
+            <Popup 
+                Margin="10,10,10,10" 
+                Name="VolleyPlot" 
+                Width="1860" 
+                Height="1000" 
+                Placement="AbsolutePoint" 
+                HorizontalOffset="40" 
+                VerticalOffset="40"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                IsOpen="False">
                 <StackPanel Name="PopupStack" Orientation="Vertical">
-                    <charts:Chart Name="chart1" Title="Volley Plot" Background="Red" Width="1700" Height="800" Margin="20,20,20,20">
+                    <charts:Chart 
+                        Name="chart1" 
+                        Title="Volley Plot" 
+                        Background="Purple" 
+                        Width="1700" 
+                        Height="800" 
+                        Margin="20,20,20,20">
                         <charts:Chart.Series>
                             <charts:ScatterSeries 
                                   IndependentValuePath="Key"
@@ -539,7 +557,7 @@
 
                         <charts:Chart.Axes>
                             <charts:LinearAxis Orientation="Y" Minimum="0" Maximum="1080" Interval="0" ShowGridLines="False" />
-                            <charts:LinearAxis Orientation="X" Minimum="0" Maximum="1920" Interval="0" ShowGridLines="False" />
+                            <charts:LinearAxis Orientation="X" Minimum="0" Maximum="1920" Interval="960" ShowGridLines="True" Foreground="Purple" />
                         </charts:Chart.Axes>
                     </charts:Chart>
                 </StackPanel>

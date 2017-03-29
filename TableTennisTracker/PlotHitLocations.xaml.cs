@@ -14,28 +14,42 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TableTennisTracker.Models;
+using TableTennisTracker.ModelViews;
+using TableTennisTracker.Services;
 
 namespace TableTennisTracker
 {
     /// <summary>
     /// Interaction logic for PlotHitLocations.xaml
     /// </summary>
-    public partial class PlotHitLocations : Page, INotifyPropertyChanged
+    public partial class PlotHitLocations : Page
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public string CallPage;
-        public Game Game;
-        public List<HitLocation> Bounces;
+        public GamesView Game;
+        public Game InGame;
+        public List<GamesView> Games;
+        GameService gs = new GameService();
 
-        public PlotHitLocations(List<HitLocation> _bounces, Game _game, string _callPage)
+        public PlotHitLocations(Game _game, string _callPage)
         {
             CallPage = _callPage;
-            Game = _game;
-            Bounces = _bounces;
+            InGame = _game;
 
             InitializeComponent();
 
-            PlotXYData();
+            if (InGame == null)
+            {
+                Games = gs.GetGames();
+                PickGameList.ItemsSource = Games;
+                PickGame.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                HitLocationButton.Visibility = Visibility.Collapsed;
+                Game = gs.GetGame(InGame.Id);
+                chart0.Visibility = Visibility.Visible;
+                PlotXYData();
+            }
         }
 
         // Create xyData list from Bounces, send to XAML plot
@@ -43,19 +57,38 @@ namespace TableTennisTracker
         {
             List<KeyValuePair<float, float>> xyData = new List<KeyValuePair<float, float>>();
 
-            for (int i = 0; i < Bounces.Count; i++)
+            for (int i = 0; i < Game.GameHitLocations.Count; i++)
             {
-                xyData.Add(new KeyValuePair<float, float>(Bounces[i].X, Bounces[i].Y));
+                xyData.Add(new KeyValuePair<float, float>(Game.GameHitLocations[i].X, Game.GameHitLocations[i].Y));
             }
 
             chart0.DataContext = xyData;
+        }
+
+        private void HitLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            GamesView ChosenGame = (GamesView)PickGameList.SelectedItem;
+            PickGame.Visibility = Visibility.Collapsed;
+            chart0.Visibility = Visibility.Visible;
+            HitLocationButton.Visibility = Visibility.Collapsed;
+            PickNewGameButton.Visibility = Visibility.Visible;
+            Game = ChosenGame;
+            PlotXYData();
+        }
+
+        private void PickNewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            chart0.Visibility = Visibility.Collapsed;
+            PickNewGameButton.Visibility = Visibility.Collapsed;
+            PickGame.Visibility = Visibility.Visible;
+            HitLocationButton.Visibility = Visibility.Visible;
         }
 
         private void Return_Click(object sender, RoutedEventArgs e)
         {
             if (CallPage == "GameSummary")
             {
-                NavigationService.Navigate(new GameSummary(Game, Bounces));
+                NavigationService.Navigate(new GameSummary(InGame));
             }
             else if (CallPage == "Leaderboard")
             {

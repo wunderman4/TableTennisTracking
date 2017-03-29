@@ -35,7 +35,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class GamePage : Page, INotifyPropertyChanged
     {
-        public bool debug = false;
+        public bool debug = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
         Player PlayerOne = null;
@@ -174,6 +174,7 @@ namespace TableTennisTracker
             pause = false;
         }
 
+        // Which player has serve
         public string Server
         {
             get { return _Server; }
@@ -264,64 +265,6 @@ namespace TableTennisTracker
             return inList[index];
         }
 
-        // Get xyz physical coordinates for bounce location, add to Bounce list
-        private HitLocation BounceLocation(DepthFrame depthFrame, int xavg, int yavg)
-        {
-            HitLocation bounceLocn = new Models.HitLocation();
-            if (depthFrame == null)
-            {
-                return (bounceLocn);
-            }
-
-            using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-            {
-                CameraSpacePoint[] camSpacePoints = new CameraSpacePoint[1920 * 1080];
-                this.coordinateMapper.MapColorFrameToCameraSpaceUsingIntPtr(depthFrameData.UnderlyingBuffer, depthFrameData.Size, camSpacePoints);
-                List<float> xvals = new List<float>();
-                List<float> yvals = new List<float>();
-                List<float> zvals = new List<float>();
-                int Vcount = 0;
-
-                // Find ball in camera space
-                for (int i = -40; i < 40; i++)
-                {
-                    for (int j = -40; j < 40; j++)
-                    {
-                        if (yavg + i > tableLevel)
-                        {
-                            int tempIndex = (yavg + i) * 1920 + xavg + j;
-                            int arrVal = 4 * tempIndex;
-                            if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
-                            {
-                                arrVal = 4;
-                            }
-                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.5)
-                            {
-                                xvals.Add(camSpacePoints[tempIndex].X);
-                                yvals.Add(camSpacePoints[tempIndex].Y);
-                                zvals.Add(camSpacePoints[tempIndex].Z);
-                                Vcount++;
-                            }
-                        }
-                    }
-                }
-                if (Vcount > 0)
-                {
-                    bounceLocn.X = FindMedian(xvals);
-                    bounceLocn.Y = FindMedian(yvals);
-                    bounceLocn.Z = FindMedian(zvals);
-                    bounceLocn.Volley = VolleyNumber;
-                }
-                else
-                {
-                    bounceLocn.X = 0;
-                    bounceLocn.Y = 0;
-                    bounceLocn.Z = 0;
-                }
-                return (bounceLocn);
-            }
-        }
-
         // Get xyz physical coordinates 
         private BallCoords XYZLocation(DepthFrame depthFrame, int xavg, int yavg)
         {
@@ -348,12 +291,7 @@ namespace TableTennisTracker
                         if (yavg + i > tableLevel)
                         {
                             int tempIndex = (yavg + i) * 1920 + xavg + j;
-                            int arrVal = 4 * tempIndex;
-                            if (arrVal > 4 * 1920 * 1080 || arrVal < 0)
-                            {
-                                arrVal = 4;
-                            }
-                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.5)
+                            if (camSpacePoints[tempIndex].Z > GlobalClass.minZ && camSpacePoints[tempIndex].Z < 3.6)
                             {
                                 xvals.Add(camSpacePoints[tempIndex].X);
                                 yvals.Add(camSpacePoints[tempIndex].Y);
@@ -380,7 +318,7 @@ namespace TableTennisTracker
             }
         }
 
-        // Check if ball location is reasonable comopared to previous location, return false if not
+        // Check if ball location is reasonable compared to previous location, return false if not
         private bool ReasonableLocation(DataPoint NewLocation)
         {
             DataPoint PrevLocation = AllData[AllData.Count - 1];
@@ -449,23 +387,23 @@ namespace TableTennisTracker
                     // If too much time passes without bounce/return, someone missed
                     if (this.hitTime != DateTime.MinValue)
                     {
-                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 2)
+                        if ((float)DateTime.Now.Subtract(this.hitTime).TotalSeconds > 1.5)
                         {
                             if (this.Direction == "Left" && bounce1)
                             {
-                                Score("P2", "Time Limit");
+                                Score("P2", "Time Limit - no return");
                             }
                             else if (this.Direction == "Left")
                             {
-                                Score("P1", "Time Limit");
+                                Score("P1", "Time Limit - no bounce");
                             }
                             else if (this.Direction == "Right" && bounce1)
                             {
-                                Score("P1", "Time Limit");
+                                Score("P1", "Time Limit - no return");
                             }
                             else
                             {
-                                Score("P2", "Time Limit");
+                                Score("P2", "Time Limit - no bounce");
                             }
                         }
                     }
@@ -500,22 +438,22 @@ namespace TableTennisTracker
                             {
                                 if (this.Direction == "Left")
                                 {
-                                    Score("P2", "Below Table");
+                                    Score("P2", "Below Table - no return");
                                 }
                                 else
                                 {
-                                    Score("P1", "Below Table");
+                                    Score("P1", "Below Table - no return");
                                 }
                             }
                             else
                             {
                                 if (this.Direction == "Left")
                                 {
-                                    Score("P1", "Below Table");
+                                    Score("P1", "Below Table - no bounce");
                                 }
                                 else
                                 {
-                                    Score("P2", "Below Table");
+                                    Score("P2", "Below Table - no bounce");
                                 }
                             }
                         }
@@ -532,20 +470,20 @@ namespace TableTennisTracker
                         if (served)
                         {
                             // Horizontal direction determination and direction change detection
-                            if (xdelta > 5)
+                            if (xdelta > 10)
                             {
                                 if (this.Direction == "Right")
                                 {
-                                    ChangeDirection();
+                                    ChangeDirection(ydelta);
                                     changeDir = true;
                                 }
                                 this.Direction = "Left";
                             }
-                            else if (xdelta < -5)
+                            else if (xdelta < -10)
                             {
                                 if (this.Direction == "Left")
                                 {
-                                    ChangeDirection();
+                                    ChangeDirection(ydelta);
                                     changeDir = true;
                                 }
                                 this.Direction = "Right";
@@ -559,7 +497,7 @@ namespace TableTennisTracker
                             }
                             else if (ydelta < -5)
                             {
-                                if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
+                                if (this.VertDir == "Down" && !changeDir && yavg - tableLevel < 100)   // Log possible bounce
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
@@ -570,7 +508,7 @@ namespace TableTennisTracker
                                     if (!changeDir)
                                     {
                                         // Handle bounce processing
-                                        if (PreviousXYZ.X != 0 && PreviousXYZ.Y != 0 && PreviousXYZ.Z != 0 && this.serveBounce)
+                                        if (PreviousXYZ.X != 0 && PreviousXYZ.Y != 0 && PreviousXYZ.Z != 0 && PreviousXYZ.Z > GlobalClass.minZ && this.serveBounce)
                                         {
                                             HitLocation bounceXYZ = new HitLocation();
                                             bounceXYZ.X = PreviousXYZ.X;
@@ -585,6 +523,10 @@ namespace TableTennisTracker
                                 }
                                 this.VertDir = "Up";
                             }
+                            else if (PossibleBounce)
+                            {
+                                PossibleBounce = false;
+                            }
                             else if (ydelta <= 0)
                             {
                                 if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
@@ -597,11 +539,44 @@ namespace TableTennisTracker
                         }
                         else if (inVolley)    // if not served yet, check for serve hit
                         {
-                            // Serve defined as moving in x and negative y
-                            if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
+                            // check for low, shallow bounce serve
+                            int xStartDelta = 0;
+                            if (Server == "P1")
+                            {
+                                xStartDelta = xavg - (int)startLocation.X;
+                            }
+                            else
+                            {
+                                xStartDelta = (int)startLocation.X - xavg;
+                            }
+
+                            if (xStartDelta > 30)
+                            {
+                                served = true;
+                                if (ydelta > 10)
+                                {
+                                    VertDir = "Down";
+                                } 
+                                else if (yavg - tableLevel < 50)
+                                {
+                                    VertDir = "Up";
+                                    serveBounce = true;
+                                }
+
+                                if (xdelta > 0)
+                                {
+                                    this.Direction = "Left";
+                                }
+                                else
+                                {
+                                    this.Direction = "Right";
+                                }
+                            }
+
+                            // Serve defined as moving in x and negative y (slower serve, easy bounce detection)
+                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
                             {
                                 this.served = true;
-                                this.startPosTime = DateTime.MinValue;
                                 VolleyStartTime = DateTime.Now;
                                 this.VertDir = "Down";
                                 if (xdelta > 0)
@@ -638,6 +613,7 @@ namespace TableTennisTracker
                     int yavg = (int)BallLocation.Y;
 
                     CheckStartPosition(xavg, yavg);
+
                 }
             }
         }
@@ -778,7 +754,7 @@ namespace TableTennisTracker
 
             // check volley length in time
             float volleyLength = (float)(DateTime.Now.Subtract(this.VolleyStartTime).TotalSeconds);
-            if (volleyLength > LongestVolleyTime)
+            if (volleyLength > LongestVolleyTime && volleyLength < 90)
             {
                 LongestVolleyTime = volleyLength;
             }
@@ -810,11 +786,16 @@ namespace TableTennisTracker
 
             ScoreMessageString = message;
 
+            TextDecoration myUnderline = new TextDecoration();
+            myUnderline.Pen = new Pen(Brushes.LimeGreen, 2);
+            TextDecorationCollection myCollection = new TextDecorationCollection();
+            myCollection.Add(myUnderline);
+
             if (player == "P1")
             {
                 this.PlayerOneScore++;
                 PlayScore();
-                PlayerOneUserName.TextDecorations = TextDecorations.Underline;
+                PlayerOneUserName.TextDecorations = myCollection;
                 if (debug)
                 {
                     P1ScoreMessage.Visibility = Visibility.Visible;
@@ -825,7 +806,7 @@ namespace TableTennisTracker
             {
                 this.PlayerTwoScore++;
                 PlayScore();
-                PlayerTwoUserName.TextDecorations = TextDecorations.Underline;
+                PlayerTwoUserName.TextDecorations = myCollection;
                 P1ScoreMessage.Visibility = Visibility.Hidden;
                 if (debug)
                 {
@@ -881,7 +862,7 @@ namespace TableTennisTracker
         private void GameSummaryButton_Click(object sender, RoutedEventArgs e)
         {
             GameOver();
-            NavigationService.Navigate(new GameSummary(CurrentGame, Bounces));
+            NavigationService.Navigate(new GameSummary(CurrentGame));
         }
 
         // Game over handling
@@ -909,10 +890,17 @@ namespace TableTennisTracker
         }
 
         // Handle change in ball direction
-        private void ChangeDirection()
+        private void ChangeDirection(float ydelta)
         {
             if (serveBounce)
             {
+                // Check for fast bounce + return
+                if (PossibleBounce && ydelta < -5 && !bounce1)
+                {
+                    bounce1 = true;
+                    PossibleBounce = false;
+                }
+
                 if (!bounce1)
                 {
                     if (this.Direction == "Left")
@@ -952,11 +940,11 @@ namespace TableTennisTracker
                 }
                 else if (this.Direction == "Right" && hit.X < netLocation)   // Wrong side of net
                 {
-                    Score("P2", "Hit Net");
+                    Score("P2", "Bounce wrong side");
                 }
                 else if (this.Direction == "Left" && hit.X > netLocation)    // Wrong side of net
                 {
-                    Score("P1", "Hit Net");
+                    Score("P1", "Bounce wrong side");
                 }
                 else     // Legal bounce
                 {
@@ -969,7 +957,7 @@ namespace TableTennisTracker
                 if ((this.Direction == "Right" && hit.X < netLocation) || (this.Direction == "Left" && hit.X > netLocation))
                 {
                     this.serveBounce = true;
-                    this.hitTime = DateTime.Now.AddSeconds(1);
+                    this.hitTime = DateTime.Now.AddSeconds(2);
                 }
                 else
                 {
@@ -1137,14 +1125,7 @@ namespace TableTennisTracker
                 this.multiSourceFrameReader.Dispose();
                 this.multiSourceFrameReader = null;
             }
-
-            //if (this.kinectSensor != null)
-            //{
-            //    this.kinectSensor.Close();
-            //    this.kinectSensor = null;
-            //}
         }
-
 
     }
 }
