@@ -171,7 +171,7 @@
                 Margin="0,0,0,0"
                 Grid.Column="0"
                 Grid.Row="0" 
-                Width="960"
+                Width="1210"
                 HorizontalAlignment="Center" >
             <ItemsControl>
                 <StackPanel
@@ -194,6 +194,11 @@
                                         Margin="8 0 0 0" 
                                         Grid.Column="0"
                                         Orientation="Horizontal">
+                                        <TextBlock 
+                                            FontSize="30"
+                                            FontWeight="Bold" 
+                                            Width="250"
+                                            Text="{Binding CreatedDate, StringFormat=g}" />
                                         <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold" 
