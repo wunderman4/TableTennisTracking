@@ -11,6 +11,7 @@ namespace TableTennisTracker
         public DbSet<Game>  Games { get; set; }
         public DbSet<HitLocation> HitLocations { get; set; }
         public DbSet<GamePlayer> GamePlayers { get; set; }
+        public DbSet<GlobalStats> GlobalStats { get; set; }
 
         // Your context has been configured to use a 'TableTennisTrackerDb' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
