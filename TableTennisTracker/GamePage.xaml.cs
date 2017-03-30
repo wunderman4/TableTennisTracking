@@ -548,6 +548,7 @@ namespace TableTennisTracker
                             if (xStartDelta > 30)
                             {
                                 served = true;
+                                VolleyStartTime = DateTime.Now;
                                 if (ydelta > 10)
                                 {
                                     VertDir = "Down";
