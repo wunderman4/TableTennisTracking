@@ -251,6 +251,7 @@
     <Compile Include="TableTennisTrackerDb.cs" />
     <Compile Include="ViewModels\GamesView.cs" />
     <Compile Include="ViewModels\GlobalGameStats.cs" />
+    <Compile Include="ViewModels\GlobalGameStatsView.cs" />
     <Compile Include="ViewModels\PlayerGameStats.cs" />
     <Compile Include="ViewModels\PlayerWithGames.cs" />
     <Page Include="Calibration.xaml">
