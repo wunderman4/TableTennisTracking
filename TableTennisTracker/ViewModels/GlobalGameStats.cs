@@ -5,276 +5,134 @@ using System.Text;
 using System.Threading.Tasks;
 using TableTennisTracker.Models;
 using TableTennisTracker.ModelViews;
+using TableTennisTracker.Respository;
 using TableTennisTracker.Services;
+using TableTennisTracker.ViewModels;
 
 namespace TableTennisTracker.ModelViews
 {
     public class GlobalGameStats
     {
-        private GameService gs;
+        private GenericRespository _repo;
 
-        private PlayerService ps;
+        TableTennisTrackerDb _db = new TableTennisTrackerDb();
+                
+        private GlobalGameStatsView globalStats;
 
-        private List<PlayerWithGames> playersWtihGames;
 
-        public Player PlayerWithMostWins { get; set; }
+        public string PlayerWithMostWins { get; set; }
+        public int PlayerWithMostWinsId { get; set; }
         public string MostWins { get; set; }
 
-        public Player PlayerWithMostLosses { get; set; }
-        public string MostLosses { get; set; }
-
-        public GamesView GameWithLongestVolleyHits { get; set; }
+        public int GameWithLongestVolleyHits { get; set; }
+        public string Player1GameWithLongestVolleyHits { get; set; }
+        public int Player1GameWithLongestVolleyHitsId { get; set; }
+        public string Player2GameWithLongestVolleyHits { get; set; }
+        public int Player2GameWithLongestVolleyHitsId { get; set; }
         public string LongestVolleyHits { get; set; }
 
-        public GamesView GameWtihLongestVolleyTime { get; set; }
+        public int GameWtihLongestVolleyTime { get; set; }
+        public string Player1GameWithLongestVolleyTime { get; set; }
+        public int Player1GameWithLongestVolleyTimeId { get; set; }
+        public string Player2GameWithLongestVolleyTime { get; set; }
+        public int Player2GameWithLongestVolleyTimeId { get; set; }
         public string LongestVolleyTime { get; set; }
 
-        public Player PlayerWithMostGames { get; set; }
+        public string PlayerWithMostGames { get; set; }
+        public int PlayerWithMostGamesId { get; set; }
         public string MostGames { get; set; }
 
-        public Player PlayerWithBestWinRatio { get; set; }
+        public string PlayerWithBestWinRatio { get; set; }
+        public int PlayerWithBestWinRatioId { get; set; }
         public string BestWinRatio { get; set; }
 
-        public Player PlayerWithGreatestAvgPointSpreadWins { get; set; }
+        public string PlayerWithGreatestAvgPointSpreadWins { get; set; }
+        public int PlayerWithGreatestAvgPointSpreadWinsId { get; set; }
         public string BestAvgPointSpreadWins { get; set; }
 
-        public Player PlayerWithLeastAvgPointSpreadLosses { get; set; }
+        public string PlayerWithLeastAvgPointSpreadLosses { get; set; }
+        public int PlayerWithLeastAvgPointSpreadLossesId { get; set; }
         public string LeastAvgPointSpreadLosses { get; set; }
 
         //string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
         public GlobalGameStats()
         {
-            this.gs = new GameService();
-            this.ps = new PlayerService();
+            this._repo = new GenericRespository(_db);
+             
+            this.globalStats = this.LoadGlobalStats();
 
-            this.playersWtihGames = ps.ListPlayersWithGames();
+            this.PlayerWithMostWins = globalStats.PlayerWithMostWins;
+            this.PlayerWithMostWinsId = globalStats.PlayerWithMostWinsId;
+            this.MostWins = globalStats.MostWins.ToString();
 
-            this.PlayerWithMostWins = ps.GetPlayerWithMostWins();
-            this.MostWins = PlayerWithMostWins.Wins.ToString();
+            this.PlayerWithMostGames = globalStats.PlayerWithMostWins;
+            this.PlayerWithMostGamesId = globalStats.PlayerWithMostGamesId;
+            this.MostGames = globalStats.MostWins.ToString();
 
-            //this.PlayerWithMostLosses = ps.GetPlayerWithMostLosses();
-            //this.MostLosses = PlayerWithMostLosses.Losses.ToString();
+            this.GameWithLongestVolleyHits = globalStats.GameWithLongestVolleyHits;
+            this.Player1GameWithLongestVolleyHits = globalStats.Player1GameWithLongestVolleyHits;
+            this.Player1GameWithLongestVolleyHitsId = globalStats.Player1GameWithLongestVolleyHitsId;
+            this.Player2GameWithLongestVolleyHits = globalStats.Player2GameWithLongestVolleyHits;
+            this.Player2GameWithLongestVolleyHitsId = globalStats.Player2GameWithLongestVolleyHitsId;
+            this.LongestVolleyHits = globalStats.LongestVolleyHits.ToString();
 
-            this.PlayerWithMostGames = ps.GetPlayerWithMostGames();
-            this.MostGames = (PlayerWithMostGames.Wins + PlayerWithMostGames.Losses).ToString();
+            this.GameWtihLongestVolleyTime = globalStats.GameWithLongestVolleyTime;
+            this.Player1GameWithLongestVolleyTime = globalStats.Player1GameWithLongestVolleyTime;
+            this.Player1GameWithLongestVolleyTimeId = globalStats.Player1GameWithLongestVolleyHitsId;
+            this.Player2GameWithLongestVolleyTime = globalStats.Player2GameWithLongestVolleyTime;
+            this.Player2GameWithLongestVolleyTimeId = globalStats.Player2GameWithLongestVolleyTimeId;
+            this.LongestVolleyTime = globalStats.LongestVolleyTime.ToString("0.##");
 
-            this.GameWithLongestVolleyHits = gs.GetGameWithLongestVolley();
-            this.LongestVolleyHits = GameWithLongestVolleyHits.LongestVolleyHits.ToString();
+            this.PlayerWithBestWinRatio = globalStats.PlayerWithBestWinRatio;
+            this.PlayerWithBestWinRatioId = globalStats.PlayerWithBestWinRatioId;
+            this.BestWinRatio = globalStats.BestWinRatio.ToString("0.##");
 
-            this.GameWtihLongestVolleyTime = gs.GetGameWithLongestVolleyTime();
-            this.LongestVolleyTime = GameWtihLongestVolleyTime.LongestVolleyTime.ToString("0.##");
+            this.PlayerWithGreatestAvgPointSpreadWins = globalStats.PlayerWithGreatestAvgPointSpreadWins;
+            this.PlayerWithGreatestAvgPointSpreadWinsId = globalStats.PlayerWithGreatestAvgPointSpreadWinsId;
+            this.BestAvgPointSpreadWins = globalStats.BestAvgPointSpreadWins.ToString("0.##");
 
-            this.PlayerWithBestWinRatio = this.GetPlayerWithBestWinRatio();
-            
-            this.PlayerWithGreatestAvgPointSpreadWins = this.GetPlayerWithGreatestAvgPointSpreadWins();
-            this.PlayerWithLeastAvgPointSpreadLosses = this.GetPlayerWithGreatestAvgPointSpreadLosses();
+            this.PlayerWithLeastAvgPointSpreadLosses = globalStats.PlayerWithLeastAvgPointSpreadLosses;
+            this.PlayerWithLeastAvgPointSpreadLossesId = globalStats.PlayerWithLeastAvgPointSpreadLossesId;
+            this.LeastAvgPointSpreadLosses = globalStats.LeastAvgPointSpreadLosses.ToString("0.##");
         }
 
-        private Player GetPlayerWithBestWinRatio()
+        private GlobalGameStatsView LoadGlobalStats()
         {
-            Player playerWithBestWinRatio;
-
-            var ratioList = new List<string>();
-
-            // loop through all players
-            // calculating their win ratios
-            // and putting them into a list:
-
-            foreach(PlayerWithGames player in playersWtihGames)
-            {
-                decimal totalGames = player.Wins + player.Losses;
-
-                if(totalGames != 0 && totalGames >= 5) // Avoid any players who don't have any games
-                {
-                    decimal ratio = player.Wins / totalGames;
-
-                    string playerRatio = ratio.ToString("0.##") + " : " + player.Id.ToString();
-
-                    ratioList.Add(playerRatio);
-                }
-            }
-
-            // sort and reverse the ratio list
-            // to get a descending list:
-            ratioList.Sort();
-            ratioList.Reverse();
-                        
-            // Get the player:
-            playerWithBestWinRatio = ps.GetPlayer( ParseOutTopPlayerId(ratioList));
-
-            // Assign the metric:
-
-            this.BestWinRatio = ParseOutTopPlayerMetric(ratioList);
-
-            return playerWithBestWinRatio;
-        }
-
-        private Player GetPlayerWithGreatestAvgPointSpreadWins()
-        {
-            Player playerWithBestAvgPointSpread;
-
-            var avgPointSpreadList = new List<string>();
-
-            // loop through all players
-            // calculating their average point
-            // spread for wins
-            // and putting them into a list:
-
-            foreach (PlayerWithGames player in playersWtihGames)
-            {
-                int playerId = player.Id;
-
-                decimal gamesWon = 0;
-
-                decimal gameSpread = 0;
-
-                decimal AvgPointSpread = 0;
-
-                decimal totalGames = player.Wins + player.Losses;
-
-                if (totalGames != 0 && totalGames >= 5) // Avoid any players who 
-                {                                       // don't have any games or too few
-                    foreach (Game game in player.Games)
-                    {
-                        if (game.Player1.Id == playerId)
-                        {
-                            if (game.Player1Score > game.Player2Score)
-                            {
-                                gameSpread += game.Player1Score - game.Player2Score;
-
-                                gamesWon++;
-                            }
-                        }
-                        else
-                        {
-                            if (game.Player2Score > game.Player1Score)
-                            {
-                                gameSpread += game.Player2Score - game.Player1Score;
-
-                                gamesWon++;
-                            }
-                        }
-                    }
-
-                    AvgPointSpread = gameSpread / gamesWon;
-
-                    string playerAvgPointSpread = AvgPointSpread.ToString("0.##") + " : " + playerId.ToString();
-
-                    avgPointSpreadList.Add( playerAvgPointSpread );
-                }
-            }
-
-            // sort and reverse the list
-            // to get a descending list:
-            avgPointSpreadList.Sort();
-            avgPointSpreadList.Reverse();
-
-            // Get the player:
-            playerWithBestAvgPointSpread = ps.GetPlayer( ParseOutTopPlayerId(avgPointSpreadList));
-
-            // Assign the best average point spread for wins:
-            this.BestAvgPointSpreadWins = ParseOutTopPlayerMetric(avgPointSpreadList);
-
-            return playerWithBestAvgPointSpread;
-        }
-
-        private Player GetPlayerWithGreatestAvgPointSpreadLosses()
-        {
-            Player playerWithBestAvgPointSpread;
-
-            var avgPointSpreadList = new List<string>();
-
-            // loop through all players
-            // calculating their average point
-            // spread for wins
-            // and putting them into a list:
-
-            foreach (PlayerWithGames player in playersWtihGames)
-            {
-                int playerId = player.Id;
-
-                decimal gamesLost = 0;
-
-                decimal gameSpread = 0;
-
-                decimal AvgPointSpread = 0;
-
-                decimal totalGames = player.Wins + player.Losses;
-
-                if (totalGames != 0 && totalGames >= 5) // Avoid any players who 
-                {                                       // don't have any games or too few
-                    foreach (Game game in player.Games)
-                    {
-                        if (game.Player1.Id == playerId)
-                        {
-                            if (game.Player2Score > game.Player1Score)
-                            {
-                                gameSpread += game.Player2Score - game.Player1Score;
-
-                                gamesLost++;
-                            }
-                        }
-                        else
-                        {
-                            if (game.Player1Score > game.Player2Score)
-                            {
-                                gameSpread += game.Player1Score - game.Player2Score;
-
-                                gamesLost++;
-                            }
-                        }
-                    }
-
-                    AvgPointSpread = gameSpread / gamesLost;
-
-                    string playerAvgPointSpread = AvgPointSpread.ToString("0.##") + " : " + playerId.ToString();
-
-                    avgPointSpreadList.Add(playerAvgPointSpread);
-                }
-            }
-
-            // sort and reverse the list
-            // to get a descending list:
-            avgPointSpreadList.Sort();
-            //avgPointSpreadList.Reverse();
-
-            // Get the player:
-            playerWithBestAvgPointSpread = ps.GetPlayer(ParseOutTopPlayerId(avgPointSpreadList));
-
-            this.LeastAvgPointSpreadLosses = ParseOutTopPlayerMetric(avgPointSpreadList);
-
-            return playerWithBestAvgPointSpread;
-        }
-
-        private int ParseOutTopPlayerId(List<string> list)
-        {
-            // Grab the top most entry:
-            string top = list[0];
-
-            // Split out the entry using colon as the delimiter:
-            string[] parms = top.Split(':');
-
-            // Grab the player's id (second parameter) and 
-            // convert it to an int:
-            int playerId = Convert.ToInt32(parms[1]);
-
-            // return the player's id:
-            return playerId;
-        }
-
-        private string ParseOutTopPlayerMetric(List<string> list)
-        {
-            // Grab the top most entry:
-            string top = list[0];
-
-            // Split out the entry using colon as the delimiter:
-            string[] parms = top.Split(':');
-
-            // Grab the player's metric (first parameter):
-            string metric = parms[0];
-
-            // return the player's id:
-            return metric;
+            GlobalGameStatsView globalStats = (from g in _repo.Query<GlobalStats>()
+                                               orderby g.Id descending
+                                               select new GlobalGameStatsView
+                                               {
+                                                   Id = g.Id,
+                                                   PlayerWithMostWins = g.PlayerWithMostWins,
+                                                   PlayerWithMostGamesId = g.PlayerWithMostGamesId,
+                                                   MostWins = g.MostWins,
+                                                   PlayerWithMostGames = g.PlayerWithMostGames,
+                                                   PlayerWithMostWinsId = g.PlayerWithMostWinsId,
+                                                   MostGamesPlayed = g.MostGamesPlayed,
+                                                   PlayerWithBestWinRatio = g.PlayerWithBestWinRatio,
+                                                   PlayerWithBestWinRatioId = g.PlayerWithBestWinRatioId,
+                                                   BestWinRatio = g.BestWinRatio,
+                                                   PlayerWithGreatestAvgPointSpreadWins = g.PlayerWithGreatestAvgPointSpreadWins,
+                                                   PlayerWithGreatestAvgPointSpreadWinsId = g.PlayerWithGreatestAvgPointSpreadWinsId,
+                                                   BestAvgPointSpreadWins = g.BestAvgPointSpreadWins,
+                                                   PlayerWithLeastAvgPointSpreadLosses = g.PlayerWithLeastAvgPointSpreadLosses,
+                                                   PlayerWithLeastAvgPointSpreadLossesId = g.PlayerWithLeastAvgPointSpreadLossesId,
+                                                   LeastAvgPointSpreadLosses = g.LeastAvgPointSpreadLosses,
+                                                   GameWithLongestVolleyHits = g.GameWithLongestVolleyHits,
+                                                   Player1GameWithLongestVolleyHits = g.Player1GameWithLongestVolleyHits,
+                                                   Player1GameWithLongestVolleyHitsId = g.Player1GameWithLongestVolleyHitsId,
+                                                   Player2GameWithLongestVolleyHits = g.Player2GameWithLongestVolleyHits,
+                                                   Player2GameWithLongestVolleyHitsId = g.Player2GameWithLongestVolleyHitsId,
+                                                   LongestVolleyHits = g.LongestVolleyHits,
+                                                   GameWithLongestVolleyTime = g.GameWithLongestVolleyTime,
+                                                   Player1GameWithLongestVolleyTime = g.Player1GameWithLongestVolleyTime,
+                                                   Player1GameWithLongestVolleyTimeId = g.Player1GameWithLongestVolleyTimeId,
+                                                   Player2GameWithLongestVolleyTime = g.Player2GameWithLongestVolleyTime,
+                                                   Player2GameWithLongestVolleyTimeId = g.Player2GameWithLongestVolleyTimeId,
+                                                   LongestVolleyTime = g.LongestVolleyTime,
+                                                   LastUpdated = g.LastUpdated
+                                               }).FirstOrDefault();
+            return globalStats;
         }
     }
 }
