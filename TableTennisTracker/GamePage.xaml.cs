@@ -341,12 +341,17 @@ namespace TableTennisTracker
         // Calculate ball speed in m/s
         private double BallSpeed(BallCoords currLocn, BallCoords prevLocn)
         {
-            if (currLocn.X != 0 && currLocn.Y != 0 && prevLocn.X != 0 && prevLocn.Y != 0)
+            if (currLocn.X != 0 && currLocn.Y != 0 && currLocn.Z != 0 && prevLocn.X != 0 && prevLocn.Y != 0 && prevLocn.Z != 0)
             {
                 double deltax = currLocn.X - prevLocn.X;
                 double deltay = currLocn.Y - prevLocn.Y;
+                double deltaz = currLocn.Z - prevLocn.Z;
+                if (deltaz > 0.3 || deltaz < -0.3)
+                {
+                    deltaz = 0;
+                }
                 double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
-                double distance = Math.Sqrt(deltax * deltax + deltay * deltay);
+                double distance = Math.Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
                 return distance / deltat;
             } else
             {
@@ -548,7 +553,6 @@ namespace TableTennisTracker
                             if (xStartDelta > 30)
                             {
                                 served = true;
-                                VolleyStartTime = DateTime.Now;
                                 if (ydelta > 10)
                                 {
                                     VertDir = "Down";
