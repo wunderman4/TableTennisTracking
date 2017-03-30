@@ -142,7 +142,7 @@
             Name="PickGame"
             Grid.Column="0"
             Grid.Row="0" 
-            Width="1000"
+            Width="1460"
             HorizontalAlignment="Center"
             Orientation="Vertical">
 
@@ -151,12 +151,12 @@
                 Padding="0" 
                 Grid.Column="0"
                 Grid.Row="0"
-                Width="1000"
+                Width="1460"
                 HorizontalAlignment="Center" >
                 <materialDesign:ColorZone 
                     Mode="PrimaryMid"
                     Margin="0,0,0,0"
-                    Width="1000">
+                    Width="1460">
                     <TextBlock
                         FontSize="50"
                         HorizontalAlignment="Center"
@@ -171,7 +171,7 @@
                 Margin="0,0,0,0"
                 Grid.Column="0"
                 Grid.Row="0" 
-                Width="960"
+                Width="1420"
                 HorizontalAlignment="Center" >
             <ItemsControl>
                 <StackPanel
@@ -181,7 +181,8 @@
                     HorizontalAlignment="Stretch"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                         Margin="10,10,10,10"
-                    Height="560">
+                    Height="560"
+                        Width="1340">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border 
@@ -195,6 +196,10 @@
                                         Grid.Column="0"
                                         Orientation="Horizontal">
                                         <TextBlock 
+                                           FontSize="30"
+                                           Width="440"
+                                           Text="{Binding CreatedDate, StringFormat=g}" />
+                                        <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold" 
                                             Width="250"
@@ -205,6 +210,7 @@
                                             Text="{Binding Player1Score}" />
                                         <TextBlock 
                                             FontSize="30"
+                                            FontWeight="Bold"
                                             HorizontalAlignment="Right"
                                             Margin="60,0,0,0"
                                             Width="250"
