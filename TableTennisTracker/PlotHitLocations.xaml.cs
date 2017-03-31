@@ -78,7 +78,7 @@ namespace TableTennisTracker
 
             for (int i = 0; i < Game.GameHitLocations.Count; i++)
             {
-                xyData.Add(new KeyValuePair<float, float>(Game.GameHitLocations[i].X, Game.GameHitLocations[i].Y));
+                xyData.Add(new KeyValuePair<float, float>(Game.GameHitLocations[i].X, Game.GameHitLocations[i].Z));
             }
 
             chart0.DataContext = xyData;
@@ -91,7 +91,7 @@ namespace TableTennisTracker
             chart0.Visibility = Visibility.Visible;
             HitLocationButton.Visibility = Visibility.Collapsed;
             PickNewGameButton.Visibility = Visibility.Visible;
-            Game = ChosenGame;
+            Game = gs.GetGame(ChosenGame.Id);
             PlotXYData();
         }
 
