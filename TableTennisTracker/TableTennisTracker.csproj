@@ -221,6 +221,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GamePlayer.cs" />
+    <Compile Include="Models\GlobalStats.cs" />
     <Compile Include="Models\HitLocation.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="NewPlayer.xaml.cs">
