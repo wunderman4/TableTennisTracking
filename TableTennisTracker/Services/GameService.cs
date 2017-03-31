@@ -35,21 +35,22 @@ namespace TableTennisTracker.Services
         {
             int playerId;
             Player player;
-            List<HitLocation> gameHitLocations;
+            //List<HitLocation> gameHitLocations;
 
             List<GamesView> gameList = (from g in _repo.Query<Game>()
-                                    select new GamesView
-                                    {
-                                        Id = g.Id,
-                                        Player1Id = g.Player1.Id,
-                                        Player1Score = g.Player1Score,
-                                        Player2Id = g.Player2.Id,
-                                        Player2Score = g.Player2Score,
-                                        MaxVelocity = g.MaxVelocity,
-                                        LongestVolleyHits = g.LongestVolleyHits,
-                                        LongestVolleyTime = g.LongestVolleyTime,
-                                        CreatedDate = g.CreatedDate
-                                    }).ToList();
+                                        orderby g.CreatedDate descending
+                                        select new GamesView
+                                        {
+                                            Id = g.Id,
+                                            Player1Id = g.Player1.Id,
+                                            Player1Score = g.Player1Score,
+                                            Player2Id = g.Player2.Id,
+                                            Player2Score = g.Player2Score,
+                                            MaxVelocity = g.MaxVelocity,
+                                            LongestVolleyHits = g.LongestVolleyHits,
+                                            LongestVolleyTime = g.LongestVolleyTime,
+                                            CreatedDate = g.CreatedDate
+                                        }).ToList();
 
             foreach(GamesView game in gameList)
             {
@@ -67,11 +68,11 @@ namespace TableTennisTracker.Services
                           select p).FirstOrDefault();
                 game.Player2 = player;
 
-                gameHitLocations = (from h in _repo.Query<HitLocation>()
-                                    where h.Game.Id == game.Id
-                                    select h).ToList();
+                //gameHitLocations = (from h in _repo.Query<HitLocation>()
+                //                    where h.Game.Id == game.Id
+                //                    select h).ToList();
 
-                game.GameHitLocations = gameHitLocations;
+                //game.GameHitLocations = gameHitLocations;
             }
 
             return gameList;
@@ -264,11 +265,18 @@ namespace TableTennisTracker.Services
             }
             _db.SaveChanges();
 
-            //delete the game's hit locations first:
-            _hitLocationSer.DeleteHitLocationsGame(id);
-            
-            //now delete the game:
+            //delete the game:
             _repo.Delete(gameToBeDeleted);
+
+            //delete the game's hit locations:
+
+            List<HitLocation> gameHitLocs = _hitLocationSer.GetHitLocationsGame(id);
+
+            if (gameHitLocs.Count != 0)
+            {
+                _hitLocationSer.DeleteHitLocationsGame(id);
+            }
+
         }
 
         ///////////////Global Game Stats:////////////////////
