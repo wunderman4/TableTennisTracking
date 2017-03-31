@@ -68,7 +68,7 @@
                 Grid.Row="0" 
                 Width="400"
                 Height="400"
-                HorizontalAlignment="Right" >
+                HorizontalAlignment="Right">
                 <materialDesign:ColorZone 
                     Mode="PrimaryMid"
                     Padding="0"
@@ -91,16 +91,16 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 Margin="20,10,20,10"
-                
                 Padding="0">
                 <StackPanel 
                     Margin="0,0,0,0"
                     Width="Auto"
                     Height="Auto"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                     <StackPanel 
                         Orientation="Horizontal" 
-                        Width="878">
+                        >
                         <!--Record Button-->
                         <Button
                         Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
@@ -188,7 +188,7 @@
                     <!--Add & Subtract area-->
                     <StackPanel
                         Orientation="Horizontal"
-                        Margin="0,50,0,50">
+                        Margin="0,50,0,20">
                         <!--Subtract Button-->
                         <Button
                             Visibility="Visible"
@@ -334,10 +334,10 @@
                     Margin="0,0,0,0"
                     Width="Auto"
                     Height="Auto"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                     <StackPanel 
-                        Orientation="Horizontal" 
-                        Width="878">
+                        Orientation="Horizontal">
                         <!--Name Nationality paddle hand area-->
                         <StackPanel
                             Margin="10,0,50,0">
@@ -426,7 +426,7 @@
                     <!--Add & Subtract area-->
                     <StackPanel
                         Orientation="Horizontal"
-                        Margin="0,50,0,50">
+                        Margin="0,50,0,20">
                         <!--Subtract Button-->
                         <Button
                         Visibility="Visible"
