@@ -41,7 +41,7 @@
                         <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1" />
                     </materialDesign:TransitioningContent.OpeningEffects>
 
-
+                    <!-- Col 0, Row 0 Title Section-->
                     <materialDesign:Card 
                 Margin="20,20,20,20"
                 Padding="0" 
@@ -69,7 +69,8 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Name="PlayerOneSelectArea"
@@ -84,10 +85,14 @@
                                 <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:1"/>
                             </materialDesign:TransitioningContent.OpeningEffects>
 
-                            <ListBox 
-                            HorizontalAlignment="Stretch"
-                            Name="PlayerOneListBox"
-                            Height="600">
+                        <ListBox 
+                        HorizontalAlignment="Stretch"
+                        Name="PlayerOneListBox"
+                        Height="560"
+                        Margin="10,20,10,0"
+                        BorderBrush="#757575"
+                        BorderThickness="3"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border 
@@ -123,7 +128,7 @@
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PlayerOneConfirm"
@@ -180,7 +185,8 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Name="PlayerTwoSelectArea"
@@ -197,7 +203,11 @@
                         <ListBox 
                             HorizontalAlignment="Stretch"
                             Name="PlayerTwoListBox"
-                            Height="600">
+                            Height="560"
+                            Margin="10,20,10,0"
+                            BorderBrush="#757575"
+                            BorderThickness="3"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth3">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border 
@@ -231,7 +241,7 @@
                         ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PlayerTwoConfirm"

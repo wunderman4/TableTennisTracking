@@ -30,13 +30,13 @@
         </Grid.RowDefinitions>
 
 
-    <materialDesign:TransitioningContent 
+        <materialDesign:TransitioningContent 
                 Grid.Column="0"
                 Grid.Row="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
-        <materialDesign:TransitioningContent.OpeningEffects>
-            <materialDesign:TransitionEffect Kind="SlideInFromBottom" />
-        </materialDesign:TransitioningContent.OpeningEffects>
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="SlideInFromBottom" />
+            </materialDesign:TransitioningContent.OpeningEffects>
 
             <StackPanel
                 Name="Buttons"
@@ -44,7 +44,7 @@
                 HorizontalAlignment="Center">
 
                 <!--________________Show Hit Locations___________________________-->
-            <Button
+                <Button
                         x:Name="HitLocationButton"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
@@ -56,23 +56,23 @@
                         Width="600"
                         Click="HitLocationButton_Click"
                         >
-                <StackPanel
+                    <StackPanel
                             Orientation="Horizontal">
-                    <materialDesign:PackIcon 
+                        <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="CrosshairsGps"
                         VerticalAlignment="Center"
                          />
-                    <TextBlock
+                        <TextBlock
                                 Margin="0,0,60,0"
                                 Padding="0,0,0,0"
                                 VerticalAlignment="Center">
                                 HIT LOCATIONS
-                    </TextBlock>
-                </StackPanel>
-            </Button>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
 
                 <!--________________Pick New Game Button___________________________-->
                 <Button
@@ -166,70 +166,77 @@
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-            
+            <ProgressBar
+                Margin="20,0,20,10"
+                IsIndeterminate="True"
+                x:Name="PBar"></ProgressBar>
             <materialDesign:Card 
                 Margin="0,0,0,0"
                 Grid.Column="0"
                 Grid.Row="0" 
                 Width="1420"
-                HorizontalAlignment="Center" >
-            <ItemsControl>
-                <StackPanel
+                Height="600"
+                HorizontalAlignment="Center" 
+                Background="#616161">
+                <ItemsControl>
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Height="560"
                 Margin="20,20,20,20">
-                    <ListBox
+                        <ListBox
                     x:Name="PickGameList"
+                    Visibility="Collapsed"
                     HorizontalAlignment="Stretch"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                         Margin="10,10,10,10"
                     Height="560"
                         Width="1340">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border 
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border 
                                     x:Name="Border" 
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
 
-                                    <StackPanel 
+                                        <StackPanel 
                                         Margin="8 0 0 0" 
                                         Grid.Column="0"
                                         Orientation="Horizontal">
-                                        <TextBlock 
+                                            <TextBlock 
                                            FontSize="30"
                                            Width="440"
                                            Text="{Binding CreatedDate, StringFormat=g}" />
-                                        <TextBlock 
+                                            <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold" 
                                             Width="250"
                                             Text="{Binding Player1.UserName}" />
-                                        <TextBlock
+                                            <TextBlock
                                             FontSize="30"
                                             Width="100"
                                             Text="{Binding Player1Score}" />
-                                        <TextBlock 
+                                            <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold"
                                             HorizontalAlignment="Right"
                                             Margin="60,0,0,0"
                                             Width="250"
                                             Text="{Binding Player2.UserName}" />
-                                        <TextBlock
+                                            <TextBlock
                                             FontSize="30"
                                             HorizontalAlignment="Right"
                                             Width="100"
                                             Text="{Binding Player2Score}" />
-                                    </StackPanel>
-                                </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                
-                </ListBox>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
 
-            </StackPanel>
-            </ItemsControl>
-        </materialDesign:Card>
+                        </ListBox>
+                    </StackPanel>
+                </ItemsControl>
+            </materialDesign:Card>
         </StackPanel>
 
         <!-- _________________________Graph_________________________-->

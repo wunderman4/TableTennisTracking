@@ -128,7 +128,7 @@ namespace TableTennisTracker
             PBarSpan.Visibility = Visibility.Visible;
             Task<GlobalGameStats> GetGlobalStats = Task.Factory.StartNew(() => GlobalStats());
             GlobalStatBinding.DataContext = await GetGlobalStats;
-
+            await Task.Delay(1750);
             // Collapse 
             PBarSpan.Visibility = Visibility.Collapsed;
             Welcome.Visibility = Visibility.Collapsed;
@@ -165,8 +165,10 @@ namespace TableTennisTracker
         }
 
         // Button to Show hit location stats by game
-        private void HitLocationButton_Click(object sender, RoutedEventArgs e)
+        private async void HitLocationButton_Click(object sender, RoutedEventArgs e)
         {
+            PBarOne.Visibility = Visibility.Visible;
+            await Task.Delay(2350);
             NavigationService.Navigate(new PlotHitLocations(null, "Leaderboard"));
         }
 
@@ -184,7 +186,7 @@ namespace TableTennisTracker
         {
             if (PlayerListBox.SelectedItem != null) {
 
-                PBarSpan.Visibility = Visibility.Visible;
+                PBarTwo.Visibility = Visibility.Visible;
                 // Gather Stats by Selected Player and sets data context
                 Player SinglePlayer = (Player)PlayerListBox.SelectedItem;
                 Task<PlayerGameStats> SingleStats = Task.Factory.StartNew(() => SingleGet(SinglePlayer.Id));
@@ -192,7 +194,7 @@ namespace TableTennisTracker
                 StatsByPlayerBinding.DataContext = await SingleStats;
 
                 // collapse 
-                PBarSpan.Visibility = Visibility.Collapsed;
+                PBarTwo.Visibility = Visibility.Collapsed;
                 
                 // Shows correct elements 
                 StatsByPlayerBinding.Visibility = Visibility.Visible;
