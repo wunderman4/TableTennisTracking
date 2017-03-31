@@ -125,7 +125,6 @@
 
                         <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="10,20,10,20"
@@ -238,7 +237,6 @@
 
                         <Button
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         Margin="10,20,10,20"
