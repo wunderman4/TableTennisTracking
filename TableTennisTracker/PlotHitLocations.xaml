@@ -20,6 +20,13 @@
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}">
 
+    <Page.Resources>
+        <Style x:Key="GridLineStyle" TargetType="Line">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="StrokeThickness" Value="5" />
+        </Style>
+    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="MainCol" Width="*" />
@@ -242,11 +249,12 @@
         <!-- _________________________Graph_________________________-->
         <charts:Chart 
             Name="chart0" 
-            Title="Table Hit Locations" 
-            Background="Purple" 
-            Width="1500" 
+            Title="" 
+            Background="#5E35B1" 
+            Width="1260" 
             Height="700" 
             Margin="20,20,20,20" 
+            FontSize="1"
             HorizontalAlignment="Center"
             Visibility="Collapsed">
             <charts:Chart.Series>
@@ -285,8 +293,8 @@
             </charts:Chart.LegendStyle>
 
             <charts:Chart.Axes>
-                <charts:LinearAxis Orientation="Y" Interval="0" ShowGridLines="False" />
-                <charts:LinearAxis Orientation="X" Interval="10" ShowGridLines="True" />
+                <charts:LinearAxis Orientation="Y" Minimum="2" Maximum="3.6" Interval="0" ShowGridLines="False" />
+                <charts:LinearAxis Orientation="X" Minimum="-1.6" Maximum="1.6" Interval="1.6" ShowGridLines="True" GridLineStyle="{StaticResource GridLineStyle}"/>
             </charts:Chart.Axes>
         </charts:Chart>
 
