@@ -41,7 +41,7 @@
 
             <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:0:1" />
                 </materialDesign:TransitioningContent.OpeningEffects>
 
 
@@ -72,7 +72,8 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Margin="0,0,0,0"
@@ -237,7 +238,7 @@
 
                     <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" Duration="0:0:0:1" />
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <Button
@@ -245,7 +246,7 @@
                         Foreground="Black"
                         Background="Red"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,20"
+                        Margin="10,70,10,20"
                         FontSize="55"
                         Height="125"
                         Click="CancelEdit">CANCEL
@@ -266,7 +267,7 @@
                 Grid.Column="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                 <materialDesign:TransitioningContent.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                    <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0:1"/>
                 </materialDesign:TransitioningContent.OpeningEffects>
 
                 <materialDesign:Card 
@@ -296,7 +297,8 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
                 <StackPanel 
                     Margin="0,0,0,0"
                     Width="800"
@@ -426,7 +428,7 @@
                 Grid.Column="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
                         <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromRight" />
+                            <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0:1"/>
                         </materialDesign:TransitioningContent.OpeningEffects>
 
                         <Button
@@ -434,7 +436,7 @@
                         Name="Confrim"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,70,0,20"
+                        Margin="10,70,10,20"
                         FontSize="55"
                         Height="125"
                         Click="Submit"
