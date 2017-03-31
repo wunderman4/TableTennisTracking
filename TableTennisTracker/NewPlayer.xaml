@@ -73,7 +73,8 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Margin="0,0,0,0"
@@ -253,7 +254,7 @@
                         Background="Red"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,70,0,0"
+                        Margin="10,50,10,20"
                         FontSize="55"
                         Height="125"
                         Click="AddCancel">CANCEL
@@ -303,7 +304,8 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
                 <StackPanel 
                     Margin="0,0,0,0"
                     Width="800"
@@ -441,7 +443,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,70,0,0"
+                        Margin="10,50,10,20"
                         FontSize="55"
                         Height="125"
                         Click="Submit"

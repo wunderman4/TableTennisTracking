@@ -20,13 +20,6 @@
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}">
 
-    <Page.Resources>
-        <Style x:Key="GridLineStyle" TargetType="Line">
-            <Setter Property="StrokeThickness" Value="5" />
-            <Setter Property="Stroke" Value="White" />
-        </Style>
-    </Page.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="MainCol" Width="*" />
@@ -36,13 +29,14 @@
             <RowDefinition Name="PlotButtons" Height="200" />
         </Grid.RowDefinitions>
 
+
         <materialDesign:TransitioningContent 
                 Grid.Column="0"
                 Grid.Row="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
-        <materialDesign:TransitioningContent.OpeningEffects>
-            <materialDesign:TransitionEffect Kind="SlideInFromBottom" />
-        </materialDesign:TransitioningContent.OpeningEffects>
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="SlideInFromBottom" />
+            </materialDesign:TransitioningContent.OpeningEffects>
 
             <StackPanel
                 Name="Buttons"
@@ -50,7 +44,7 @@
                 HorizontalAlignment="Center">
 
                 <!--________________Show Hit Locations___________________________-->
-            <Button
+                <Button
                         x:Name="HitLocationButton"
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
@@ -62,23 +56,23 @@
                         Width="600"
                         Click="HitLocationButton_Click"
                         >
-                <StackPanel
+                    <StackPanel
                             Orientation="Horizontal">
-                    <materialDesign:PackIcon 
+                        <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="125"
                         Height="125"
                         Kind="CrosshairsGps"
                         VerticalAlignment="Center"
                          />
-                    <TextBlock
+                        <TextBlock
                                 Margin="0,0,60,0"
                                 Padding="0,0,0,0"
                                 VerticalAlignment="Center">
                                 HIT LOCATIONS
-                    </TextBlock>
-                </StackPanel>
-            </Button>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
 
                 <!--________________Pick New Game Button___________________________-->
                 <Button
@@ -172,83 +166,88 @@
                     </TextBlock>
                 </materialDesign:ColorZone>
             </materialDesign:Card>
-            
+            <ProgressBar
+                Margin="20,0,20,10"
+                IsIndeterminate="True"
+                x:Name="PBar"></ProgressBar>
             <materialDesign:Card 
                 Margin="0,0,0,0"
                 Grid.Column="0"
                 Grid.Row="0" 
                 Width="1420"
-                HorizontalAlignment="Center" >
-            <ItemsControl>
-                <StackPanel
+                Height="600"
+                HorizontalAlignment="Center" 
+                Background="#616161">
+                <ItemsControl>
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Height="560"
                 Margin="20,20,20,20">
-                    <ListBox
+                        <ListBox
                     x:Name="PickGameList"
+                    Visibility="Collapsed"
                     HorizontalAlignment="Stretch"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        ScrollViewer.CanContentScroll="False"
                         Margin="10,10,10,10"
                     Height="560"
                         Width="1340">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border 
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border 
                                     x:Name="Border" 
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
 
-                                    <StackPanel 
+                                        <StackPanel 
                                         Margin="8 0 0 0" 
                                         Grid.Column="0"
                                         Orientation="Horizontal">
-                                        <TextBlock 
+                                            <TextBlock 
                                            FontSize="30"
                                            Width="440"
                                            Text="{Binding CreatedDate, StringFormat=g}" />
-                                        <TextBlock 
+                                            <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold" 
                                             Width="250"
                                             Text="{Binding Player1.UserName}" />
-                                        <TextBlock
+                                            <TextBlock
                                             FontSize="30"
                                             Width="100"
                                             Text="{Binding Player1Score}" />
-                                        <TextBlock 
+                                            <TextBlock 
                                             FontSize="30"
                                             FontWeight="Bold"
                                             HorizontalAlignment="Right"
                                             Margin="60,0,0,0"
                                             Width="250"
                                             Text="{Binding Player2.UserName}" />
-                                        <TextBlock
+                                            <TextBlock
                                             FontSize="30"
                                             HorizontalAlignment="Right"
                                             Width="100"
                                             Text="{Binding Player2Score}" />
-                                    </StackPanel>
-                                </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                
-                </ListBox>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
 
-            </StackPanel>
-            </ItemsControl>
-        </materialDesign:Card>
+                        </ListBox>
+                    </StackPanel>
+                </ItemsControl>
+            </materialDesign:Card>
         </StackPanel>
 
         <!-- _________________________Graph_________________________-->
         <charts:Chart 
-            Name="chart0"
-            FontSize="1"
-            Background="#5E35B1" 
-            Width="1260" 
+            Name="chart0" 
+            Title="Table Hit Locations" 
+            Background="Purple" 
+            Width="1500" 
             Height="700" 
+            Margin="20,20,20,20" 
             HorizontalAlignment="Center"
-            BorderBrush="White"
-            BorderThickness="5"
             Visibility="Collapsed">
             <charts:Chart.Series>
                 <charts:ScatterSeries 
@@ -286,10 +285,9 @@
             </charts:Chart.LegendStyle>
 
             <charts:Chart.Axes>
-                <charts:LinearAxis Orientation="Y" Minimum="2" Maximum="3.6" Interval="2" ShowGridLines="False" />
-                <charts:LinearAxis Orientation="X" Minimum="-1.6" Maximum="1.6" Interval="1.6" ShowGridLines="True" GridLineStyle="{StaticResource GridLineStyle}"/>
+                <charts:LinearAxis Orientation="Y" Interval="0" ShowGridLines="False" />
+                <charts:LinearAxis Orientation="X" Interval="10" ShowGridLines="True" />
             </charts:Chart.Axes>
-
         </charts:Chart>
 
     </Grid>

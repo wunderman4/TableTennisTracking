@@ -143,7 +143,8 @@
                 Grid.Column="0"
                 Grid.Row="2"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Name="ColZeroRowOne"
@@ -165,7 +166,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
@@ -198,7 +199,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,0"
                         FontSize="55"
                         Height="125"
                         Click="StatsByPlayer_Click"
@@ -232,7 +233,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
@@ -261,12 +262,11 @@
                             </materialDesign:TransitioningContent.OpeningEffects>
                             <Button
                         x:Name="HitLocationButton"
-                        
                         Visibility="Visible"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
@@ -303,7 +303,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,0"
                         FontSize="55"
                         Height="125"
                         VerticalAlignment="Bottom"
@@ -331,10 +331,14 @@
 
                     <!--Stats By Player Select Player List Box-->
                     <ListBox 
-                            Visibility="Collapsed"
-                            HorizontalAlignment="Stretch"
-                            x:Name="PlayerListBox"
-                            Height="600">
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Stretch"
+                        x:Name="PlayerListBox"
+                        Height="560"
+                        Margin="10,20,10,0"
+                        BorderBrush="#757575"
+                        BorderThickness="3"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -342,24 +346,17 @@
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition 
-                                                    SharedSizeGroup="Checkerz" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel 
+                                    <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                            <TextBlock 
-                                                FontSize="50"
-                                                FontWeight="Bold" 
-                                                Text="{Binding UserName}" />
-                                            <TextBlock 
-                                                FontSize="30"
-                                                Text="{Binding PlayerName}" />
-                                        </StackPanel>
-                                    </Grid>
+                                        <TextBlock 
+                                            FontSize="50"
+                                            FontWeight="Bold" 
+                                            Text="{Binding UserName}" />
+                                        <TextBlock 
+                                            FontSize="30"
+                                            Text="{Binding PlayerName}" />
+                                    </StackPanel>
                                 </Border>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
@@ -372,10 +369,14 @@
 
                     <!--PVPSelectOne List Box-->
                     <ListBox 
-                            Visibility="Collapsed"
-                            HorizontalAlignment="Stretch"
-                            x:Name="PVPSelectOne"
-                            Height="600">
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Stretch"
+                        x:Name="PVPSelectOne"
+                        Height="560"
+                        Margin="10,20,10,0"
+                        BorderBrush="#757575"
+                        BorderThickness="3"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -383,30 +384,18 @@
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition 
-                                                    SharedSizeGroup="Checkerz" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel 
+                                    <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                            <TextBlock 
-                                                FontSize="50"
-                                                FontWeight="Bold" 
-                                                Text="{Binding UserName}" />
-                                            <TextBlock 
-                                                FontSize="30"
-                                                Text="{Binding PlayerName}" />
-                                        </StackPanel>
-                                    </Grid>
+                                        <TextBlock 
+                                            FontSize="50"
+                                            FontWeight="Bold" 
+                                            Text="{Binding UserName}" />
+                                        <TextBlock 
+                                            FontSize="30"
+                                            Text="{Binding PlayerName}" />
+                                    </StackPanel>
                                 </Border>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -415,7 +404,9 @@
                     <StackPanel
                         x:Name="PVPOneArea"
                         Visibility="Collapsed"
-                        Height="600">
+                        Height="560"
+                        Margin="10,20,10,0"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <!--UserName Binding-->
                         <StackPanel
                             x:Name="PVPOneUserNameBinding"
@@ -600,7 +591,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PVPOneConfirmButton_Click"
@@ -621,7 +612,7 @@
                         </StackPanel>
                     </Button>
 
-                    <!--PVP One Select New-->
+                    <!--PVP One Select New Button-->
                     <Button
                         x:Name="PVPOneSelectNewButton"
                         Background="Orange"
@@ -629,7 +620,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PVPOneSelectNewButton_Click"
@@ -658,7 +649,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="ReturnButton_Click"
@@ -768,7 +759,8 @@
                 Grid.Column="1"
                 Grid.Row="2"
                 Margin="10,0,10,10"
-                Padding="0">
+                Padding="0"
+                Background="#616161">
 
                 <StackPanel 
                     Name="ButtonCard"
@@ -780,10 +772,14 @@
 
                     <!--PVPSelectTwo List Box-->
                     <ListBox 
-                            Visibility="Collapsed"
-                            HorizontalAlignment="Stretch"
-                            x:Name="PVPSelectTwo"
-                            Height="600">
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Stretch"
+                        x:Name="PVPSelectTwo"
+                        Height="560"
+                        Margin="10,20,10,0"
+                        BorderBrush="#757575"
+                        BorderThickness="3"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -791,30 +787,18 @@
                                     Padding="8" 
                                     BorderThickness="0 0 0 1" 
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition 
-                                                    SharedSizeGroup="Checkerz" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel 
+                                    <StackPanel 
                                             Margin="8 0 0 0" 
                                             Grid.Column="1">
-                                            <TextBlock 
-                                                FontSize="50"
-                                                FontWeight="Bold" 
-                                                Text="{Binding UserName}" />
-                                            <TextBlock 
-                                                FontSize="30"
-                                                Text="{Binding PlayerName}" />
-                                        </StackPanel>
-                                    </Grid>
+                                        <TextBlock 
+                                            FontSize="50"
+                                            FontWeight="Bold" 
+                                            Text="{Binding UserName}" />
+                                        <TextBlock
+                                            FontSize="30"
+                                            Text="{Binding PlayerName}" />
+                                    </StackPanel>
                                 </Border>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -823,7 +807,9 @@
                     <StackPanel
                         x:Name="StatsByPlayerBinding"
                         Visibility="Collapsed"
-                        Height="600">
+                        Height="560"
+                        Margin="10,20,10,0"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
                         <!--Username Binding-->
                         <StackPanel
@@ -1004,7 +990,9 @@
                     <StackPanel
                         x:Name="PVPTwoArea"
                         Visibility="Collapsed"
-                        Height="600">
+                        Height="560"
+                        Margin="10,20,10,0"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
                         <!--PVP Two Username Binding-->
                         <StackPanel
@@ -1213,7 +1201,7 @@
                             Width="350"
                             FontSize="28"
                             VerticalAlignment="Center"
-                                    Text="{Binding PlayerWithMostWins.UserName}">
+                                    Text="{Binding PlayerWithMostWins}">
                                 </TextBlock>
                                 <TextBlock
                             Name="GMostWins"
@@ -1248,7 +1236,7 @@
                                     Width="350"
                                     FontSize="28"
                                     VerticalAlignment="Center"
-                                    Text="{Binding PlayerWithMostGames.UserName}">
+                                    Text="{Binding PlayerWithMostGames}">
                                 </TextBlock>
                                 <TextBlock
                                     Name="GMostGames"
@@ -1283,7 +1271,7 @@
                                     Width="350"
                                     FontSize="28"
                                     VerticalAlignment="Center"
-                                    Text="{Binding PlayerWithBestWinRatio.UserName}">
+                                    Text="{Binding PlayerWithBestWinRatio}">
                                 </TextBlock>
                                 <TextBlock
                                     Name="GBestRatio"
@@ -1319,7 +1307,7 @@
                                     Width="350"
                                     FontSize="28"
                                     VerticalAlignment="Center"
-                                    Text="{Binding PlayerWithGreatestAvgPointSpreadWins.UserName}">
+                                    Text="{Binding PlayerWithGreatestAvgPointSpreadWins}">
                                 </TextBlock>
                                 <TextBlock
                                     Name="GBestWinSpread"
@@ -1355,7 +1343,7 @@
                                     FontSize="28"
                                     Width="300"
                                     VerticalAlignment="Center">
-                                    <Run Text="{Binding GameWithLongestVolleyHits.Player1.UserName}"></Run>
+                                    <Run Text="{Binding Player1GameWithLongestVolleyHits}"></Run>
                                 </TextBlock>
                                 <TextBlock
                                     Name="GMostHits"
@@ -1364,7 +1352,7 @@
                                     TextAlignment="Center"
                                     Foreground="#76FF03"
                                     Style="{DynamicResource MaterialDesignBody2TextBlock}" >
-                                    <Run Text="{Binding GameWithLongestVolleyHits.LongestVolleyHits}">
+                                    <Run Text="{Binding LongestVolleyHits}">
                                     </Run>
 
                                 </TextBlock>
@@ -1375,8 +1363,10 @@
                                     VerticalAlignment="Center"
                                     TextAlignment="Right"
                                     Style="{DynamicResource MaterialDesignBody2TextBlock}">
-                                    <Run Text="{Binding GameWithLongestVolleyHits.Player2.UserName}">
+                                    <Run Text="{Binding Player2GameWithLongestVolleyHits}">
+                                        
                                     </Run>
+
                                 </TextBlock>
                             </StackPanel>
 
@@ -1390,7 +1380,7 @@
                                     FontSize="28"
                                     Width="300"
                                     VerticalAlignment="Center">
-                                    <Run Text="{Binding GameWtihLongestVolleyTime.Player1.UserName}"></Run>
+                                    <Run Text="{Binding Player1GameWithLongestVolleyTime}"></Run>
                                 </TextBlock>
                                 <TextBlock
                                     FontSize="28"
@@ -1409,7 +1399,7 @@
                                     VerticalAlignment="Center"
                                     TextAlignment="Right"
                                     Style="{DynamicResource MaterialDesignBody2TextBlock}">
-                                    <Run Text="{Binding GameWtihLongestVolleyTime.Player2.UserName}">
+                                    <Run Text="{Binding Player2GameWithLongestVolleyTime}">
                                     </Run>
                                 </TextBlock>
                             </StackPanel>
@@ -1426,7 +1416,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="StatsByPlayerConfirm_Click"
@@ -1454,7 +1444,7 @@
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PVPTwoConfirmButton_Click"
@@ -1483,7 +1473,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:RippleAssist.Feedback="#DD000000" 
                         materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Margin="0,20,0,0"
+                        Margin="10,20,10,20"
                         FontSize="55"
                         Height="125"
                         Click="PVPTwoSelectNewButton_Click"

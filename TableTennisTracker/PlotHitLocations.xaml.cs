@@ -39,9 +39,10 @@ namespace TableTennisTracker
 
             if (InGame == null)
             {
-                Games = gs.GetGames();
-                PickGameList.ItemsSource = Games;
-                PickGame.Visibility = Visibility.Visible;
+                GetAllGames();
+                //Games = gs.GetGames();
+                //PickGameList.ItemsSource = Games;
+                //PickGame.Visibility = Visibility.Visible;
             }
             else
             {
@@ -51,6 +52,24 @@ namespace TableTennisTracker
                 PlotXYData();
             }
         }
+
+        private async void GetAllGames()
+        {
+
+            Task<List<GamesView>> AllGames = Task.Factory.StartNew(() => GetAllGamesWorker());
+            Games = await AllGames;
+            PickGameList.ItemsSource = Games;
+            PickGameList.Visibility = Visibility.Visible;
+            PickGame.Visibility = Visibility.Visible;
+            PBar.Visibility = Visibility.Collapsed;
+            
+        }
+
+        private List<GamesView> GetAllGamesWorker()
+        {
+            return gs.GetGames();
+        }
+
 
         // Create xyData list from Bounces, send to XAML plot
         public void PlotXYData()
