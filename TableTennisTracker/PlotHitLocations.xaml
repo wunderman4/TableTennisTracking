@@ -20,6 +20,13 @@
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}">
 
+    <Page.Resources>
+        <Style x:Key="GridLineStyle" TargetType="Line">
+            <Setter Property="StrokeThickness" Value="5" />
+            <Setter Property="Stroke" Value="White" />
+        </Style>
+    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="MainCol" Width="*" />
@@ -29,8 +36,7 @@
             <RowDefinition Name="PlotButtons" Height="200" />
         </Grid.RowDefinitions>
 
-
-    <materialDesign:TransitioningContent 
+        <materialDesign:TransitioningContent 
                 Grid.Column="0"
                 Grid.Row="1"
                 OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
@@ -180,6 +186,7 @@
                     x:Name="PickGameList"
                     HorizontalAlignment="Stretch"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ScrollViewer.CanContentScroll="False"
                         Margin="10,10,10,10"
                     Height="560"
                         Width="1340">
@@ -234,13 +241,14 @@
 
         <!-- _________________________Graph_________________________-->
         <charts:Chart 
-            Name="chart0" 
-            Title="Table Hit Locations" 
-            Background="Purple" 
-            Width="1500" 
+            Name="chart0"
+            FontSize="1"
+            Background="#5E35B1" 
+            Width="1260" 
             Height="700" 
-            Margin="20,20,20,20" 
             HorizontalAlignment="Center"
+            BorderBrush="White"
+            BorderThickness="5"
             Visibility="Collapsed">
             <charts:Chart.Series>
                 <charts:ScatterSeries 
@@ -278,9 +286,10 @@
             </charts:Chart.LegendStyle>
 
             <charts:Chart.Axes>
-                <charts:LinearAxis Orientation="Y" Interval="0" ShowGridLines="False" />
-                <charts:LinearAxis Orientation="X" Interval="10" ShowGridLines="True" />
+                <charts:LinearAxis Orientation="Y" Minimum="2" Maximum="3.6" Interval="2" ShowGridLines="False" />
+                <charts:LinearAxis Orientation="X" Minimum="-1.6" Maximum="1.6" Interval="1.6" ShowGridLines="True" GridLineStyle="{StaticResource GridLineStyle}"/>
             </charts:Chart.Axes>
+
         </charts:Chart>
 
     </Grid>

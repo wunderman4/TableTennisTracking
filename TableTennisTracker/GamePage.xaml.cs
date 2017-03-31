@@ -86,6 +86,8 @@ namespace TableTennisTracker
         public string _Server;
         public bool plotRepeat = false;
         public string _scoreMessageString;
+        public string[] SpeedData;
+        public int SpeedIndex;
 
         // Constructor
         public GamePage(Player pOne, Player pTwo)
@@ -172,6 +174,8 @@ namespace TableTennisTracker
             VolleyNumber = 1;
             maxSpeed = 0;
             pause = false;
+            SpeedData = new string[10000];
+            SpeedIndex = 0;
         }
 
         // Which player has serve
@@ -347,6 +351,8 @@ namespace TableTennisTracker
                 double deltay = currLocn.Y - prevLocn.Y;
                 double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
                 double distance = Math.Sqrt(deltax * deltax + deltay * deltay);
+                SpeedData[SpeedIndex] = currLocn.X + "  " + prevLocn.X + "  " + currLocn.Y + "  " + prevLocn.Y + "  " + distance + "  " + deltat;
+                SpeedIndex++;
                 return distance / deltat;
             } else
             {
@@ -440,7 +446,7 @@ namespace TableTennisTracker
                                     Score("P1", "Below Table - no return");
                                 }
                             }
-                            else
+                            else if (served)
                             {
                                 if (this.Direction == "Left")
                                 {
@@ -450,6 +456,10 @@ namespace TableTennisTracker
                                 {
                                     Score("P2", "Below Table - no bounce");
                                 }
+                            }
+                            else
+                            {
+                                ServeIsBad();
                             }
                         }
 
@@ -524,7 +534,7 @@ namespace TableTennisTracker
                             }
                             else if (ydelta <= 0)
                             {
-                                if (this.VertDir == "Down" && !changeDir)   // Log possible bounce
+                                if (this.VertDir == "Down" && !changeDir && yavg - tableLevel < 100)   // Log possible bounce
                                 {
                                     PossibleBounce = true;
                                     this.hitTime = DateTime.Now;
@@ -570,7 +580,7 @@ namespace TableTennisTracker
                             }
 
                             // Serve defined as moving in x and negative y (slower serve, easy bounce detection)
-                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10)
+                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10 && xStartDelta > 30)
                             {
                                 this.served = true;
                                 VolleyStartTime = DateTime.Now;
@@ -883,6 +893,9 @@ namespace TableTennisTracker
             string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             string path1 = System.IO.Path.Combine(myPhotos, "BounceData" + ".txt");
             File.WriteAllLines(path1, bounceOut);
+
+            string path2 = System.IO.Path.Combine(myPhotos, "SpeedData.txt");
+            File.WriteAllLines(path2, SpeedData);
         }
 
         // Handle change in ball direction
