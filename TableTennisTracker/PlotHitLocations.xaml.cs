@@ -40,13 +40,11 @@ namespace TableTennisTracker
             if (InGame == null)
             {
                 GetAllGames();
-                //Games = gs.GetGames();
-                //PickGameList.ItemsSource = Games;
-                //PickGame.Visibility = Visibility.Visible;
             }
             else
             {
                 HitLocationButton.Visibility = Visibility.Collapsed;
+                PickGame.Visibility = Visibility.Visible;
                 Game = gs.GetGame(InGame.Id);
                 chart0.Visibility = Visibility.Visible;
                 PlotXYData();

@@ -189,15 +189,16 @@
                     <StackPanel
                         VerticalAlignment="Center"
                         Height="560"
-                Margin="20,20,20,20">
+                        Margin="20,20,20,20">
                         <ListBox
-                    x:Name="PickGameList"
-                    Visibility="Collapsed"
-                    HorizontalAlignment="Stretch"
-                    ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        Margin="10,10,10,10"
-                    Height="560"
-                        Width="1340">
+                            x:Name="PickGameList"
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Stretch"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ScrollViewer.CanContentScroll="False"
+                            Margin="10,10,10,10"
+                            Height="560"
+                            Width="1340">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border 

@@ -31,7 +31,10 @@ namespace TableTennisTracker
 
         public Calibration()
         {
-            this.Message = "Not Calibrated";
+            if (GlobalClass.tableHeight == 0)
+            {
+                this.Message = "Not Calibrated";
+            }
 
             this.kinectSensor = KinectSensor.GetDefault();
 

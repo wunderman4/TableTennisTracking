@@ -92,6 +92,7 @@
                         Margin="10,20,10,0"
                         BorderBrush="#757575"
                         BorderThickness="3"
+                            ScrollViewer.CanContentScroll="False"
                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
@@ -206,6 +207,7 @@
                             Margin="10,20,10,0"
                             BorderBrush="#757575"
                             BorderThickness="3"
+                            ScrollViewer.CanContentScroll="False"
                             materialDesign:ShadowAssist.ShadowDepth="Depth3">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

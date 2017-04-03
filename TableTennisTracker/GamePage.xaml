@@ -31,6 +31,18 @@
                 <RowDefinition Name="Heading_0" Height="Auto" />
                 <RowDefinition Name="Form_1" Height="Auto"/>
             </Grid.RowDefinitions>
+            
+            <!--......................... Progress Bar for Game Summary Load ..................-->
+            <ProgressBar 
+                Visibility="Collapsed"
+                x:Name="PBarSpan"
+                Grid.Column="0"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Top"
+                IsIndeterminate="True" 
+                Margin="20,0,20,5" />
+            
             <!--............................. Player one Column.........................  -->
             <!--Username Header-->
             <StackPanel
