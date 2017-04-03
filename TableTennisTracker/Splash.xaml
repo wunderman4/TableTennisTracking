@@ -19,8 +19,6 @@
 
     <DockPanel>
 
-
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -29,112 +27,6 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <!--..................................All text Cards.............................-->
-            <!--Add account card-->
-            <!--<materialDesign:Card 
-                Margin="10,10,40,0"
-                Padding="0" 
-                Grid.Column="0"
-                Grid.Row="0" 
-                Width="600"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-                <materialDesign:ColorZone 
-                    Mode="PrimaryMid"
-                    Padding="15" >
-                    <TextBlock
-                        Padding="40"
-                        FontSize="70"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        TextAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        <Run Text="ADD PLAYER"/><LineBreak/>
-                        
-                       <materialDesign:PackIcon 
-                        Margin="0,0,0,0"
-                        Width="100"
-                        Height="100"
-                        Kind="ArrowDownBold"
-                        VerticalAlignment="Center"
-                        
-                         >
-                </materialDesign:PackIcon>
-                    </TextBlock>
-                </materialDesign:ColorZone>
-            </materialDesign:Card>
-            
-            
-            --><!--Start Game Card--><!--
-           
-            <materialDesign:Card 
-                Margin="20,0,20,0"
-                Padding="0" 
-                Grid.Column="0"
-                Grid.Row="1" 
-                Width="600"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <materialDesign:ColorZone 
-                    Mode="PrimaryMid"
-                    Padding="15" >
-                    <TextBlock
-                        Padding="40"
-                        FontSize="80"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        TextWrapping="Wrap"
-                        TextAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                       <materialDesign:PackIcon 
-                        Margin="0,0,0,0"
-                        Width="100"
-                        Height="100"
-                        Kind="ArrowUpBold"
-                        VerticalAlignment="Center">
-                       </materialDesign:PackIcon>
-                        <LineBreak/>
-                        <Run Text="NEW GAME"/>
-                    </TextBlock>
-                </materialDesign:ColorZone>
-            </materialDesign:Card>
-            
-            
-            --><!--Leaderboard Card--><!--
-            
-            <materialDesign:Card 
-                Margin="40,10,10,0"
-                Padding="0" 
-                Grid.Column="0"
-                Grid.Row="0" 
-                Width="600"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                <materialDesign:ColorZone 
-                    Mode="PrimaryMid"
-                    Padding="15" >
-                    <TextBlock
-                        Padding="40"
-                        FontSize="70"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        TextAlignment="Center"
-                        Style="{DynamicResource MaterialDesignTitleTextBlock}">
-                        <Run Text="LEADERBOARD"/><LineBreak/>
-                        
-                       <materialDesign:PackIcon 
-                        Margin="0,0,0,0"
-                        Width="100"
-                        Height="100"
-                        Kind="ArrowDownBold"
-                        VerticalAlignment="Center"
-                        
-                         >
-                </materialDesign:PackIcon>
-                    </TextBlock>
-                </materialDesign:ColorZone>
-            </materialDesign:Card>-->
 
             <ProgressBar
                 x:Name="PBMain"
@@ -158,11 +50,23 @@
                     Grid.Column="0"
                     Width="400"
                     Height="400"
-                    ToolTip="New Game"
                     materialDesign:RippleAssist.Feedback="#DD000000" 
                     materialDesign:ShadowAssist.ShadowDepth="Depth5"
                     FontSize="56"
                     Click="NewGame">
+                    <Button.ToolTip>
+                        <ToolTip 
+                            FontSize="40" 
+                            FontWeight="Bold" 
+                            Placement="Bottom" 
+                            Background="#BDBDBD"
+                            Foreground="Black"
+                            Padding="40,10,40,10"
+                            VerticalOffset="20"
+                            HorizontalOffset="-40">
+                            NEW GAME
+                        </ToolTip>
+                    </Button.ToolTip>
                     <materialDesign:PackIcon 
                         Margin="0,0,0,30"
                         Width="300"
@@ -198,10 +102,22 @@
                     Grid.Column="0"
                     Width="400"
                     Height="400"
-                    ToolTip="Add New Player"
                     materialDesign:RippleAssist.Feedback="#DD000000"
                     materialDesign:ShadowAssist.ShadowDepth="Depth5"
                     Click="NewPlayer">
+                    <Button.ToolTip>
+                        <ToolTip 
+                            FontSize="40" 
+                            FontWeight="Bold" 
+                            Placement="Top" 
+                            Background="#BDBDBD"
+                            Foreground="Black"
+                            Padding="40,10,40,10"
+                            VerticalOffset="-20"
+                            HorizontalOffset="20">
+                            ADD NEW PLAYER
+                        </ToolTip>
+                    </Button.ToolTip>
                 <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="300"
@@ -227,12 +143,24 @@
                     Grid.Column="0"
                     Width="400"
                     Height="400"
-                    ToolTip="Leaderboard"
                     materialDesign:RippleAssist.Feedback="#DD000000" 
                     materialDesign:ShadowAssist.ShadowDepth="Depth5"
                     FontSize="46"
                     Click="Leaderboard"
                     >
+                    <Button.ToolTip>
+                        <ToolTip 
+                            FontSize="40" 
+                            FontWeight="Bold" 
+                            Placement="Top" 
+                            Background="#BDBDBD"
+                            Foreground="Black"
+                            Padding="40,10,40,10"
+                            VerticalOffset="-20"
+                            HorizontalOffset="-20">
+                            LEADERBOARD
+                        </ToolTip>
+                    </Button.ToolTip>
                     <materialDesign:PackIcon 
                         Margin="0,0,0,0"
                         Width="300"
