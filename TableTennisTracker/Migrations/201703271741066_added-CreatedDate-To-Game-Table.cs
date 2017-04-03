@@ -9,6 +9,7 @@ namespace TableTennisTracker.Migrations
         {
             AddColumn("dbo.Games", "CreatedDate", c => c.DateTime(nullable: false));
         }
+
         
         public override void Down()
         {

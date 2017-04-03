@@ -7,13 +7,13 @@ namespace TableTennisTracker.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RemovedGlobalStats : IMigrationMetadata
+    public sealed partial class GlobalStats : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovedGlobalStats));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(GlobalStats));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703301612529_Removed-GlobalStats"; }
+            get { return "201704031724369_GlobalStats"; }
         }
         
         string IMigrationMetadata.Source

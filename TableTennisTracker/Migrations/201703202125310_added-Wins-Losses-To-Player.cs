@@ -10,6 +10,7 @@ namespace TableTennisTracker.Migrations
             AddColumn("dbo.Players", "Wins", c => c.Int(nullable: false));
             AddColumn("dbo.Players", "Losses", c => c.Int(nullable: false));
         }
+
         
         public override void Down()
         {

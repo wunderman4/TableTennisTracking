@@ -2,15 +2,11 @@ namespace TableTennisTracker.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
-    public partial class RemovedGlobalStats : DbMigration
+  
+      
+    public partial class AddedGlobalStatsbackIn : DbMigration
     {
         public override void Up()
-        {
-            DropTable("dbo.GlobalStats");
-        }
-        
-        public override void Down()
         {
             CreateTable(
                 "dbo.GlobalStats",
@@ -48,6 +44,11 @@ namespace TableTennisTracker.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+        }
+        
+        public override void Down()
+        {
+            DropTable("dbo.GlobalStats");
         }
     }
 }
