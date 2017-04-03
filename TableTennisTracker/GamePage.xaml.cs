@@ -47,6 +47,7 @@ namespace TableTennisTracker
         SoundPlayer BallSet = new SoundPlayer(@"../../Sounds/BallSet.wav");
         SoundPlayer BadServe = new SoundPlayer(@"../../Sounds/BadServe.wav");
         SoundPlayer GameWin = new SoundPlayer(@"../../Sounds/GameWin.wav");
+        SoundPlayer WrongServer = new SoundPlayer(@"../../Sounds/WrongPlayer2.wav");
         GameService gs = new GameService();
 
         private KinectSensor kinectSensor = null;
@@ -76,6 +77,7 @@ namespace TableTennisTracker
         public DataPoint startLocation;
         public DateTime startPosTime;
         public DateTime scoreDelay;
+        public DateTime wrongServeTime;
         public bool served;
         public bool gameOver;
         public bool PossibleBounce;
@@ -176,6 +178,7 @@ namespace TableTennisTracker
             pause = false;
             SpeedData = new string[10000];
             SpeedIndex = 0;
+            wrongServeTime = DateTime.MinValue;
         }
 
         // Which player has serve
@@ -345,11 +348,11 @@ namespace TableTennisTracker
         // Calculate ball speed in m/s
         private double BallSpeed(BallCoords currLocn, BallCoords prevLocn)
         {
-            if (currLocn.X != 0 && currLocn.Y != 0 && prevLocn.X != 0 && prevLocn.Y != 0)
+            double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
+            if (currLocn.X != 0 && currLocn.Y != 0 && prevLocn.X != 0 && prevLocn.Y != 0 && deltat > 0.025 && deltat < 0.07)
             {
                 double deltax = currLocn.X - prevLocn.X;
                 double deltay = currLocn.Y - prevLocn.Y;
-                double deltat = currLocn.Time.Subtract(prevLocn.Time).TotalSeconds;
                 double distance = Math.Sqrt(deltax * deltax + deltay * deltay);
                 SpeedData[SpeedIndex] = currLocn.X + "  " + prevLocn.X + "  " + currLocn.Y + "  " + prevLocn.Y + "  " + distance + "  " + deltat;
                 SpeedIndex++;
@@ -672,9 +675,10 @@ namespace TableTennisTracker
                         this.startPosition = false;
                         StartVolley();
                     }
-                    else
+                    else if(DateTime.Now.Subtract(wrongServeTime).TotalSeconds > 2.0)
                     {
-                        //Make some warning sound
+                        wrongServeTime = DateTime.Now;
+                        PlayWrongServer();
                     }
                 }
             }
@@ -971,7 +975,7 @@ namespace TableTennisTracker
                 if ((this.Direction == "Right" && hit.X < netLocation) || (this.Direction == "Left" && hit.X > netLocation))
                 {
                     this.serveBounce = true;
-                    this.hitTime = DateTime.Now.AddSeconds(2);
+                    this.hitTime = DateTime.Now.AddSeconds(1);
                 }
                 else
                 {
@@ -1094,6 +1098,13 @@ namespace TableTennisTracker
         {
             GameWin.Load();
             GameWin.Play();
+        }
+
+        // Plays Wrong Player Sound
+        private void PlayWrongServer()
+        {
+            WrongServer.Load();
+            WrongServer.Play();
         }
 
         // Create xyData list from AllData, send to XAML plot
