@@ -93,6 +93,14 @@
                             Margin="4" 
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
+                            Click="AboutUs">
+                            ABOUT US
+                        </Button>
+
+                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                            Margin="4" 
+                            HorizontalAlignment="Center"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="Splash">
                             RETURN HOME
                         </Button>
