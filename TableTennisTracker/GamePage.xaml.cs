@@ -865,9 +865,11 @@ namespace TableTennisTracker
         }
 
         // Confirms Game Over navigates to game summary page
-        private void GameSummaryButton_Click(object sender, RoutedEventArgs e)
+        private async void GameSummaryButton_Click(object sender, RoutedEventArgs e)
         {
-            GameOver();
+            PBarSpan.Visibility = Visibility.Visible;
+            Task FinishGame = Task.Factory.StartNew(() => GameOver());
+            await FinishGame;
             NavigationService.Navigate(new GameSummary(CurrentGame));
         }
 
@@ -882,20 +884,23 @@ namespace TableTennisTracker
             gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
-            string[] bounceOut = new string[this.Bounces.Count + 1];
-            bounceOut[0] = "X, Y, Z";
-            int i = 1;
-            foreach (HitLocation item in this.Bounces)
+            if (debug)
             {
-                bounceOut[i] = item.X.ToString() + ", " + item.Y.ToString() + ", " + item.Z.ToString();
-                i++;
-            }
-            string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            string path1 = System.IO.Path.Combine(myPhotos, "BounceData" + ".txt");
-            File.WriteAllLines(path1, bounceOut);
+                string[] bounceOut = new string[this.Bounces.Count + 1];
+                bounceOut[0] = "X, Y, Z";
+                int i = 1;
+                foreach (HitLocation item in this.Bounces)
+                {
+                    bounceOut[i] = item.X.ToString() + ", " + item.Y.ToString() + ", " + item.Z.ToString();
+                    i++;
+                }
+                string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                string path1 = System.IO.Path.Combine(myPhotos, "BounceData" + ".txt");
+                File.WriteAllLines(path1, bounceOut);
 
-            string path2 = System.IO.Path.Combine(myPhotos, "SpeedData.txt");
-            File.WriteAllLines(path2, SpeedData);
+                string path2 = System.IO.Path.Combine(myPhotos, "SpeedData.txt");
+                File.WriteAllLines(path2, SpeedData);
+            }
         }
 
         // Handle change in ball direction

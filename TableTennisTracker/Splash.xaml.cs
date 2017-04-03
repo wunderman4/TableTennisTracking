@@ -29,8 +29,14 @@ namespace TableTennisTracker
         {
             PBMain.Visibility = Visibility.Visible;
             await Task.Delay(1900);
-            NavigationService.Navigate(new SelectPlayers());
-
+            if (GlobalClass.tableHeight == 0)
+            {
+                NavigationService.Navigate(new Calibration());
+            }
+            else
+            {
+                NavigationService.Navigate(new SelectPlayers());
+            }
 
         }
 
