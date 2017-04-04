@@ -41,7 +41,7 @@
                 Grid.ColumnSpan="2"
                 VerticalAlignment="Top"
                 IsIndeterminate="True" 
-                Margin="20,0,20,5" />
+                Margin="42,0,42,5" />
             
             <!--............................. Player one Column.........................  -->
             <!--Username Header-->

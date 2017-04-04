@@ -81,6 +81,7 @@ namespace TableTennisTracker
         public bool served;
         public bool gameOver;
         public bool PossibleBounce;
+        public bool PossibleNet;
         public DataPoint tempBounce;
         public HitLocation tempBounceXYZ;
         public BallCoords CurrentXYZ;
@@ -170,6 +171,7 @@ namespace TableTennisTracker
             this.startPosition = false;
             this.startPosTime = DateTime.MinValue;
             this.PossibleBounce = false;
+            PossibleNet = false;
             this.scoreDelay = DateTime.MinValue;
             Server = "";
             VolleyHits = 0;
@@ -486,6 +488,7 @@ namespace TableTennisTracker
                                     changeDir = true;
                                 }
                                 this.Direction = "Left";
+                                PossibleNet = false;
                             }
                             else if (xdelta < -10)
                             {
@@ -495,6 +498,30 @@ namespace TableTennisTracker
                                     changeDir = true;
                                 }
                                 this.Direction = "Right";
+                                PossibleNet = false;
+                            }
+                            // Check for possible hitting net
+                            else if (xavg - netLocation < 20 && xavg - netLocation > 0 && Direction == "Left")
+                            {
+                                if (PossibleNet)
+                                {
+                                    Score("P1", "Hit Net");
+                                }
+                                else
+                                {
+                                    PossibleNet = true;
+                                }
+                            }
+                            else if (xavg - netLocation > -20 && xavg - netLocation < 0 && Direction == "Right")
+                            {
+                                if (PossibleNet)
+                                {
+                                    Score("P2", "Hit Net");
+                                }
+                                else
+                                {
+                                    PossibleNet = true;
+                                }
                             }
 
                             // Vertical direction and bounce detection
@@ -741,6 +768,7 @@ namespace TableTennisTracker
             this.Direction = "";
             VolleyHits = 0;
             PlayBallSet();
+            PossibleNet = false;
             if (Server == "P1")
             {
                 PlayerOneBall.Visibility = Visibility.Visible;
@@ -840,7 +868,6 @@ namespace TableTennisTracker
             }
         }
 
-
         // Asks if user would like to undo game over
         private void UndoGameOverButton_Click(object sender, RoutedEventArgs e)
         {
@@ -874,6 +901,7 @@ namespace TableTennisTracker
             PBarSpan.Visibility = Visibility.Visible;
             Task FinishGame = Task.Factory.StartNew(() => GameOver());
             await FinishGame;
+            await Task.Delay(2000);
             NavigationService.Navigate(new GameSummary(CurrentGame));
         }
 
@@ -885,7 +913,7 @@ namespace TableTennisTracker
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
             CurrentGame.LongestVolleyTime = LongestVolleyTime;
             CurrentGame.MaxVelocity = (float)maxSpeed;
-            gs.AddGame(CurrentGame, Bounces);
+        //    gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
             if (debug)
