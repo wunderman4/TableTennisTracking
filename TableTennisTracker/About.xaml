@@ -1,0 +1,73 @@
+﻿<Page x:Class="TableTennisTracker.About"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TableTennisTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="970" d:DesignWidth="1913"
+      Title="About"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}">
+
+    
+    <Grid HorizontalAlignment="Center"
+          Width="1300">
+        <ScrollViewer
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            Height="970"
+            VerticalAlignment="Center">
+
+        <StackPanel>
+            <!--Card One About the project-->
+                <materialDesign:Card
+                Padding="20"
+                Margin="20,25,20,50"
+                Background="#616161">
+                    <StackPanel>
+                        <TextBlock    
+                        HorizontalAlignment="Center"
+                        FontSize="70">
+                            ABOUT THE PROJECT:
+                        </TextBlock>
+                        <TextBlock
+                            Margin="100,25,100,0"
+                            Padding="5"
+                            FontSize="24"
+                            TextWrapping="WrapWithOverflow">
+                            Triple Threat Table Tennis Tracker is a real time tracking system that uses Microsoft's Xbox Kinect sensor. This system tracks the table tennis ball through space and can determin when a point should be awarded by using its HD Camera and a special IR Camera to see and plot the ball in 3D space. 
+                        </TextBlock>
+                    </StackPanel>
+                </materialDesign:Card>
+            
+            
+            <!--Card Two-->
+                <materialDesign:Card
+                Padding="20"
+                Margin="20,25,20,50"
+                Background="#616161">
+                    <StackPanel>
+                        <TextBlock    
+                        HorizontalAlignment="Center"
+                        FontSize="30">
+                            About Us:
+                        </TextBlock>
+                    </StackPanel>
+                </materialDesign:Card>
+            </StackPanel>
+        </ScrollViewer>
+        
+        
+        
+        
+        
+        
+    </Grid>
+
+</Page>

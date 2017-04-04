@@ -172,6 +172,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Calibration.xaml.cs">
       <DependentUpon>Calibration.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
     <Compile Include="ViewModels\GlobalGameStatsView.cs" />
     <Compile Include="ViewModels\PlayerGameStats.cs" />
     <Compile Include="ViewModels\PlayerWithGames.cs" />
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
