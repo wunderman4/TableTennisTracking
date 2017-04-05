@@ -44,7 +44,7 @@ namespace TableTennisTracker
             else
             {
                 HitLocationButton.Visibility = Visibility.Collapsed;
-                PickGame.Visibility = Visibility.Visible;
+                PickGame.Visibility = Visibility.Collapsed;
                 Game = gs.GetGame(InGame.Id);
                 chart0.Visibility = Visibility.Visible;
                 PlotXYData();
