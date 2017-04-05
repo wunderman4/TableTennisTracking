@@ -500,7 +500,7 @@ namespace TableTennisTracker
                                 this.Direction = "Right";
                                 PossibleNet = false;
                             }
-                            // Check for possible hitting net
+                            // Check for possible hitting net - two frames at net means a score
                             else if (xavg - netLocation < 20 && xavg - netLocation > 0 && Direction == "Left")
                             {
                                 if (PossibleNet)
@@ -585,7 +585,7 @@ namespace TableTennisTracker
                                 xStartDelta = (int)startLocation.X - xavg;
                             }
 
-                            if (xStartDelta > 30)
+                            if (xStartDelta > 50)
                             {
                                 served = true;
                                 VolleyStartTime = DateTime.Now;
@@ -610,7 +610,7 @@ namespace TableTennisTracker
                             }
 
                             // Serve defined as moving in x and negative y (slower serve, easy bounce detection)
-                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10 && xStartDelta > 30)
+                             else if ((xdelta > 10 || xdelta < 10) && ydelta > 10 && xStartDelta > 50)
                             {
                                 this.served = true;
                                 VolleyStartTime = DateTime.Now;
@@ -901,7 +901,6 @@ namespace TableTennisTracker
             PBarSpan.Visibility = Visibility.Visible;
             Task FinishGame = Task.Factory.StartNew(() => GameOver());
             await FinishGame;
-            await Task.Delay(2000);
             NavigationService.Navigate(new GameSummary(CurrentGame));
         }
 
@@ -913,7 +912,7 @@ namespace TableTennisTracker
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
             CurrentGame.LongestVolleyTime = LongestVolleyTime;
             CurrentGame.MaxVelocity = (float)maxSpeed;
-        //    gs.AddGame(CurrentGame, Bounces);
+            gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
             if (debug)
@@ -1003,7 +1002,7 @@ namespace TableTennisTracker
                 if ((this.Direction == "Right" && hit.X < netLocation) || (this.Direction == "Left" && hit.X > netLocation))
                 {
                     this.serveBounce = true;
-                    this.hitTime = DateTime.Now.AddSeconds(1);
+                    this.hitTime = DateTime.Now.AddSeconds(0.5);
                 }
                 else
                 {
