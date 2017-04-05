@@ -912,8 +912,8 @@ namespace TableTennisTracker
             CurrentGame.Player1Score = PlayerOneScore;
             CurrentGame.Player2Score = PlayerTwoScore;
             CurrentGame.LongestVolleyHits = LongestVolleyHits;
-            CurrentGame.LongestVolleyTime = LongestVolleyTime;
-            CurrentGame.MaxVelocity = (float)maxSpeed;
+            CurrentGame.LongestVolleyTime = (float)Math.Round((decimal)LongestVolleyTime, 2);
+            CurrentGame.MaxVelocity = (float)Math.Round((decimal)maxSpeed, 2);
             gs.AddGame(CurrentGame, Bounces);
 
             // Write bounce locn data to file (temporary code for testing)
