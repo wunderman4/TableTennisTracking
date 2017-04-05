@@ -207,7 +207,7 @@ For our project, we needed to utilize a different type of application called Win
                                     Margin="20"
                                     FontSize="22"
                                     TextAlignment="Justify"
-                                    TextWrapping="Wrap">Christian Wunder has a background is sales, automotive and travel. After many years of wearing many hats he has decided to peruse a career in programming. The transition was a natural one as he enjoys producing music, learning new technologies, and anything with a motor. He regularly explores the latest advances in music, automotive, and web to keep up to date.
+                                    TextWrapping="Wrap">Christian Wunder has a background in sales, automotive and travel. After many years of wearing many hats he has decided to pursue a career in programming. The transition was a natural one as he enjoys producing music, learning new technologies, and anything with a motor. He regularly explores the latest advances in music, automotive, and web to keep up to date.
                                 </TextBlock>
                             </StackPanel>
                             <!--Rich Bio-->

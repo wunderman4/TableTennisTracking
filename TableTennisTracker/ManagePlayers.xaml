@@ -94,6 +94,7 @@
                                 Height="700"
                                 BorderBrush="#757575"
                                 BorderThickness="3"
+                                ScrollViewer.CanContentScroll="False"
                                 materialDesign:ShadowAssist.ShadowDepth="Depth3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
