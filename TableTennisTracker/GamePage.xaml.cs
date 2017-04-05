@@ -35,7 +35,7 @@ namespace TableTennisTracker
     /// </summary>
     public partial class GamePage : Page, INotifyPropertyChanged
     {
-        public bool debug = true;
+        public bool debug = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
         Player PlayerOne = null;
@@ -825,7 +825,9 @@ namespace TableTennisTracker
             ScoreMessageString = message;
 
             TextDecoration myUnderline = new TextDecoration();
-            myUnderline.Pen = new Pen(Brushes.LimeGreen, 2);
+            Color myGreen = Color.FromRgb(118, 255, 3);
+            SolidColorBrush myBrush = new SolidColorBrush(myGreen);
+            myUnderline.Pen = new Pen(myBrush, 2);
             TextDecorationCollection myCollection = new TextDecorationCollection();
             myCollection.Add(myUnderline);
 
