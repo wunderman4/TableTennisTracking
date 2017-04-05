@@ -178,55 +178,55 @@ For our project, we needed to utilize a different type of application called Win
                             <StackPanel>
                                 <TextBlock
                                     Width="300"
-                                Margin="20,10,20,20"
+                                    Margin="20,10,20,20"
                                     FontSize="32"
                                     TextAlignment="Center"
-                                TextWrapping="Wrap">
+                                    TextWrapping="Wrap">
                                     Matthew Ploor
                                 </TextBlock>
                                 <TextBlock
-                                Width="300"
-                                Margin="20,10,20,20"
-                                FontSize="22"
+                                    Width="300"
+                                    Margin="20,10,20,20"
+                                    FontSize="22"
                                     TextAlignment="Justify"
-                                TextWrapping="Wrap">Matthew Ploor is a former engineer who has worked in semiconductor manufacturing and chip design support.  Looking for a change of career, Matthew is now studying web development, as occasional programming was the most enjoyable part of his earlier jobs.  In addition to coding skills, his ping pong skills have advanced considerably.
+                                    TextWrapping="Wrap">Matthew Ploor is a former engineer who has worked in semiconductor manufacturing and chip design support.  Looking for a change of career, Matthew is now studying web development, as occasional programming was the most enjoyable part of his earlier jobs.  In addition to coding skills, his ping pong skills have advanced considerably.
                                 </TextBlock>
                             </StackPanel>
                             <!--Chris Bio-->
                             <StackPanel>
                                 <TextBlock
                                     Width="300"
-                                Margin="20,10,20,20"
+                                    Margin="20,10,20,20"
                                     FontSize="32"
                                     TextAlignment="Center"
-                                TextWrapping="Wrap">
+                                    TextWrapping="Wrap">
                                     Christian Wunder
                                 </TextBlock>
                                 <TextBlock
-                                Width="300"
-                                Margin="20"
-                                FontSize="22"
+                                    Width="300"
+                                    Margin="20"
+                                    FontSize="22"
                                     TextAlignment="Justify"
-                                TextWrapping="Wrap">Christian Wunder has a background is sales, automotive and travel. After many years of wearing many hats he has decided to peruse a career in programming. The transition was a natural one as he enjoys producing music, learning new technologies, and anything with a motor. He regularly explores the latest advances in music, automotive, and web to keep up to date.
+                                    TextWrapping="Wrap">Christian Wunder has a background is sales, automotive and travel. After many years of wearing many hats he has decided to peruse a career in programming. The transition was a natural one as he enjoys producing music, learning new technologies, and anything with a motor. He regularly explores the latest advances in music, automotive, and web to keep up to date.
                                 </TextBlock>
                             </StackPanel>
                             <!--Rich Bio-->
                             <StackPanel>
                                 <TextBlock
                                     Width="300"
-                                Margin="20,10,20,20"
+                                    Margin="20,10,20,20"
                                     FontSize="32"
                                     TextAlignment="Center"
-                                TextWrapping="Wrap">
+                                    TextWrapping="Wrap">
                                     Richard J. Chary
                                 </TextBlock>
 
                                 <TextBlock
-                                Width="300"
-                                Margin="20"
+                                    Width="300"
+                                    Margin="20"
                                     FontSize="22"
                                     TextAlignment="Justify"
-                                TextWrapping="Wrap">Richard J. Charay is a former Senior Programmer Analyst for FedEx with 20+ years experience in backend server development and support. After accepting a buyout from FedEx he decided to update his software education with Full Stack .Net training from CoderCamps. Richard created the project's database along with the C# services and stored procedures used by the application.
+                                    TextWrapping="Wrap">Richard J. Charay is a former Senior Programmer Analyst for FedEx with 20+ years experience in backend server development and support. After accepting a buyout from FedEx he decided to update his software education with Full Stack .Net training from CoderCamps. Richard created the project's database along with the C# services and stored procedures used by the application.
                                 </TextBlock>
                             </StackPanel>
                             <!--Add about us paragraphs here-->

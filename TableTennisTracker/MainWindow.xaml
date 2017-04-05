@@ -55,14 +55,14 @@
                             LEADERBOARD
                         </Button>
 
-                        <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        <!--<Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}"
                             Margin="4"
                             HorizontalAlignment="Center"
                             Style="{DynamicResource MaterialDesignFlatButton}"
                             Click="GameTest">
                             GAME TEST
-                        </Button>
+                        </Button>-->
 
                         <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                             CommandParameter="{x:Static Dock.Left}"
