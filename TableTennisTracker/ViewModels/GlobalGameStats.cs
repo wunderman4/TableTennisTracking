@@ -65,9 +65,10 @@ namespace TableTennisTracker.ModelViews
             this.PlayerWithMostWinsId = globalStats.PlayerWithMostWinsId;
             this.MostWins = globalStats.MostWins.ToString();
 
-            this.PlayerWithMostGames = globalStats.PlayerWithMostWins;
+            // Overhere
+            this.PlayerWithMostGames = globalStats.PlayerWithMostGames;
             this.PlayerWithMostGamesId = globalStats.PlayerWithMostGamesId;
-            this.MostGames = globalStats.MostWins.ToString();
+            this.MostGames = globalStats.MostGamesPlayed.ToString();
 
             this.GameWithLongestVolleyHits = globalStats.GameWithLongestVolleyHits;
             this.Player1GameWithLongestVolleyHits = globalStats.Player1GameWithLongestVolleyHits;

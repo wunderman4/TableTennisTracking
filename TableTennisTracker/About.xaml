@@ -1,0 +1,247 @@
+﻿<Page x:Class="TableTennisTracker.About"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TableTennisTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="970" d:DesignWidth="1913"
+      Title="About"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}">
+
+    
+    <Grid HorizontalAlignment="Center"
+          Width="1300">
+        <ScrollViewer
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            Height="970"
+            VerticalAlignment="Center">
+
+        <StackPanel>
+            <!--Card One About the project-->
+                <materialDesign:Card
+                Padding="20"
+                Margin="20,25,20,50"
+                Background="#616161">
+                    <StackPanel>
+                        <!--CardOne Title-->
+                        <TextBlock    
+                        HorizontalAlignment="Center"
+                        FontSize="70">
+                            ABOUT THE PROJECT:
+                        </TextBlock>
+                        
+                        <!--CardOne discription-->
+                        <TextBlock
+                            Margin="100,25,100,0"
+                            Padding="5"
+                            FontSize="24"
+                            TextWrapping="WrapWithOverflow">
+                            Triple Threat Table Tennis Tracker is a real-time tracking system that uses Microsoft's Xbox One Kinect sensor. The system tracks table tennis balls through space and can determine when a point should be awarded by using the Kinect sensors HD Camera and IR Camera to see and plot the ball in 3D space. Some of the features of the application are.
+                        </TextBlock>
+
+                        <!--CardOneList-->
+                        <TextBlock
+                                Margin="100,25,100,0"
+                            Padding="5"
+                            FontSize="24"
+                            TextWrapping="WrapWithOverflow">
+                            •	Track ball position on x, y, and z axes
+                            <LineBreak/>
+                            •	Award points automatically to correct player
+                            <LineBreak/>
+                            •	Manual point correction
+                            <LineBreak/>
+                            •	No touch app control via Kienct hand cursor
+                            <LineBreak/>
+                            •	Volley replay
+                            <LineBreak/>
+                            •	Check for bad serves, off table hits, and double bounces
+                            <LineBreak/>
+                            •	Log hit locations on the table top
+                            <LineBreak/>
+                            •	Keep player statistics for both game and lifetime
+                            <LineBreak/>
+                            •	Store game data in the cloud (Azure)
+                            <LineBreak/>
+                            •	Automatically configures table location with one click
+                            <LineBreak/>
+                            •	Leaderboard for global and individual stats
+                            <LineBreak/>
+                            •	Hit locations stored by game
+                            <LineBreak/>
+                        </TextBlock>
+                    </StackPanel>
+                </materialDesign:Card>
+            
+            
+                <!--Card Two-->
+                <materialDesign:Card
+                Padding="20"
+                Margin="20,25,20,50"
+                Background="#616161">
+                    <StackPanel>
+                        <!--CardTwoTitle-->
+                        <TextBlock    
+                        HorizontalAlignment="Center"
+                        FontSize="70">
+                            TECHNOLOGY USED:
+                        </TextBlock>
+                        <!--CardTwo Discription-->
+                        <TextBlock
+                            Margin="100,25,100,0"
+                            Padding="5"
+                            FontSize="24"
+                            TextWrapping="WrapWithOverflow">
+                            During the 6 weeks of instruction we received at Coder Camps we learned how to make full stack .NET web applications which use technologies like AngularJS, TypeScript, C#, HTML, etc. <LineBreak/> <LineBreak/>
+For our project, we needed to utilize a different type of application called Windows Presentation Format (WPF) which is a standalone application that runs on windows. WPF applications were completely new to everyone in the group and we learned and applied most of these technologies as we went. Some of them include:
+                        </TextBlock>
+                        
+                        <!--CardTwo List-->
+                        <TextBlock
+                            Margin="100,25,100,0"
+                            Padding="5"
+                            FontSize="24"
+                            TextWrapping="WrapWithOverflow">
+                            •	C# (Learned in class)
+                            <LineBreak/>
+                            •	WPF
+                            <LineBreak/>
+                            •	XAML
+                            <LineBreak/>
+                            •	SQL
+                            <LineBreak/>
+                            •	Google Material for WPF (Credit: ButcherBoy)
+                            <LineBreak/>
+                            •	Xbox One Kinect Sensor
+                            <LineBreak/>
+                            •	Kinect SDK v2.0
+                            <LineBreak/>
+                            •	Azure
+                            <LineBreak/>
+                            •	Code First DB Creation
+                            <LineBreak/>
+                            •	Data Visualization Toolkit 
+                            <LineBreak/>
+                            •	Microsoft SQL Server Management Studio
+                            <LineBreak/>
+                            •	Microsoft Visual Studio 2015 Community
+                            <LineBreak/>
+                            •	Source control handled by Source Tree and GitHub
+                            <LineBreak/>
+                        </TextBlock>
+                    </StackPanel>
+                </materialDesign:Card>
+                <!--Card Two-->
+                <materialDesign:Card
+                Padding="20"
+                Margin="20,25,20,50"
+                Background="#616161">
+                    <StackPanel
+                        Name="MainVert">
+                        <!--CardThree Title-->
+                        <TextBlock    
+                        HorizontalAlignment="Center"
+                        FontSize="70">
+                            ABOUT US:
+                        </TextBlock>
+                        <StackPanel
+                            Name="PictureHorizontal"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                            <!--Add Images Here-->
+                            <Image 
+                                Height="300"
+                                Margin="20"
+                                Source="Images\Matt.jpg"/>
+                            <Image 
+                                Height="300"
+                                Margin="20"
+                                Source="Images\Chris.jpg"/>
+                            <Image 
+                                Height="300"
+                                Margin="20"
+                                Source="Images\Rich.jpg"/>
+                        </StackPanel>
+                        <StackPanel
+                            Name="AboutUs"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                            <!--Matt Bio-->
+                            <StackPanel>
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20,10,20,20"
+                                    FontSize="32"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    Matthew Ploor
+                                </TextBlock>
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20,10,20,20"
+                                    FontSize="22"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap">Matthew Ploor is a former engineer who has worked in semiconductor manufacturing and chip design support.  Looking for a change of career, Matthew is now studying web development, as occasional programming was the most enjoyable part of his earlier jobs.  In addition to coding skills, his ping pong skills have advanced considerably.
+                                </TextBlock>
+                            </StackPanel>
+                            <!--Chris Bio-->
+                            <StackPanel>
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20,10,20,20"
+                                    FontSize="32"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    Christian Wunder
+                                </TextBlock>
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20"
+                                    FontSize="22"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap">Christian Wunder has a background is sales, automotive and travel. After many years of wearing many hats he has decided to peruse a career in programming. The transition was a natural one as he enjoys producing music, learning new technologies, and anything with a motor. He regularly explores the latest advances in music, automotive, and web to keep up to date.
+                                </TextBlock>
+                            </StackPanel>
+                            <!--Rich Bio-->
+                            <StackPanel>
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20,10,20,20"
+                                    FontSize="32"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    Richard J. Chary
+                                </TextBlock>
+
+                                <TextBlock
+                                    Width="300"
+                                    Margin="20"
+                                    FontSize="22"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap">Richard J. Charay is a former Senior Programmer Analyst for FedEx with 20+ years experience in backend server development and support. After accepting a buyout from FedEx he decided to update his software education with Full Stack .Net training from CoderCamps. Richard created the project's database along with the C# services and stored procedures used by the application.
+                                </TextBlock>
+                            </StackPanel>
+                            <!--Add about us paragraphs here-->
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:Card>
+
+            </StackPanel>
+        </ScrollViewer>
+        
+        
+        
+        
+        
+        
+    </Grid>
+
+</Page>

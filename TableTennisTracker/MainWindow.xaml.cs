@@ -102,5 +102,13 @@ namespace TableTennisTracker
             await Task.Delay(350);
             Main.Content = new ManagePlayers();
         }
+
+        private async void AboutUs(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(350);
+            Main.Content = new About();
+
+
+        }
     }
 }

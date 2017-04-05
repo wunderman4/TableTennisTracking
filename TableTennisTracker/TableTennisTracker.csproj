@@ -172,6 +172,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Calibration.xaml.cs">
       <DependentUpon>Calibration.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,26 @@
     <Compile Include="Migrations\201703202125310_added-Wins-Losses-To-Player.Designer.cs">
       <DependentUpon>201703202125310_added-Wins-Losses-To-Player.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703271741066_added-CreatedDate-To-Game-Table.cs" />
+    <Compile Include="Migrations\201703271741066_added-CreatedDate-To-Game-Table.Designer.cs">
+      <DependentUpon>201703271741066_added-CreatedDate-To-Game-Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703301443487_Added-GlobalStats-table.cs" />
+    <Compile Include="Migrations\201703301443487_Added-GlobalStats-table.Designer.cs">
+      <DependentUpon>201703301443487_Added-GlobalStats-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031724369_GlobalStats.cs" />
+    <Compile Include="Migrations\201704031724369_GlobalStats.Designer.cs">
+      <DependentUpon>201704031724369_GlobalStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031730155_Added GlobalStats-backIn.cs" />
+    <Compile Include="Migrations\201704031730155_Added GlobalStats-backIn.Designer.cs">
+      <DependentUpon>201704031730155_Added GlobalStats-backIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031738044_retrys.cs" />
+    <Compile Include="Migrations\201704031738044_retrys.Designer.cs">
+      <DependentUpon>201704031738044_retrys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GamePlayer.cs" />
@@ -254,6 +277,10 @@
     <Compile Include="ViewModels\GlobalGameStatsView.cs" />
     <Compile Include="ViewModels\PlayerGameStats.cs" />
     <Compile Include="ViewModels\PlayerWithGames.cs" />
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -343,6 +370,21 @@
     <EmbeddedResource Include="Migrations\201703202125310_added-Wins-Losses-To-Player.resx">
       <DependentUpon>201703202125310_added-Wins-Losses-To-Player.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703271741066_added-CreatedDate-To-Game-Table.resx">
+      <DependentUpon>201703271741066_added-CreatedDate-To-Game-Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703301443487_Added-GlobalStats-table.resx">
+      <DependentUpon>201703301443487_Added-GlobalStats-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031724369_GlobalStats.resx">
+      <DependentUpon>201704031724369_GlobalStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031730155_Added GlobalStats-backIn.resx">
+      <DependentUpon>201704031730155_Added GlobalStats-backIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031738044_retrys.resx">
+      <DependentUpon>201704031738044_retrys.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -355,11 +397,16 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ping_pong_table_tennis_ball_xzi_icon.ico" />
     <Resource Include="Images\favicon.ico" />
+    <Resource Include="Images\Chris.jpg" />
+    <Resource Include="Images\Matt.jpg" />
+    <Resource Include="Images\Rich.jpg" />
     <Content Include="Sounds\BadServe.wav" />
     <Content Include="Sounds\BallSet.wav" />
     <Content Include="Sounds\GameWin.wav" />
