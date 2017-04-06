@@ -19,7 +19,6 @@ namespace TableTennisTracker.ModelViews
                 
         private GlobalGameStatsView globalStats;
 
-
         public string PlayerWithMostWins { get; set; }
         public int PlayerWithMostWinsId { get; set; }
         public string MostWins { get; set; }
@@ -61,6 +60,11 @@ namespace TableTennisTracker.ModelViews
              
             this.globalStats = this.LoadGlobalStats();
 
+            if (globalStats == null)
+            {
+                globalStats = new GlobalGameStatsView();
+            }
+
             this.PlayerWithMostWins = globalStats.PlayerWithMostWins;
             this.PlayerWithMostWinsId = globalStats.PlayerWithMostWinsId;
             this.MostWins = globalStats.MostWins.ToString();
@@ -95,6 +99,7 @@ namespace TableTennisTracker.ModelViews
             this.PlayerWithLeastAvgPointSpreadLosses = globalStats.PlayerWithLeastAvgPointSpreadLosses;
             this.PlayerWithLeastAvgPointSpreadLossesId = globalStats.PlayerWithLeastAvgPointSpreadLossesId;
             this.LeastAvgPointSpreadLosses = globalStats.LeastAvgPointSpreadLosses.ToString("0.##");
+
         }
 
         private GlobalGameStatsView LoadGlobalStats()

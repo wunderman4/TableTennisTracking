@@ -37,5 +37,37 @@ namespace TableTennisTracker.ViewModels
         public int Player2GameWithLongestVolleyTimeId { get; set; }
         public float LongestVolleyTime { get; set; }
         public DateTime? LastUpdated { get; set; }
+
+
+        public GlobalGameStatsView()
+        {
+            PlayerWithMostWins = "N/A";
+            PlayerWithMostWinsId = 0;
+            MostWins = 0;
+            PlayerWithMostGames = "N/A";
+            PlayerWithMostGamesId = 0;
+            MostGamesPlayed = 0;
+            PlayerWithBestWinRatio = "N/A";
+            PlayerWithBestWinRatioId = 0;
+            BestWinRatio = 0;
+            PlayerWithGreatestAvgPointSpreadWins = "N/A";
+            PlayerWithGreatestAvgPointSpreadWinsId = 0;
+            BestAvgPointSpreadWins = 0;
+            PlayerWithLeastAvgPointSpreadLosses = "N/A";
+            PlayerWithLeastAvgPointSpreadLossesId = 0;
+            LeastAvgPointSpreadLosses = 0;
+            GameWithLongestVolleyHits = 0;
+            Player1GameWithLongestVolleyHits = "N/A";
+            Player1GameWithLongestVolleyHitsId = 0;
+            Player2GameWithLongestVolleyHits = "N/A";
+            Player2GameWithLongestVolleyHitsId = 0;
+            LongestVolleyHits = 0;
+            GameWithLongestVolleyTime = 0;
+            Player1GameWithLongestVolleyTime = "N/A";
+            Player1GameWithLongestVolleyTimeId = 0;
+            Player2GameWithLongestVolleyTime = "N/A";
+            Player2GameWithLongestVolleyTimeId = 0;
+            LongestVolleyTime = 0;
+        }
     }
 }
