@@ -4,6 +4,8 @@ Our group project at Coder Camps. This project is a collaboration between  Matth
 
 ABOUT THE PROJECT:
 
+Check out the video here: https://youtu.be/tw47QmbsD18
+
 Triple Threat Table Tennis Tracker is a real-time tracking system that uses Microsoft's Xbox One Kinect sensor. The system tracks table tennis balls through space and can determine when a point should be awarded by using the Kinect sensors HD Camera and IR Camera to see and plot the ball in 3D space. Some of the features of the application are. 
 
 •	Track ball position on x, y, and z axes 
